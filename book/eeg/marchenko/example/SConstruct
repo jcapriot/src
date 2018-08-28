@@ -1,3 +1,4 @@
+from __future__ import print_function
 # ------------------------------------------------------------
 # Tutorial:
 # This SConstruct explains how to use sfmarchenko
@@ -121,9 +122,9 @@ par['f2'] = int(2*round(5/par['df'])) #PARAM
 par['f3'] = int(2*round(10/par['df'])) #PARAM
 par['f4'] = int(1*round(45/par['df'])) #PARAM
 
-print par['f2']
-print par['f3']
-print par['f4']
+print(par['f2'])
+print(par['f3'])
+print(par['f4'])
 
 par['fn'] = par['f2']/2
 Flow('wl1',None,
@@ -466,8 +467,8 @@ par['nshots_nxvs'] = par['nshots']*par['nxvs']
 par['f1'] = - (par['ox'] - par['x_left'])/par['dx'] + 1
 par['f2'] = - (par['oz'] - 0.0)/par['dz']
 
-print par['f1']
-print par['f2']
+print(par['f1'])
+print(par['f2'])
 
 # Extended source wavelet
 Flow('wav1fft_ext','wav1fft','spray axis=2 n=%(nshots_nxvs)d' % par)

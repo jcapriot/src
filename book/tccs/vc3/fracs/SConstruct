@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import math
 import rsf.recipes.beg as beg
@@ -32,17 +33,17 @@ s=math.sin(angle_rad)
 w1m=wf*c*c+ws*s*s
 w12m=(wf-ws)*(s*c)
 w2m=wf*s*s+ws*c*c
-print w1m
-print w12m
-print w2m
+print(w1m)
+print(w12m)
+print(w2m)
 
 ## Or just set the W's manually:
 w1m=0.0659
 w12m=0.0014
 w2m=0.0631
-print w1m
-print w12m
-print w2m
+print(w1m)
+print(w12m)
+print(w2m)
 
 ## Flow('w1',None,'spike n1=376 n2=101 n3=101 mag=%g d2=0.1 d3=0.1' % (w1m))
 ## Flow('w2','w1','math output=%g'% (w2m))

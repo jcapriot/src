@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import fdmod,encode,wei,adcig,polar
 import math
@@ -162,7 +163,7 @@ for isx in range(par['mignsx']):
 
 klist=len(nlist);
 for k in range(klist):
-    print "shot #",nlist[k]," @ {x,y}={",xlist[k],",",ylist[k],"}"
+    print("shot #",nlist[k]," @ {x,y}={",xlist[k],",",ylist[k],"}")
 
 # ------------------------------------------------------------
 for k in range(klist):
@@ -191,7 +192,7 @@ Plot('ss',map(lambda k: 'ss-%06d' % nlist[k],range(klist)),'Overlay')
 par['xcip']=23.45
 par['ycip']=11.425
 par['zcip']=2.380
-print "CIP @",par['xcip'],par['ycip'],par['zcip']
+print("CIP @",par['xcip'],par['ycip'],par['zcip'])
 
 ixcip=(par['xcip']-parmig['ox'])/(parmig['dx'])
 iycip=(par['ycip']-parmig['oy'])/(parmig['dy'])

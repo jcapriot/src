@@ -1,3 +1,4 @@
+from __future__ import print_function
 ## 
  # EIC 3D angle decomposition
  ##
@@ -419,7 +420,7 @@ for c in (CIPLIST):
     if(y!=0):
         f=f*y/abs(y);
         
-    print c,"%6.3g"%par[c+'x'],"%6.3g"%par[c+'y'],"%6.3g"%f,"%6.2g"%t
+    print(c,"%6.3g"%par[c+'x'],"%6.3g"%par[c+'y'],"%6.3g"%f,"%6.2g"%t)
 
     if(c == 'I'):
         Flow('pol'+ctag,None,

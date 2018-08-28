@@ -1,3 +1,4 @@
+from __future__ import print_function
 # This SConstruct builds and places the JAVA API Jar in the LIB FOLDER
 # that is then installed to RSFROOT
 
@@ -17,7 +18,7 @@ jdk = env.get('JAVA_HOME')
 if not jdk: jdk = env.get('JAVA_SDK')
 
 if not jdk:
-    print 'Please set the JAVA_HOME or JAVA_SDK environmental variable'
+    print('Please set the JAVA_HOME or JAVA_SDK environmental variable')
     Exit(1)
     
 minesjtk = env.get('MINESJTK')

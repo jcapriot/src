@@ -1,3 +1,4 @@
+from __future__ import print_function
 #############################################################################
 ###################### COMMON DEFINITIONS - DO NOT ALTER ####################
 #############################################################################
@@ -350,7 +351,7 @@ jobs = [
 for i in range(len(jobs)):
     sig = getFlowSignature(jobs[i]['job']+'.work',jobs[i], penv)
     if sig == None:
-        print 'Error return from iwave.getFlowSignature - cannot set up job = ' + i
+        print('Error return from iwave.getFlowSignature - cannot set up job = ' + i)
     else:
 #       print 'sig.cmd = ' + sig['cmd'] + '\n'
 #       print 'sig.src = ' + ' '.join(sig['src']) + '\n'

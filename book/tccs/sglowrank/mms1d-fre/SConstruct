@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 from rsf.recipes.m1d import *
 
@@ -167,7 +168,7 @@ def modeling(errpar, ipar, mode, idn):
         elif mode == 'fre':
             bmk = lrwav0
         else:
-            print "Error of mode!"
+            print("Error of mode!")
             emit
     elif ipar['inject']=='n' :
         bmk = aslt
@@ -348,7 +349,7 @@ Result(mode,
              plotfat=4 plotcol=6,3,5  dash=3,2,0 
        ''') 
 
-print errlist.keys()
+print(errlist.keys())
 
 
 Result('frec15', 

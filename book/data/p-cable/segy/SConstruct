@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 from rsf.recipes.beg import server
 
@@ -5,9 +6,9 @@ isegy=4297
 mysegy="DeconShots3.sgy"
 myrsf="DeconShots3"
 targets=[ myrsf+".rsf" , myrsf+"_hdr.rsf" , myrsf+".thdr" , myrsf+".bhdr"]
-print "mysegy=",mysegy
-print "myrsf=",myrsf
-print "targets=",targets
+print("mysegy=",mysegy)
+print("myrsf=",myrsf)
+print("targets=",targets)
 
 Fetch(mysegy,'tip',server)
 

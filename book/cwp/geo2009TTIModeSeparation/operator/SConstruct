@@ -1,3 +1,4 @@
+from __future__ import print_function
 ## 
  # elastic modeling; wavefield separation operators
  ## illustrate VTI and TTI operators in 2D
@@ -148,7 +149,7 @@ for i in range(3):
     for sigindex in range(3):
         sig=0.75+sigindex*0.25
         sigtag='-sig%01d'%sigindex
-        print sigtag
+        print(sigtag)
         fdd.separatorD('dzK'+sigtag+tag,'dxK'+sigtag+tag,'spk','cA'+tag,'y','k','gaussian',sig,8,25,25,par)
         fdd.separatorD('dzX'+sigtag+tag,'dxX'+sigtag+tag,'spk','cA'+tag,'y','x','gaussian',sig,8,25,25,par)
         Plot('dzK'+sigtag+tag,'dzK'+sigtag+tag+'-tmp',

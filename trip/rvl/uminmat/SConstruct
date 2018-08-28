@@ -1,3 +1,4 @@
+from __future__ import print_function
 # determine path to here, package name
 import os
 import shutil
@@ -30,7 +31,7 @@ env = Environment(variables = vars,
 		  AR={'AR' : '${AR}'})
 Help(vars.GenerateHelpText(env))
 
-print thisname
+print(thisname)
 
 testflag='no'
 docflag='no'

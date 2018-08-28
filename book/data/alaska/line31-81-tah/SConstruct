@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 
 #################### 
@@ -33,7 +34,7 @@ Flow('line',rawsegy,'cat axis=2 ${SOURCES[:%d]}'%len(rawsegy),stdin=0)
 
 # use python's list comprehension to make rawsegy_hdr list from the rawsegy list
 rawsegy_hdr=[file+'_hdr'  for file in rawsegy]
-print 'rawsegy_hdr=',rawsegy_hdr
+print('rawsegy_hdr=',rawsegy_hdr)
 
 # concatinate the input _hdr.rsf files to make line_hdr.rsf
 numsegy=len(rawsegy)

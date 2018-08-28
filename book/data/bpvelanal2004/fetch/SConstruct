@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 
 # files have names like:
@@ -82,7 +83,7 @@ Flow('2004_Benchmark_READMES.display','2004_Benchmark_READMES.pdf',
         'open ${SOURCES[0]}',stdin=0,stdout=-1)
 Flow('eage_abstract.display','eage_abstract.pdf',
         'open ${SOURCES[0]}',stdin=0,stdout=-1)
-print "cat README_Modification"
+print("cat README_Modification")
 
 End()
 
