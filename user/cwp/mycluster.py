@@ -1,22 +1,22 @@
 '''
 This python module overrides the standard Madagascar
-python SCons methods.  We do this, carefully so that 
-the SCons methods still work unless we set the Global 
-variable CSCONS.  If CSCONS is set, then SCons does 
+python SCons methods.  We do this, carefully so that
+the SCons methods still work unless we set the Global
+variable CSCONS.  If CSCONS is set, then SCons does
 not work, and rather we generate a series of PBS
 job wrappers for our commands.
 
 This file is customized in a number of areas.  To quickly
 find all changes, search for the tag:  CWPONLY
 
-The python executable cscons automatically turns on 
+The python executable cscons automatically turns on
 the PBS capabilities of this module.  See the documentation
-online for Mio (on the iTeam website) to learn how to 
+online for Mio (on the iTeam website) to learn how to
 configure your SConstructs to use this module.
 
 author:  Jeff Godwin, Jan 12 2011, CWP
 
-Some new functions are added to make cscons working in an 
+Some new functions are added to make cscons working in an
 iterative inversion scheme. These functions include reading
 user input from command line, setup different pbs directory
 name at each iteration, executing an command line input, etc.
@@ -36,7 +36,7 @@ project = rsf.proj.Project()
 
 ###############
 ######################
-# CWPONLY - From here down, the rest of this file is basically custom. 
+# CWPONLY - From here down, the rest of this file is basically custom.
 ###############
 JOB_NAME = None
 EMAIL    = None
@@ -219,9 +219,9 @@ class Job:
             file.write('from rsf.proj import *\n')
             file.write( \
 '''
-import dbhash 	 
+import dbhash
 proj = Project()
-proj.SConsignFile("%s",dbhash)	 
+proj.SConsignFile("%s",dbhash)
 ''' % (sconsign))
             file.write(string.join(self.tasks,'\n'))
             file.write('\n')
@@ -264,7 +264,7 @@ class Parallel(Job):
             return False
 
     def flush(self):
-        if len(self.tasks) > 0: 
+        if len(self.tasks) > 0:
             text = '\n'.join(self.tasks)
             self.scripts.append(text)
             self.tasks = []
@@ -273,7 +273,7 @@ class Parallel(Job):
         global pbs_dirt
         if self.name:
             nscripts = len(self.scripts)
-           
+
             inode = 0
             ijob  = 0
             j = 1
@@ -292,9 +292,9 @@ class Parallel(Job):
                     sconsign = '%s.sconsign.dbhash' % scriptname
                     file.write( \
 '''
-import dbhash 	 
+import dbhash
 proj = Project()
-proj.SConsignFile("%s",dbhash)	 
+proj.SConsignFile("%s",dbhash)
 ''' % (sconsign))
 
                     self.sconsign.append(sconsign)
@@ -302,14 +302,14 @@ proj.SConsignFile("%s",dbhash)
                     for tscript in nodescripts:
                         file.write(tscript)
                         file.write('\n')
-                    
+
                     file.write('End()\n')
                     file.close()
-                    
+
                     inode += 1
                     j = 1
                     nodescripts = []
-                else: 
+                else:
                     j += 1
 
                 if inode == self.nodes or i == len(self.scripts)-1:
@@ -324,7 +324,7 @@ proj.SConsignFile("%s",dbhash)
                     names = []
                     self.all.append(jobname)
 
-            
+
     def __str__(self):
         return 'Parallel: %d %d %d %d'  % (self.time,self.nodes,self.ppn,self.ipn)
 
@@ -336,7 +336,7 @@ def Cluster(name, email=None, cluster='mio', time=1,ppn=8,nodetype=None,submit=F
     EMAIL = email
     CLUSTER = cluster
     NODETYPE = nodetype
-    AUTO_SUBMIT =submit 
+    AUTO_SUBMIT =submit
 
     CLUSTER_CONFIGURED = True
 
@@ -383,7 +383,7 @@ def __createstring(rsfcommand,target,source,command,kw):
 
     outsou = ''
     if type(source) == str:
-        outsou = '"%s"' % source 
+        outsou = '"%s"' % source
     else:
         outsou = str(source)
 
@@ -447,7 +447,7 @@ def Flow(target,source,flow,**kw):
             else:
                 kw.pop('np')
 
-                #if not kw['np']: 
+                #if not kw['np']:
                 #    kw['np'] = nodes
 
 
@@ -456,12 +456,12 @@ def Flow(target,source,flow,**kw):
         if mpi and nodes > 0:
             CURRENT_JOB = Job(nodes=nodes,time=time,ppn=ppn,notes='MPI')
             JOB_QUEUE.append(CURRENT_JOB)
-       
+
         command = __createstring('Flow',target,source,flow,kw)
         CURRENT_JOB.add(command)
 
     else:
-        if kw.has_key('time'): 
+        if kw.has_key('time'):
             kw.pop('time')
         if kw.has_key('np'):
             kw['np'] = -1 # We are running locally
@@ -472,7 +472,7 @@ def Flow(target,source,flow,**kw):
             kw.pop('nodes')
         if kw.has_key('ppn'):
             kw.pop('ppn')
-        return apply(project.Flow,(target,source,flow),kw)
+        return project.Flow(target,source,flow, **kw)
 
 def Plot (target,source,flow=None,**kw):
     if CSCONS:
@@ -487,7 +487,7 @@ def Plot (target,source,flow=None,**kw):
         command = __createstring('Plot',target,source,flow,kw)
         CURRENT_JOB.add(command)
     else:
-        return apply(project.Plot,(target,source,flow),kw)
+        return project.Plot(target,source,flow, **kw)
 
 def Result(target,source,flow=None,**kw):
     if CSCONS:
@@ -499,7 +499,7 @@ def Result(target,source,flow=None,**kw):
         command = __createstring('Result',target,source,flow,kw)
         CURRENT_JOB.add(command)
     else:
-        return apply(project.Result,(target,source,flow),kw)
+        return project.Result(target,source,flow, **kw)
 
 def Force(content):
     global CURRENT_JOB
@@ -519,7 +519,7 @@ def Run(content):
 
     CURRENT_JOB.add(content)
     CURRENT_JOB.store(content)
-    CURRENT_JOB.relaunch = False 
+    CURRENT_JOB.relaunch = False
     CURRENT_JOB.run = True
 
     CURRENT_JOB = None
@@ -527,7 +527,7 @@ def Run(content):
 ####
 # No changes here
 def Fetch(file,dir,private=0,**kw):
-    return apply(project.Fetch,(file,dir,private),kw)
+    return project.Fetch(file,dir,private, **kw)
 #####
 
 def Save(file):
@@ -565,7 +565,7 @@ def End(**kw):
                     raise Exception('Fig directory exists but is not suitable for vpl files?')
 
             print('Preparing jobs...')
-            
+
             global SCONSIGNS
 
             i = 0; n = len(final_queue);
@@ -625,5 +625,5 @@ def End(**kw):
 
         else:
             raise Exception("Did not find any jobs?")
-            
-    return apply(project.End,[],kw)
+
+    return project.End(**kw)

@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Copyright (C) 2004 University of Texas at Austin
 #
 # This program is free software; you can redistribute it and/or modify
@@ -63,13 +64,13 @@ def test(target=None,source=None,env=None):
 
     locked = re.sub('.*\/([^\/]+)\/([^\/]+)\/([^\/]+)\/Fig\/',
                     figdir+'/\\1/\\2/\\3/',os.path.abspath(src))
-    print("Comparing %s and %s" % (locked,src)))
+    print("Comparing %s and %s" % (locked,src))
     if os.path.isfile(locked):
         diff = os.system(' '.join([os.path.join(bindir,sfprefix+'vplotdiff'),
                                    locked,src]))
         return diff
     else:
-        print('No locked file "%s" ' % locked))
+        print('No locked file "%s" ' % locked)
         return 0
 
 def echo(target,source,env):
@@ -186,7 +187,7 @@ keepenv = ('DISPLAY','VPLOTFONTDIR','HOME',
 #############################################################################
 class Project(Environment):
     def __init__(self,**kw):
-        apply(Environment.__init__,(self,),kw)
+        Environment.__init__(self, **kw)
         self.EnsureSConsVersion(0,96)
         opts = {
             'TIMER':'Whether to time execution',
@@ -460,7 +461,7 @@ class Project(Environment):
         else: # get it from the rotating list
             if noderotate:
                 numtries=0
-                while (self.taskonnode[self.ip] and numtries<2*len(self.nodes):
+                while(self.taskonnode[self.ip] and numtries<2*len(self.nodes)):
                     time.sleep(.01)
                     self.ip=(self.ip+1)%len(self.nodes) # increment and modulo
                     numtries+=1
@@ -501,7 +502,7 @@ class Project(Environment):
 
         flow = self.Command(targets,sources,command)
         # free up the node for reuse
-        if !local:
+        if not local:
             if noderotate:
                 self.taskonnode[myip]=FALSE
 
@@ -524,7 +525,7 @@ class Project(Environment):
         if combine.has_key(flow):
             if not type(source) is types.ListType:
                 source = string.split(source)
-            flow = apply(combine[flow],[self.vppen,len(source)])
+            flow = combine[flow](self.vppen,len(source))
             if vppen:
                 flow = flow + ' ' + vppen
             kw.update({'src_suffix':vpsuffix,'stdin':0})
@@ -532,14 +533,14 @@ class Project(Environment):
             flow = flow + ' | %s pixmaps=y' % self.sfpen
             kw.update({'stdout':-1})
         kw.update({'suffix':suffix})
-        return apply(self.Flow,(target,source,flow),kw)
+        return self.Flow(target,source,flow,**kw)
     def Result(self,target,source,flow=None,suffix=vpsuffix,**kw):
         if not flow: # two arguments
             flow = source
             source = target
         target2 = os.path.join(self.resdir,target)
         kw.update({'suffix':suffix})
-        plot = apply(self.Plot,(target2,source,flow),kw)
+        plot = self.Plot(target2,source,flow,**kw)
         target2 = target2 + suffix
         view = self.Command(target + '.view',plot,self.sfpen + " $SOURCES",
                             src_suffix=vpsuffix)
@@ -603,17 +604,17 @@ class Project(Environment):
 project = Project()
 
 def Flow(target,source,flow,**kw):
-    return apply(project.Flow,(target,source,flow),kw)
+    return project.Flow(target,source,flow,**kw)
 def Plot (target,source,flow=None,**kw):
-    return apply(project.Plot,(target,source,flow),kw)
+    return project.Plot(target,source,flow,**kw)
 def Result(target,source,flow=None,**kw):
-    return apply(project.Result,(target,source,flow),kw)
+    return project.Result(target,source,flow,**kw)
 def Fetch(file,dir,private=0,**kw):
-    return apply(project.Fetch,(file,dir,private),kw)
+    return project.Fetch(file,dir,private,**kw)
 def End(**kw):
-    return apply(project.End,[],kw)
+    return project.End(**kw)
 def Program(*arg,**kw):
-    return apply(project.Program,arg,kw)
+    return project.Program(*arg,**kw)
 def Get(name):
     return project['ENV'].get(name)
 

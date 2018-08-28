@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-from __future__ import print_function 
+from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 # this produces errors with kdmig2d.py - the first su program doc
@@ -36,7 +36,7 @@ data = {}
 # m8r wiki page, with fallback info in a config file
 
 docprogs = '''
-add attr awefd2d cat cmplx conjgrad cp csv2rsf cut dd disfil dottest get 
+add attr awefd2d cat cmplx conjgrad cp csv2rsf cut dd disfil dottest get
 headerattr headercut headermath headersort headerwindow in interleave mask math
 pad pick prep4plot put real remap1 reverse rm rotate rtoc scale segyread
 segywrite spike spray srmig3 stack stretch transp window sizes figlist booklist
@@ -97,7 +97,7 @@ except:
     pass
 
 RSFROOT="%s"
-    
+
 def selfdoc():
     'Display man page'
     prognm = os.path.basename(sys.argv[0])
@@ -128,14 +128,14 @@ def use(target=None,source=None,env=None):
         except:
             sys.stderr.write('problem with %s' % dotproj)
             continue
-        
+
         dirname = os.path.dirname(dotproj)
         dirname,project = os.path.split(dirname)
         dirname,chapter = os.path.split(dirname)
         dirname,book    = os.path.split(dirname)
 
         for prog in loc['uses']:
-            out.write('rsf.doc.progs["%s"].use("%s","%s","%s")\n' % 
+            out.write('rsf.doc.progs["%s"].use("%s","%s","%s")\n' %
                       (prog,book,chapter,project))
         out.write('\n')
     out.close()
@@ -225,7 +225,7 @@ def html_section(title, fgcol, bgcol, contents, width=6,
 def bigsection(title, *args):
     """Format a section with a big heading."""
     title = '<big><strong>%s</strong></big>' % title
-    return apply(html_section,(title,)+args)
+    return html_section(*([title,]+args))
 
 def multicolumn(list, format, cols=4):
     """Format a list of items into a multi-column list."""
@@ -446,7 +446,7 @@ class rsfprog(object):
             if usedoc:
                 if usedoc_i > usedoc_max:
                     usedoc += '%d more examples listed in:\n' % \
-                              (usedoc_i - usedoc_max) 
+                              (usedoc_i - usedoc_max)
                     usedoc += '%s/share/doc/madagascar/html/%s.html\n'%\
                               (rsfroot,self.name)
             doc = doc + section('used in',usedoc.rstrip())
@@ -598,7 +598,7 @@ DocCmd: %s
                     filename = tokens[tokens.index(cue)+1]
                     data, ext  = filename.split('.')
                 except:
-                    continue                
+                    continue
                 if data in ['in','out']:
                     data = '(no hint on content)'
                 else:
@@ -699,7 +699,7 @@ def html(dir,known_version):
     file = open (os.path.join(dir,'index.html'),'w')
     name = '<big><big><strong>Madagascar Programs</strong></big></big>'
     content = heading(name,'#ffffff','#7799ee')
-        
+
     if known_version[-4:] == '-svn' or known_version == '':
         # Read subversion version number, if possible
         proc = os.popen('svn stat -v SConstruct 2>/dev/null')
@@ -713,7 +713,7 @@ def html(dir,known_version):
                 pass
 
     rev_add2content = 'version ' + known_version
-            
+
     if have_datetime_module or know_revnr:
         content += 'Generated'
         if have_datetime_module:
@@ -918,7 +918,7 @@ def getprog(file,out,lang = 'c',rsfprefix = 'sf',rsfsuffix='rsf',
         else:
             filename = par[0]
             io = par[1]
-            tag = par[2]            
+            tag = par[2]
         if valid.get(filename,1):
             iotype = {'i':'input','o':'output'}[io[0].lower()]
             if tag == 'in' or (not tag and iotype == 'input'):
@@ -1144,7 +1144,7 @@ def cli(rsfprefix = 'sf',rsfplotprefix='vp'):
                 else:
                     main.document(usedoc_max,root)
             else:
-                print ('''Run %s with parameters. 
+                print ('''Run %s with parameters.
 To obtain a selfdoc, install %s with Madagascar: http://www.ahay.org/wiki/Adding_new_programs_to_Madagascar
                        ''' % (prog,prog))
 

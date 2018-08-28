@@ -630,7 +630,7 @@ def Flow(target,source,flow,**kw):
             kw.pop('nodes')
         if kw.has_key('ppn'):
             kw.pop('ppn')
-        return apply(project.Flow,(target,source,flow),kw)
+        return project.Flow(target,source,flow, **kw)
 
 def Plot (target,source,flow=None,**kw):
     if CSCONS:
@@ -644,7 +644,7 @@ def Plot (target,source,flow=None,**kw):
         command = __createstring('Plot',target,source,flow,kw)
         CURRENT_JOB.add(command)
     else:
-        return apply(project.Plot,(target,source,flow),kw)
+        return project.Plot(target,source,flow, **kw)
 
 def Result(target,source,flow=None,**kw):
     if CSCONS:
@@ -656,7 +656,7 @@ def Result(target,source,flow=None,**kw):
         command = __createstring('Result',target,source,flow,kw)
         CURRENT_JOB.add(command)
     else:
-        return apply(project.Result,(target,source,flow),kw)
+        return project.Result(target,source,flow, **kw)
 
 def Force(content):
     global CURRENT_JOB
@@ -686,7 +686,7 @@ def Run(content):
 ####
 # No changes here
 def Fetch(file,dir,private=0,**kw):
-    return apply(project.Fetch,(file,dir,private),kw)
+    return project.Fetch(*(file,dir,private), **kw)
 #####
 
 def Save(file):
@@ -797,4 +797,4 @@ def End(**kw):
         else:
             raise Exception("Did not find any jobs?")
 
-    return apply(project.End,[],kw)
+    return project.End(**kw)
