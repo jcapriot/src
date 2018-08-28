@@ -32,7 +32,7 @@ def convert(vpl,png,**kw):
     fail = os.system(command)
     os.unlink(eps)
     if fail:
-        raise RuntimeError, 'cannot run "%s" ' % pstoimg
+        raise RuntimeError('cannot run "%s" ' % pstoimg)
 
 if __name__ == "__main__":
     # own user interface instead of that provided by RSF's Python API

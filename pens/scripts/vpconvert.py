@@ -156,7 +156,7 @@ def convert(vpl,out,format,pen,args,verb=True):
         os.unlink(eps)
 
         if fail:
-            raise RuntimeError, 'Cannot convert eps to pdf.' 
+            raise RuntimeError('Cannot convert eps to pdf.') 
     else:
         # default behavior
         run = '%s %s %s > %s' % (exe,args,vpl,out)
