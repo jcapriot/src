@@ -157,7 +157,7 @@ else:
 
         def __get(self, key, default=None):
             """Obtains value of argument from dictionary"""
-            if self.__args.has_key(key):
+            if key in self.__args:
                 return self.__args[key]
             else:
                 return default

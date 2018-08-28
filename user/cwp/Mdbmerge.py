@@ -48,7 +48,7 @@ for db in dbs:
         objects = pickle.loads(opendb[key])
         for obj in objects.keys():
             print('......Subkey: %s' % obj)
-            if outerdb[key].has_key(obj):
+            if obj in outerdb[key]:
                 print('WARNING: key collision: %s dbase key: %s ' % (db,obj))
             else:
                 outerdb[key][obj] = objects[obj]

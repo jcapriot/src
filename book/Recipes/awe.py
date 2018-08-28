@@ -8,32 +8,32 @@ def myid(n): return '_'+reduce(add,['%d'%random.randint(0,9) for i in range(n)])
 
 # ------------------------------------------------------------
 def param(par):
-    if(not par.has_key('nb')):       par['nb']=0
-    if(not par.has_key('nbell')):    par['nbell']=5
+    if('nb' not in par):       par['nb']=0
+    if('nbell' not in par):    par['nbell']=5
 
-    if(not par.has_key('snap')):     par['snap']='y'
-    if(not par.has_key('jsnap')):    par['jsnap']=100
-    if(not par.has_key('jdata')):    par['jdata']=1
-    if(not par.has_key('dabc')):     par['dabc']='y'
-    if(not par.has_key('ompchunk')): par['ompchunk']=1
-    if(not par.has_key('ompnth')):   par['ompnth']=0
-    if(not par.has_key('fsrf')):     par['fsrf']='n'
-    if(not par.has_key('verb')):     par['verb']='n'
-    if(not par.has_key('fdorder')):  par['fdorder']=4
-    if(not par.has_key('optfd')):    par['optfd']='n'
-    if(not par.has_key('hybridbc')): par['hybridbc']='n'
-    if(not par.has_key('sinc')):     par['sinc']='n'
-    if(not par.has_key('expl')):     par['expl']='n'
+    if('snap' not in par):     par['snap']='y'
+    if('jsnap' not in par):    par['jsnap']=100
+    if('jdata' not in par):    par['jdata']=1
+    if('dabc' not in par):     par['dabc']='y'
+    if('ompchunk' not in par): par['ompchunk']=1
+    if('ompnth' not in par):   par['ompnth']=0
+    if('fsrf' not in par):     par['fsrf']='n'
+    if('verb' not in par):     par['verb']='n'
+    if('fdorder' not in par):  par['fdorder']=4
+    if('optfd' not in par):    par['optfd']='n'
+    if('hybridbc' not in par): par['hybridbc']='n'
+    if('sinc' not in par):     par['sinc']='n'
+    if('expl' not in par):     par['expl']='n'
 
-    if(not par.has_key('gaus')):     par['gaus']='y'
+    if('gaus' not in par):     par['gaus']='y'
 
-    if(not par.has_key('nqz')): par['nqz']=par['nz']
-    if(not par.has_key('oqz')): par['oqz']=par['oz']
-    if(not par.has_key('dqz')): par['dqz']=par['dz']
+    if('nqz' not in par): par['nqz']=par['nz']
+    if('oqz' not in par): par['oqz']=par['oz']
+    if('dqz' not in par): par['dqz']=par['dz']
 
-    if(not par.has_key('nqx')): par['nqx']=par['nx']
-    if(not par.has_key('oqx')): par['oqx']=par['ox']
-    if(not par.has_key('dqx')): par['dqx']=par['dx']
+    if('nqx' not in par): par['nqx']=par['nx']
+    if('oqx' not in par): par['oqx']=par['ox']
+    if('dqx' not in par): par['dqx']=par['dx']
 
 # ------------------------------------------------------------
 def awepar(par):
@@ -658,7 +658,7 @@ def wom(wom,wfld,velo,vmean,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
 
-    if(not par.has_key('wweight')): par['wweight']=1
+    if('wweight' not in par): par['wweight']=1
 
     wtmp = wfld + 'tmp'+myid(16)
     vtmp = wfld + 'vel'+myid(16)

@@ -93,9 +93,9 @@ def oneirST(inp,zdel,xdel,m,n,custom,par):
 #    Plot(inp+'-'+zdel,inp+'-all','window n3=1 f3=0 |' + opplot('',''))
 #    Plot(inp+'-'+xdel,inp+'-all','window n3=1 f3=1 |' + opplot('',''))   
 
-    if(not par.has_key('ys')): par['ys']=0.75
-    if(not par.has_key('xs')): par['xs']=0.75
-    if(not par.has_key('xc')): par['xc']=-8.25
+    if('ys' not in par): par['ys']=0.75
+    if('xs' not in par): par['xs']=0.75
+    if('xc' not in par): par['xc']=-8.25
     pplot.p1x2(inp,inp+'-'+zdel,inp+'-'+xdel,par['ys'],par['xs'],par['xc'])
 
 #    pplot.p2x1(inp,inp+'-'+zdel,inp+'-'+xdel,0.5,0.5,-9.00)
@@ -138,9 +138,9 @@ def oneirST_box(inp,zdel,xdel,m,n,box,custom,par):
     Plot(inp+'-'+zdel,[inp+'-'+zdel+'-',box],'Overlay')
     Plot(inp+'-'+xdel,[inp+'-'+xdel+'-',box],'Overlay')
 
-    if(not par.has_key('ys')): par['ys']=0.75
-    if(not par.has_key('xs')): par['xs']=0.75
-    if(not par.has_key('xc')): par['xc']=-8.25
+    if('ys' not in par): par['ys']=0.75
+    if('xs' not in par): par['xs']=0.75
+    if('xc' not in par): par['xc']=-8.25
     pplot.p1x2(inp,inp+'-'+zdel,inp+'-'+xdel,par['ys'],par['xs'],par['xc'])
 
 #    pplot.p2x1(inp,inp+'-'+zdel,inp+'-'+xdel,0.5,0.5,-9.00)
@@ -379,9 +379,9 @@ def oneirST_S(inp,zdel,xdel,m,n,custom,par):
 #    Plot(inp+'-'+zdel,inp+'-all','window n3=1 f3=0 |' + opplot('',''))
 #    Plot(inp+'-'+xdel,inp+'-all','window n3=1 f3=1 |' + opplot('',''))   
 
-    if(not par.has_key('ys')): par['ys']=0.75
-    if(not par.has_key('xs')): par['xs']=0.75
-    if(not par.has_key('xc')): par['xc']=-8.25
+    if('ys' not in par): par['ys']=0.75
+    if('xs' not in par): par['xs']=0.75
+    if('xc' not in par): par['xc']=-8.25
     pplot.p1x2(inp,inp+'-'+zdel,inp+'-'+xdel,par['ys'],par['xs'],par['xc'])
 
 #    pplot.p2x1(inp,inp+'-'+zdel,inp+'-'+xdel,0.5,0.5,-9.00)

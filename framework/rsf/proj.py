@@ -560,7 +560,7 @@ class Project(Environment):
             flow = os.path.join(self.bindir,'vpannotate') + \
               ' text=${SOURCES[1]} batch=y ${SOURCES[0]} $TARGET'
             kw.update({'src_suffix':vpsuffix,'stdin':0,'stdout':-1})
-        elif combine.has_key(flow):
+        elif flow in combine:
             if not type(source) is types.ListType:
                 source = string.split(source)
             flow = combine[flow](*[self.vppen,len(source)])

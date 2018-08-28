@@ -162,7 +162,7 @@ def report_toc(target=None,source=None,env=None):
         if not book:
             author = get_author(src,authors,tag)
         title = get_title(src,titles,tag)
-        if sections.has_key(tag[1]):
+        if tag[1] in sections:
             toc.write('\n\\geosection*{%s}\n' % sections[tag[1]])
         if author and title:
             toc.write('\TOCentry[%s]{%s}{\pageref{%s.start}}\n' %

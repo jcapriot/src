@@ -585,27 +585,27 @@ def Flow(target,source,flow,**kw):
 
         mpi = None
         nodes = -1
-        if kw.has_key('mpi'):
+        if 'mpi' in kw:
             mpi = kw['mpi']
             kw.pop('mpi')
-            if not kw.has_key('nodes'):
+            if 'nodes' not in kw:
                 raise Exception('Must specify # of nodes for mpi jobs')
             else:
                 nodes = kw.pop('nodes')
 
-            if kw.has_key('ppn'):
+            if 'ppn' in kw:
                 ppn = kw.pop('ppn')
                 if not ppn: ppn= DEFAULT_PPN
             else:
                 ppn = DEFAULT_PPN
 
-            if not kw.has_key('time'):
+            if 'time' not in kw:
                 raise Exception('you must specify time for mpi jobs')
             else:
                 time = kw.pop('time')
                 if not time: raise Exception("must specify time for mpi jobs")
 
-            if not kw.has_key('np'):
+            if 'np' not in kw:
                 if nodes <= 0:
                     raise Exception('You must specify the number of nodes for mpi jobs')
             else:
@@ -619,16 +619,16 @@ def Flow(target,source,flow,**kw):
         CURRENT_JOB.add(command)
 
     else:
-        if kw.has_key('time'):
+        if 'time' in kw:
             kw.pop('time')
-        if kw.has_key('np'):
+        if 'np' in kw:
             kw['np'] = -1 # We are running locally
             kw.pop('np')
-        if kw.has_key('mpi'):
+        if 'mpi' in kw:
             kw.pop('mpi')
-        if kw.has_key('nodes'):
+        if 'nodes' in kw:
             kw.pop('nodes')
-        if kw.has_key('ppn'):
+        if 'ppn' in kw:
             kw.pop('ppn')
         return project.Flow(target,source,flow, **kw)
 

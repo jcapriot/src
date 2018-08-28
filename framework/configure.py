@@ -80,8 +80,8 @@ pkg = {}
 def need_pkg(pkgtype,fatal=True):
     global pkg, plat
     pkgnm = 'unknown'
-    if pkg.has_key(pkgtype):
-        if pkg[pkgtype].has_key(plat['distro']):
+    if pkgtype in pkg:
+        if plat['distro'] in pkg[pkgtype]:
             pkgnm = pkg[pkgtype].get(plat['distro'])
             if fatal:
                 stderr_write('Needed package: ' + pkgnm,'yellow_on_red')
@@ -1687,7 +1687,7 @@ def pfft(context):
 def ncpus():
     'Detects number of CPUs'
     if plat['OS'] in ('linux','posix'):
-        if os.sysconf_names.has_key("SC_NPROCESSORS_ONLN"):
+        if "SC_NPROCESSORS_ONLN" in os.sysconf_names:
             nr_cpus = os.sysconf("SC_NPROCESSORS_ONLN")
             if type(nr_cpus) is int:
                 if nr_cpus > 0:

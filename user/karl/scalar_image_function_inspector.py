@@ -320,7 +320,7 @@ class PlotUI(HasTraits):
         self.cross_plot.value_range.high = self.maxz
         self.cross_plot2.value_range.low = self.minz
         self.cross_plot2.value_range.high = self.maxz
-        if self._image_index.metadata.has_key("selections"):
+        if "selections" in self._image_index.metadata:
             x_ndx, y_ndx = self._image_index.metadata["selections"]
             if y_ndx and x_ndx:
                 self.pd.set_data("line_value",

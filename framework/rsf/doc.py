@@ -363,9 +363,9 @@ class rsfdata(object):
         self.name = name
         self.uses = {}
     def use (self,book,chapter,project):
-        if not self.uses.has_key(book):
+        if book not in self.uses:
             self.uses[book]={}
-        if not self.uses[book].has_key(chapter):
+        if chapter not in self.uses[book]:
             self.uses[book][chapter] = []
         self.uses[book][chapter].append(project)
 
@@ -407,9 +407,9 @@ class rsfprog(object):
     def par (self,name,par):
         self.pars[name] = par
     def use (self,book,chapter,project):
-        if not self.uses.has_key(book):
+        if book not in self.uses:
             self.uses[book]={}
-        if not self.uses[book].has_key(chapter):
+        if chapter not in self.uses[book]:
             self.uses[book][chapter] = []
         self.uses[book][chapter].append(project)
     def docstring(self,usedoc_max,rsfroot):
@@ -723,7 +723,7 @@ def html(dir,known_version):
     dirs = {}
     for prog in progs.keys():
         dir = os.path.dirname(progs[prog].file)
-        if not dirs.has_key(dir):
+        if dir not in dirs:
             dirs[dir] = []
         dirs[dir].append(prog)
     keys = dirs.keys()
@@ -744,7 +744,7 @@ def text(dir,name):
     dirs = {}
     for prog in progs.keys():
         dir = os.path.dirname(progs[prog].file)
-        if not dirs.has_key(dir):
+        if dir not in dirs:
             dirs[dir] = []
         dirs[dir].append(prog)
     keys = dirs.keys()

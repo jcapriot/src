@@ -522,7 +522,7 @@ class Project(Environment):
         if not flow: # two arguments
             flow = source
             source = target
-        if combine.has_key(flow):
+        if flow in combine:
             if not type(source) is types.ListType:
                 source = string.split(source)
             flow = combine[flow](self.vppen,len(source))
