@@ -25,7 +25,6 @@
 
 #ifdef __APPLE__
 #define VIMAGE_H
-#define __VECLIB__
 #include <Accelerate/Accelerate.h>
 #else
 #ifdef HAVE_MKL
