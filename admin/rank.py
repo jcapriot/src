@@ -10,7 +10,7 @@ import networkx as nx
 
 def output_rank(G,filename):
     rank = nx.pagerank(G)
-    keys = rank.keys()
+    keys = list(rank.keys())
     keys.sort(lambda x,y: cmp(rank[y],rank[x]))
 
     ofile = open(filename,'w')
@@ -22,14 +22,14 @@ def output_rank(G,filename):
 Gprog = nx.Graph()
 Gproj = nx.Graph()
 
-programs = progs.keys()
+programs = list(progs.keys())
 
 proj = {}
 for p in programs:
     dirs = []
     uses = progs[p].uses
-    for book in uses.keys():
-        for chapter in uses[book].keys():
+    for book in list(uses.keys()):
+        for chapter in list(uses[book].keys()):
             for project in uses[book][chapter]:
                 dir = '/'.join([book,chapter,project])
                 dirs.append(dir)
@@ -43,7 +43,7 @@ for p in programs:
             if p1 != p2:
                 Gproj.add_edge(p1,p2)
                         
-projects = proj.keys()
+projects = list(proj.keys())
 
 for p in projects:
     ps = proj[p]

@@ -129,13 +129,13 @@ button.pack(side=RIGHT)
 if n3 > 1:
     def nextframe(event=None):
         global i3,n3,canvas,next,prev,picks
-        for pick in picks[i3].keys():
+        for pick in list(picks[i3].keys()):
             canvas.itemconfigure(pick,state=HIDDEN)
         i3 += 1
         if i3 == n3-1:
             next.config(state='disabled')
         prev.config(state='normal')
-        for pick in picks[i3].keys():
+        for pick in list(picks[i3].keys()):
             canvas.itemconfigure(pick,state=NORMAL)   
         i3frame.set('%d of %d' % (i3+1,n3))
         image = rsf2image(i3)
@@ -144,13 +144,13 @@ if n3 > 1:
 
     def prevframe(event=None):
         global i3,n3,canvas,next,prev,picks
-        for pick in picks[i3].keys():
+        for pick in list(picks[i3].keys()):
             canvas.itemconfigure(pick,state=HIDDEN)
         i3 -= 1
         if i3 == 0:
             prev.config(state='disabled')
         next.config(state='normal')
-        for pick in picks[i3].keys():
+        for pick in list(picks[i3].keys()):
             canvas.itemconfigure(pick,state=NORMAL)   
         i3frame.set('%d of %d' % (i3+1,n3))
         image = rsf2image(i3)
@@ -276,7 +276,7 @@ canvas.pack(side=BOTTOM)
 def cleanup():
     global ppms, picks
     for i in range(n3):
-        for pick in picks[i].values():
+        for pick in list(picks[i].values()):
             sys.stdout.write('%g\t%g\t%d\n' % pick)
     for ppm in ppms:
         if os.path.isfile(ppm):

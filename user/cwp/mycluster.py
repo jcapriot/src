@@ -397,7 +397,7 @@ def __createstring(rsfcommand,target,source,command,kw):
     else:
         command = """%s(%s,%s,\n\t'''%s'''""" % (rsfcommand,outtar,outsou,command)
 
-    for key in kw.keys():
+    for key in list(kw.keys()):
         if type(kw[key]) == str:
             command+=',%s="%s"' % (str(key),str(kw[key]))
         else:

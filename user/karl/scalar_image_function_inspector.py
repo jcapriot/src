@@ -35,7 +35,7 @@ from traitsui.api import Group, HGroup, Item, View, UItem, spring
 from pyface.timer.api import Timer
 
 # Remove the most boring colormaps from consideration:
-colormaps = default_colormaps.color_map_name_dict.keys()
+colormaps = list(default_colormaps.color_map_name_dict.keys())
 for boring in 'bone gray yarg gist_gray gist_yarg Greys'.split():
     colormaps.remove(boring)
 

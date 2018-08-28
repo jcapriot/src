@@ -1306,7 +1306,7 @@ class Filter(object):
         return self
     def setcommand(self,kw,args=[]):
         parstr = []
-        for (key,val) in kw.items():
+        for (key,val) in list(kw.items()):
             if self.checkpar and self.prog and not self.prog.pars.get(key):
                 sys.stderr.write('checkpar: No %s= parameter in %s\n' % 
                                  (key,self.prog.name))
@@ -1473,7 +1473,7 @@ class _Wrap(object):
          try:
              return getattr(self.wrapped, name)
          except AttributeError:
-             if name in rsf.doc.progs.keys() or 'sf'+name in rsf.doc.progs.keys():
+             if name in list(rsf.doc.progs.keys()) or 'sf'+name in list(rsf.doc.progs.keys()):
                  return Filter(name)
              else:
                  raise

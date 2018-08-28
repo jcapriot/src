@@ -125,7 +125,7 @@ def __docmerge(target=None,source=None,env=None):
                 out.write(line)
         inp.close()
     alias = env.get('alias',{})
-    for prog in alias.keys():
+    for prog in list(alias.keys()):
         out.write("rsf.doc.progs['%s']=%s\n" % (prog,alias[prog]))
     out.close()
 #    print outfile

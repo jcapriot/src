@@ -6,7 +6,7 @@ import rsf.doc
 import rsf.prog
 
 progs = rsf.doc.progs
-for prog in progs.keys():
+for prog in list(progs.keys()):
     sfprog = rsf.doc.progs[prog]
     if not sfprog.uses:
         if not os.path.dirname(sfprog.file) in \

@@ -216,7 +216,7 @@ def iw(Fwf, Frec, Fsrc, Fvel, Fden, par, prefix, suffix):
                  'gelev': '%siwgelev%s' %(_pf, sf_)
                  }
 
-    hks = hkeys.keys()
+    hks = list(hkeys.keys())
     hksn =[]      
     i = 0
     hstr = ''

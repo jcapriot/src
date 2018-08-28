@@ -60,7 +60,7 @@ class Sandbox(Canvas):
         part of a LinkedFlow.
         '''
         items = []
-        for tag,item in self.items.items():
+        for tag,item in list(self.items.items()):
             items.append(item)
         return items
 
@@ -334,12 +334,12 @@ class Sandbox(Canvas):
         '''
         Reset this canvas.  Delete all objects attached to it.
         '''
-        for tag,item in self.items.items():
+        for tag,item in list(self.items.items()):
             item.delete()
-            if tag in self.flows.keys():
+            if tag in list(self.flows.keys()):
                 self.flows.pop(tag)
         
-        for tag,item in self.flows.items():
+        for tag,item in list(self.flows.items()):
             item.delete()
         
         self.items = {}

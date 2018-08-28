@@ -262,7 +262,7 @@ class Project(Environment):
         self.hostname = socket.gethostname()
 
         # Keep environmental variables needed for SLURM
-        for env in os.environ.keys():
+        for env in list(os.environ.keys()):
             if 'SLURM_' == env[:6] or 'TACC_' == env[:5] or '_ModuleTable' == env[:12]:
                 self.Append(ENV={env:os.environ[env]})
 
@@ -309,7 +309,7 @@ class Project(Environment):
         path = {'darwin': '/opt/local/bin',
                 'irix': '/usr/freeware/bin',
                 'cygwin': '/usr/X11R6/bin:/usr/lib/lapack'}
-        for plat in path.keys():
+        for plat in list(path.keys()):
             if sys.platform[:len(plat)] == plat:
                 self['ENV']['PATH'] = ':'.join([path[plat],
                                                 self['ENV']['PATH']])
@@ -360,7 +360,7 @@ class Project(Environment):
         # self.jobs is the number of jobs
         # self.ip is the current CPU
 
-        for key in self['ENV'].keys():
+        for key in list(self['ENV'].keys()):
             self.environ = self.environ + " %s='%s'" %(key,self['ENV'][key])
 
     def __Split(self,split,reduction,

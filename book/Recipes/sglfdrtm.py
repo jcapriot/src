@@ -66,7 +66,7 @@ def checkpar(par):
         sys.exit()
     
 def printpar(par):
-    keylist = par.keys()
+    keylist = list(par.keys())
     keylist.sort()
     print("{")
     for key in keylist:

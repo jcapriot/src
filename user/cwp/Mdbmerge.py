@@ -41,12 +41,12 @@ outerdb = {}
 for db in dbs:
     print('Merging... %s' % db)
     opendb = dbhash.open(db,'r')
-    keys = opendb.keys()
+    keys = list(opendb.keys())
     for key in keys:
         print('...Key: %s' % key)
         outerdb.setdefault(key,{})
         objects = pickle.loads(opendb[key])
-        for obj in objects.keys():
+        for obj in list(objects.keys()):
             print('......Subkey: %s' % obj)
             if obj in outerdb[key]:
                 print('WARNING: key collision: %s dbase key: %s ' % (db,obj))
@@ -55,7 +55,7 @@ for db in dbs:
     opendb.close()
 
 print('Writing out database...')
-for key in outerdb.keys():
+for key in list(outerdb.keys()):
     ndb[key] = pickle.dumps(outerdb[key],0)
 
 ndb.sync()

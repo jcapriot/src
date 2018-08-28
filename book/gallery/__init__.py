@@ -16,7 +16,7 @@ _methods = {
 
 def method():
     thisdir = os.path.basename(os.getcwd())
-    if thisdir in _methods.keys():
+    if thisdir in list(_methods.keys()):
         return _methods[thisdir]
     else:
         return ''

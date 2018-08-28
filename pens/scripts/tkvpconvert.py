@@ -46,7 +46,7 @@ def convert(vpl,format,opts,pars):
 
     new = '.'.join([os.path.splitext(vpl)[0],format.lower()])
     opts = ' '.join(map(lambda x: '='.join([x, str(pars[x].get())]), 
-                        pars.keys())) + ' ' + opts
+                        list(pars.keys()))) + ' ' + opts
     
     fail = vpconvert.convert(vpl,new,format,None,opts,False)
     
@@ -78,7 +78,7 @@ def main():
     frame = tk.Frame(root)
     tk.Label(frame, text="Format:").pack(side=tk.LEFT)
     subframe = tk.Frame(frame)
-    formats = vpconvert.pens.keys()
+    formats = list(vpconvert.pens.keys())
     formats.sort()
     nf = len(formats)
     for i in range(nf):

@@ -38,16 +38,16 @@ class Program():
         snps = '[SYNOPSIS]:\n\t%s \n\n' % self.synopsis
         cmts = '[COMMENTS]:\n\t%s\n\n' % self.comments
         pars = '[PARAMETERS]:\n\n'
-        names = self.pars.keys()
+        names = list(self.pars.keys())
         names.sort()
         for name in names:
             par = self.pars[name]
             pars += '\t'+str(par)+'\n'
         uses = '\n[USED IN]:\n'
-        books = self.uses.keys()
+        books = list(self.uses.keys())
         books.sort()
-        for book in self.uses.keys():
-            chapters = self.uses[book].keys()
+        for book in list(self.uses.keys()):
+            chapters = list(self.uses[book].keys())
             chapters.sort()
             for chapter in chapters:
                 for project in self.uses[book][chapter]:

@@ -171,7 +171,7 @@ def getcode(s):
     options = s.group(1)
     name = string.replace(s.group(2),'\\RSF',os.environ.get('RSFSRC'))
     line = {'first':1,'last':9999}
-    for mark in line.keys():
+    for mark in list(line.keys()):
         if options:
             match = re.search('%sline=(\d+)' % mark,options)
             if match:

@@ -545,7 +545,7 @@ def colorize(target=None,source=None,env=None):
      margin-left: 2em;
      margin-right: 2em; }
      ''' % py)
-     for style in _styles.keys():
+     for style in list(_styles.keys()):
           out.write('.%s { color: %s; }\n' % (_styles[style],_colors[style]))
      out.write('''</style>
      </head>
@@ -602,7 +602,7 @@ def colorize(target=None,source=None,env=None):
                toktype = token.OP
           elif toktype == token.NAME and keyword.iskeyword(toktext):
                toktype = _KEYWORD
-          elif toktype == token.NAME and toktext in _colors.keys():
+          elif toktype == token.NAME and toktext in list(_colors.keys()):
                toktype = toktext
 
           style = _styles.get(toktype, _styles[_TEXT])
@@ -857,7 +857,7 @@ class TeXPaper(Environment):
                               'Figs':Figs})
         path = {'darwin': ['/sw/bin','/opt/local/bin'],
                 'irix': ['/usr/freeware/bin']}
-        for plat in path.keys():
+        for plat in list(path.keys()):
             if sys.platform[:len(plat)] == plat:
                 for pathdir in filter(os.path.isdir,path[plat]):
                     self['ENV']['PATH'] = ':'.join([pathdir,
@@ -950,7 +950,7 @@ class TeXPaper(Environment):
                                       r'%s/%s/\2%s' % (pdir,resdir,pssuffix),
                                       fig)
 
-        for fig in eps.keys():
+        for fig in list(eps.keys()):
             ps = eps[fig]
             resdir2 = os.path.join(self.docdir,os.path.dirname(ps))
             if fig[-3:] == vpsuffix[-3:]:

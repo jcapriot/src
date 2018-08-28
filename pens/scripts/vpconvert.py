@@ -41,7 +41,7 @@ pens = {
     'avi': 'ppm'
     }
 
-formats = pens.keys()
+formats = list(pens.keys())
 formats.sort()
 
 def exists(pen):

@@ -203,7 +203,7 @@ def identify_platform(context):
             plat['arch'] = '32bit'
     context.Result('%(OS)s [%(distro)s]' % plat)
     # keep TACC-specific environment
-    for env in os.environ.keys():
+    for env in list(os.environ.keys()):
         if 'TACC_' == env[:5]:
             context.env.Append(ENV={env:os.environ[env]})
 
@@ -1886,7 +1886,7 @@ def api_options(context):
     # api = list(set(api))
     api_dict = {}
     for i in api: api_dict[i] = 0
-    api = api_dict.keys()
+    api = list(api_dict.keys())
 
     # Improve output readability
     if api == ['']:
@@ -2299,7 +2299,7 @@ def set_options(env,my_opts=None):
     opts = options(config)
 
     if my_opts:
-        for opt in my_opts.keys():
+        for opt in list(my_opts.keys()):
             opts.Add(opt,my_opts[opt])
     opts.Update(env)
 

@@ -97,7 +97,7 @@ class MainFrame(wx.Frame):
         text  = wx.StaticText(self,-1,'Format:')
         sizer.Add(text)
 
-        formats = vpconvert.pens.keys()
+        formats = list(vpconvert.pens.keys())
         formats.sort()
         nf = len(formats)
         fsizer = wx.FlexGridSizer(rows=2,cols=(nf+1)/2,hgap=5,vgap=5)
@@ -212,7 +212,7 @@ class MainFrame(wx.Frame):
 
         new = '.'.join([os.path.splitext(self.vpl)[0],self.format.lower()])
         opts = ' '.join(map(lambda x: '='.join([x, self.pars[x]]), 
-                            self.pars.keys())) + ' ' + self.opts
+                            list(self.pars.keys()))) + ' ' + self.opts
     
         fail = vpconvert.convert(self.vpl,new,self.format,None,opts,False)
     

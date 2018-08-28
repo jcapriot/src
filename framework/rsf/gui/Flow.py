@@ -65,10 +65,10 @@ class Flow():
         # we can have multiple copies of the same program
         # that have independent parameters.
         self.pars = {}
-        for key,par in program.pars.items():
+        for key,par in list(program.pars.items()):
             self.pars[key] = par.copy()
             
-        keys = self.pars.keys()
+        keys = list(self.pars.keys())
         keys.sort()
         keys.remove('output')
         keys.remove('input')

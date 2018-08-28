@@ -55,7 +55,7 @@ class BaseFile:
 
     def print_self(self, varname):
         attribs = self.__dict__
-        akeys = attribs.keys()
+        akeys = list(attribs.keys())
         akeys.sort()
         max_nm_len = max(map(len,akeys))
         ivlad.msg(ivlad.hr)
@@ -142,7 +142,7 @@ class MetaFile(BaseFile):
             self.valid_ext = valid_ext
 
     def close_all(self):
-        for filenm in self.open_files.keys():
+        for filenm in list(self.open_files.keys()):
             open_files[filenm].close()
 
 ################################################################################
@@ -218,7 +218,7 @@ class RSFheader(File):
 
     def write_dict(self, adict, common_comment=None):
         # adict must be the dictionary of arguments passed to the program
-        keys = adict.keys()
+        keys = list(adict.keys())
         keys.sort()
         for key in keys:
             keycomment = common_comment
@@ -292,7 +292,7 @@ class RSFfile(MetaFile):
         'Writes everything in the header, opens data file for writing'
         all_ax_dict = {}
         for i in range(self.ndim):
-            for k in self.ax[i].keys():
+            for k in list(self.ax[i].keys()):
                 all_ax_dict[k+str(i+1)] = self.ax[i][k]
         self.hdr.write_dict(all_ax_dict)
         if self.writing_to_stdout_pipe:

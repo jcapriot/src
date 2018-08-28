@@ -24,7 +24,7 @@ def getPrograms():
     import rsf.prog
     
     programs = {}
-    for progname in rsf.doc.progs.keys():
+    for progname in list(rsf.doc.progs.keys()):
         
         prog = rsf.doc.progs[progname]
         
@@ -39,7 +39,7 @@ def getPrograms():
         uses     = prog.uses.copy()
         program = Program(name,synopsis,comments,desc,uses,also,wiki,file,vers)
         
-        for parname,par in prog.pars.items():
+        for parname,par in list(prog.pars.items()):
             
             type = par.type.replace('\t','').replace('\n','').replace(' ','')
             desc = par.desc.replace('\t','').replace('\n','')
@@ -78,7 +78,7 @@ def getPrograms():
         program.add(output)
         programs[plotcommand] = program
         
-    programNames = programs.keys()
+    programNames = list(programs.keys())
     programNames.sort()
 
     return programs, programNames

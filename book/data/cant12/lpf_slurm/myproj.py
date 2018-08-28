@@ -266,7 +266,7 @@ class Project(Environment):
         path = {'darwin': '/opt/local/bin',
                 'irix': '/usr/freeware/bin',
                 'cygwin': '/usr/X11R6/bin:/usr/lib/lapack'}
-        for plat in path.keys():
+        for plat in list(path.keys()):
             if sys.platform[:len(plat)] == plat:
                 self['ENV']['PATH'] = ':'.join([path[plat],
                                                 self['ENV']['PATH']])
@@ -329,7 +329,7 @@ class Project(Environment):
         # self.jobs is the number of jobs
         # self.ip is the current CPU
 
-        for key in self['ENV'].keys():
+        for key in list(self['ENV'].keys()):
             self.environ = self.environ + ' %s=%s' % (key,self['ENV'][key])
 
     def __Split(self,split,reduction,

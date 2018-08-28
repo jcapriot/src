@@ -164,7 +164,7 @@ class Canvas(wx.Window):
         y = y0+(ys-self.o1)/self.yscale
         return (x,y)
     def DrawPicks(self,i3):
-        for pick in picks[i3].values():
+        for pick in list(picks[i3].values()):
             (x,y) = self.UnscalePick(pick[0])
             self.dc.SetPen(self.pen)
             self.dc.SetBrush(pick[1])
@@ -184,7 +184,7 @@ class Canvas(wx.Window):
         event.Skip()
     def SelectPick(self,event):
         x,y = event.GetPositionTuple()
-        for p in picks[i3].keys():
+        for p in list(picks[i3].keys()):
             xp,yp = self.UnscalePick(picks[i3][p][0])
             if (x-xp)*(x-xp)+(y-yp)*(y-yp) < 9:
                 self.selected = p
@@ -200,7 +200,7 @@ class Canvas(wx.Window):
         event.Skip()
     def Delete(self,event):
         x,y = event.GetPositionTuple()
-        for p in picks[i3].keys():
+        for p in list(picks[i3].keys()):
             xp,yp = self.UnscalePick(picks[i3][p][0])
             if (x-xp)*(x-xp)+(y-yp)*(y-yp) < 9:
                 del picks[i3][p]
@@ -290,7 +290,7 @@ class MainFrame(wx.Frame):
 def cleanup():
     global ppms, picks
     for i in range(n3):
-        for pick in picks[i].values():
+        for pick in list(picks[i].values()):
             sys.stdout.write('%g\t%g\t%d\n' % pick[0])
     for ppm in ppms:
         if os.path.isfile(ppm):

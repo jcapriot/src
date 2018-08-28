@@ -198,7 +198,7 @@ def inspect_imgs(hcp, wiki_img_dict):
 def build_wiki_img_repl_dict(hcp, wiki_img_dict):
     'Dictionary with image hyperlinks replacements in wiki pages'
     wiki_img_repl_dict = {}
-    widk = wiki_img_dict.keys()
+    widk = list(wiki_img_dict.keys())
     s1 = 'src="/%s/%s/' % (hcp['wiki_basenm'],hcp['imgdir_basenm'])
     s2 = 'src="./%s/' % hcp['imgdir_basenm']
     for img in widk:
@@ -238,7 +238,7 @@ def filter_page(s, hcp, pagelist, wiki_img_repl_dict):
         s = s.replace(str_to_replace,replacement_str)
     # links to images
     link_beg = '<a href="/%s/Image:' % hcp['wiki_basenm']
-    for imgpath in wiki_img_repl_dict.keys():
+    for imgpath in list(wiki_img_repl_dict.keys()):
         s = s.replace(imgpath,wiki_img_repl_dict[imgpath])
         img = os.path.split(imgpath)[1]
         imgtitle = img.replace('_',' ')

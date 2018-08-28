@@ -131,7 +131,7 @@ THISPATH        = os.getcwd()
 def getFlowSignature(job, jobdict, envdict, workpath):
 
     # test for command definition
-    if 'cmd' not in jobdict[job].keys():
+    if 'cmd' not in list(jobdict[job].keys()):
         print('iwave.signature: job dictionary ' + job + ' does not include key = cmd,')
         print('so command cannot be determined')
         return
@@ -195,7 +195,7 @@ def getFlowSignature(job, jobdict, envdict, workpath):
 
     # flow target list = target list from dictionary 
     worktgt = []
-    for k in jobdict[job]['tgt'].keys():
+    for k in list(jobdict[job]['tgt'].keys()):
         worktgt = worktgt + [os.path.join(THISPATH,jobdict[job]['tgt'][k])]
 
     # flow source list = dependency list from dictionary plus par file plus workdir
@@ -217,9 +217,9 @@ def getBatchImmediateAncestor(job,jobdict,envdict):
     bdep=[]
     # first develop list of batch targets which are dependencies of this:
     for j in jobdict[job]['dep']:
-        for k in jobdict.keys():
+        for k in list(jobdict.keys()):
             if isBatch(k,jobdict,envdict):
-                for kk in jobdict[k]['tgt'].keys():
+                for kk in list(jobdict[k]['tgt'].keys()):
                     if j==jobdict[k]['tgt'][kk]:
                         bdep = bdep + [k]
                         
@@ -233,7 +233,7 @@ def getBatchImmediateAncestor(job,jobdict,envdict):
                 if bdepk == None:
                     f = True
                 else:
-                    for kk in jobdict[k]['tgt'].keys():
+                    for kk in list(jobdict[k]['tgt'].keys()):
                         for l in bdepk:
                             for ll in jobdict[l]['dep']:
                                 if ll==jobdict[k]['tgt'][kk]:
@@ -282,14 +282,14 @@ def writeScript(batch,job,path,queue,mail,acct,wall,nodes,ppn,exe):
         f.close()
 
 def isBatch(job,jobdict,envdict):
-    if ('exe' in jobdict[job].keys()):
+    if ('exe' in list(jobdict[job].keys())):
         # check spec of platform
-        if ('platf' in jobdict[job]['exe'].keys() and \
-            'wall' in jobdict[job]['exe'].keys() and \
-            'nodes' in jobdict[job]['exe'].keys() and \
-            'ppn' in jobdict[job]['exe'].keys()):
+        if ('platf' in list(jobdict[job]['exe'].keys()) and \
+            'wall' in list(jobdict[job]['exe'].keys()) and \
+            'nodes' in list(jobdict[job]['exe'].keys()) and \
+            'ppn' in list(jobdict[job]['exe'].keys())):
             # batch case - spec'd in envdict 
-            if (jobdict[job]['exe']['platf'] in envdict.keys()):
+            if (jobdict[job]['exe']['platf'] in list(envdict.keys())):
                 return True
             else:
                 return False
@@ -301,10 +301,10 @@ def isBatch(job,jobdict,envdict):
 def isMPI(job,jobdict):
 # test for presence of MPI info, for command line MPI
     MPIROOT = os.getenv('MPIROOT')
-    if ('exe' in jobdict[job].keys()):
+    if ('exe' in list(jobdict[job].keys())):
         # check spec of platform
-        if ('platf' in jobdict[job]['exe'].keys() and \
-            'ppn' in jobdict[job]['exe'].keys()):
+        if ('platf' in list(jobdict[job]['exe'].keys()) and \
+            'ppn' in list(jobdict[job]['exe'].keys())):
             if (jobdict[job]['exe']['platf'] == 'mpi'):
                 if MPIROOT == None:
                     print('Note: MPIROOT not defined') 
@@ -322,12 +322,12 @@ def isMPI(job,jobdict):
 def getParamCommand(job,jobdict):
     # assigns full pathnames to dependencies, targets - overrides
     # target filenames in parfile by appending target pairs 
-    if ('dep' in jobdict[job].keys()) and ('tgt' in jobdict[job].keys()):
+    if ('dep' in list(jobdict[job].keys())) and ('tgt' in list(jobdict[job].keys())):
         parlist = ['/bin/cat ' + os.path.join(THISPATH, job + '.par |')]
         for j in range(len(jobdict[job]['dep'])-1):
             parlist = parlist + ['sed s#' + jobdict[job]['dep'][j] + '#' + os.path.join(THISPATH,jobdict[job]['dep'][j]) + '# |']
         parlist = parlist + ['sed s#' + jobdict[job]['dep'][len(jobdict[job]['dep'])-1] + '#' + os.path.join(THISPATH,jobdict[job]['dep'][len(jobdict[job]['dep'])-1]) + '# > ./parfile']
-        for k in jobdict[job]['tgt'].keys():
+        for k in list(jobdict[job]['tgt'].keys()):
             parlist = parlist + \
                 ['; echo ' + k + ' = ' + os.path.join(THISPATH,jobdict[job]['tgt'][k]) + ' >> ./parfile']
         parcmd =  ' '.join(parlist)

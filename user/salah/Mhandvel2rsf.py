@@ -163,11 +163,11 @@ if __name__ == "__main__":
            # get inline and xline
            i=line.split()[1]
            x=line.split()[2]
-           if i in inline.keys():
+           if i in list(inline.keys()):
            	inline[i].append(x)
            else:
            	inline[i]=[x]
-	   if (i,x) in loc.keys():
+	   if (i,x) in list(loc.keys()):
 		 sys.stderr.write("duplicate location %s,%s\n"%(i,x))
                  sys.exit(2)
            else:
@@ -181,9 +181,9 @@ if __name__ == "__main__":
             #print inline[y]
             
      # compute o2, d2, n2, o3, d3, and n3
-    n2=len(inline.keys())
-    d2=1. if n2==1 else float(inline.keys()[1])-float(inline.keys()[0])
-    o2=inline.keys()[0]
+    n2=len(list(inline.keys()))
+    d2=1. if n2==1 else float(list(inline.keys())[1])-float(list(inline.keys())[0])
+    o2=list(inline.keys())[0]
     
     n3=len(inline[o2])
     d3=1. if n3==1 else float(inline[o2][1])-float(inline[o2][0])
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     lock=multiprocessing.Lock()
     #print "o2="+str(o2)+" d2="+str(d2)+" n2="+str(n2)+" o3="+str(o3)+" d3="+str(d3)+" n3="+str(n3)
     jobs=[]
-    for y in loc.keys():
+    for y in list(loc.keys()):
         #myfunction(loc[y],n1,o1,d1)
         p = multiprocessing.Process(target=myfunction, args=(lock,vs,loc[y],n1,o1,d1))
         jobs.append(p)

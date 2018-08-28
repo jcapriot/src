@@ -421,7 +421,7 @@ class rsfprog(object):
         if self.cmts:
             cmts = re.sub(r'http://[\S]+',underline_match,self.cmts)
             doc = doc + section('comments',cmts)
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             pars.sort()
             pardoc = ''
@@ -430,13 +430,13 @@ class rsfprog(object):
             doc = doc + section('parameters',pardoc.rstrip())
         if self.also:
             doc = doc + section('see also',self.also)
-        books = self.uses.keys()
+        books = list(self.uses.keys())
         if books:
             usedoc = ''
             usedoc_i = 0
             books.sort()
             for book in books:
-                chapters = self.uses[book].keys()
+                chapters = list(self.uses[book].keys())
                 chapters.sort()
                 for chapter in chapters:
                     for project in self.uses[book][chapter]:
@@ -473,7 +473,7 @@ class rsfprog(object):
             cmts =self.cmts.replace('\n','<br>')
             cmts = re.sub(r'(?:\s*<br>)+$','',cmts)
             contents = contents + '|-\n|  colspan="4" | %s\n' % cmts
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             pars.sort()
             for par in pars:
@@ -497,19 +497,19 @@ class rsfprog(object):
             contents = contents + '.SH SYNOPSIS\n.B %s\n' % self.snps
         if self.cmts:
             contents = contents + '.SH COMMENTS\n%s\n' % self.cmts
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             contents += '.SH PARAMETERS\n.PD 0\n'
             pars.sort()
             for par in pars:
                 contents += self.pars[par].man(par)
-        books = self.uses.keys()
+        books = list(self.uses.keys())
         if books:
             usedoc = ''
             usedoc_i = 0
             books.sort()
             for book in books:
-                chapters = self.uses[book].keys()
+                chapters = list(self.uses[book].keys())
                 chapters.sort()
                 for chapter in chapters:
                     for project in self.uses[book][chapter]:
@@ -543,7 +543,7 @@ class rsfprog(object):
         if self.cmts:
             contents = contents + '\\begin{verbatim}%s\\end{verbatim}\n' % \
                        self.cmts
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             pars.sort()
             contents = contents + '\\par\\noindent\n' + \
@@ -564,7 +564,7 @@ class rsfprog(object):
             contents = contents + '[SYNOPSIS]\n%s\n' % self.snps
         if self.cmts:
             contents = contents + '[COMMENTS]\n%s\n' % self.cmts
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             contents = contents + '[PARAMETERS]\n'
             #sys.stderr.write('type(pars)=%s\n'%type(pars))
@@ -609,7 +609,7 @@ DocCmd: %s
                     line = 'Port:   stdout %s w req \t%s standard output %s\n' % (ext,ext.upper(),data)
                 contents = contents + line
         """TO DO: process comments."""
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         ParamLines = ''
         if pars:
             pars.sort()
@@ -643,7 +643,7 @@ DocCmd: %s
         if self.cmts:
             cmts = re.sub(r'(http://[\S]+)',r'<a href="\1">\1</a>',self.cmts)
             contents += cmts.replace('\n','<br>\n')
-        pars =  self.pars.keys()
+        pars =  list(self.pars.keys())
         if pars:
             pars.sort()
             pardoc = ''
@@ -657,13 +657,13 @@ DocCmd: %s
                 else:
                     bgcol = '#ffc8d8'
             contents += bigsection('Parameters','#ffffff', '#ee77aa',pardoc)
-        books = self.uses.keys()
+        books = list(self.uses.keys())
         if books:
             usedoc = ''
             books.sort()
             for book in books:
                 bookdoc = ''
-                chapters = self.uses[book].keys()
+                chapters = list(self.uses[book].keys())
                 chapters.sort()
                 for chapter in chapters:
                     for project in self.uses[book][chapter]:
@@ -721,12 +721,12 @@ def html(dir,known_version):
         if rev_add2content != '':
             content += ' from ' + rev_add2content
     dirs = {}
-    for prog in progs.keys():
+    for prog in list(progs.keys()):
         dir = os.path.dirname(progs[prog].file)
         if dir not in dirs:
             dirs[dir] = []
         dirs[dir].append(prog)
-    keys = dirs.keys()
+    keys = list(dirs.keys())
     keys.sort()
     for dir in keys:
         names = dirs[dir]
@@ -742,12 +742,12 @@ def text(dir,name):
     file = open (os.path.join(dir,name),'w')
     file.write('Madagascar Programs\n')
     dirs = {}
-    for prog in progs.keys():
+    for prog in list(progs.keys()):
         dir = os.path.dirname(progs[prog].file)
         if dir not in dirs:
             dirs[dir] = []
         dirs[dir].append(prog)
-    keys = dirs.keys()
+    keys = list(dirs.keys())
     keys.sort()
     for dir in keys:
         names = dirs[dir]
@@ -1087,7 +1087,7 @@ def cli(rsfprefix = 'sf',rsfplotprefix='vp'):
             elif opt == '-k':
                 val = val.lower()
                 doc = ''
-                for prog in progs.keys():
+                for prog in list(progs.keys()):
                     desc = progs[prog].desc
                     if re.search(val,desc.lower()):
                         doc = doc + "%s: %s\n" % (bold(prog),desc)
@@ -1097,25 +1097,25 @@ def cli(rsfprefix = 'sf',rsfplotprefix='vp'):
         if not args:
             if typ == 'w':
                 html(dir,ver)
-                for prog in progs.keys():
+                for prog in list(progs.keys()):
                     main = progs.get(prog)
                     if main:
                         main.html(dir,rep)
             elif typ == 't':
                 text(dir,'INDEX.txt')
-                for prog in progs.keys():
+                for prog in list(progs.keys()):
                     main = progs.get(prog)
                     if main:
                         main.text(dir)
             elif typ == 's':
                 spec(dir,'extend.spec')
-                for prog in progs.keys():
+                for prog in list(progs.keys()):
                     main = progs.get(prog)
                     if main:
                         main.spec(dir)
             elif typ == 'g':
                 text(dir,'index.man')
-                for prog in progs.keys():
+                for prog in list(progs.keys()):
                     main = progs.get(prog)
                     if main:
                         main.man(dir,usedoc_max,root)

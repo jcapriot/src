@@ -55,7 +55,7 @@ for i in range(len(d)):
 for i in t:
     print(i)
     
-for key in e.keys():
+for key in list(e.keys()):
     print(key,e[key])
 
 
@@ -78,7 +78,7 @@ except:
 
 def m8rschool(year):
     workshops = dict(Golden=2018,Melbourne=2013)
-    for key in workshops.keys():
+    for key in list(workshops.keys()):
         if workshops[key]==year:
             return key            
 

@@ -81,7 +81,7 @@ def __parse(arg_dict):
     'Turn the list of args into a string (default vals must be None!)'  
 
     args = ''
-    for arg_nm in arg_dict.keys():
+    for arg_nm in list(arg_dict.keys()):
 	if arg_nm not in ('inp', 'out', 'verb', 'exe'):
 	    arg_v = arg_dict[arg_nm]
 	    args += ivlad.switch(arg_v==None, '', ' %s=%s' % (arg_nm,arg_v))

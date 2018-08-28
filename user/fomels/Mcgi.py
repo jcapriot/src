@@ -97,7 +97,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     par = ''
-    for key in form.keys():
+    for key in list(form.keys()):
         if key != "dir" and key != "fig":
             par += ' %s=%s' % (key,form.getvalue(key))
 

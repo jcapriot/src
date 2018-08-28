@@ -223,14 +223,14 @@ def writeScript(batch,job,path,queue,mail,acct,wall,nodes,ppn,exe):
         f.close()
 
 def isBatch(jobdict,envdict):
-    if ('exe' in jobdict.keys()):
+    if ('exe' in list(jobdict.keys())):
         # check spec of platform
-        if ('platf' in jobdict['exe'].keys() and \
-            'wall' in jobdict['exe'].keys() and \
-            'nodes' in jobdict['exe'].keys() and \
-            'ppn' in jobdict['exe'].keys()):
+        if ('platf' in list(jobdict['exe'].keys()) and \
+            'wall' in list(jobdict['exe'].keys()) and \
+            'nodes' in list(jobdict['exe'].keys()) and \
+            'ppn' in list(jobdict['exe'].keys())):
             # batch case - spec'd in envdict 
-            if (jobdict['exe']['platf'] in envdict.keys()):
+            if (jobdict['exe']['platf'] in list(envdict.keys())):
                 return True
             else:
                 return False
@@ -242,10 +242,10 @@ def isBatch(jobdict,envdict):
 def isMPI(jobdict):
 # test for presence of MPI info, for command line MPI
     MPIROOT = os.getenv('MPIROOT')
-    if ('exe' in jobdict.keys()):
+    if ('exe' in list(jobdict.keys())):
         # check spec of platform
-        if ('platf' in jobdict['exe'].keys() and \
-            'ppn' in jobdict['exe'].keys()):
+        if ('platf' in list(jobdict['exe'].keys()) and \
+            'ppn' in list(jobdict['exe'].keys())):
             if (jobdict['exe']['platf'] == 'mpi'):
                 if MPIROOT == None:
                     print('Note: MPIROOT not defined') 
@@ -303,9 +303,9 @@ def getBatchAttributes(batch):
 
 def getThreads(dict):
     nthread=1
-    if ('ppn' in dict.keys()):
+    if ('ppn' in list(dict.keys())):
         nthread = nthread * int(dict['ppn'])
-    if ('nodes' in dict.keys()):
+    if ('nodes' in list(dict.keys())):
         nthread = nthread * int(dict['nodes'])
     return str(nthread)
                                                        

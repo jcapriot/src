@@ -236,7 +236,7 @@ def main(argv=sys.argv):
                                     # merge vpl lists
     for item in figlist:  files[item] = '  '
     for item in locklist: files[item] = '  '
-    filelist = files.keys()
+    filelist = list(files.keys())
     filelist.sort()
 
 ################    find missing and different files

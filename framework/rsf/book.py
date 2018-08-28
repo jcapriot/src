@@ -114,7 +114,7 @@ def get_authors(source,default):
                         last = names.pop() # last name
                         person = string.join((person,last),'~')
                         authors[person]=last.capitalize()
-    all = map(lambda k: (authors[k],k),authors.keys())
+    all = map(lambda k: (authors[k],k),list(authors.keys()))
     all.sort()
     return all
 
@@ -176,7 +176,7 @@ def report_toc(target=None,source=None,env=None):
     map(lambda x:
         toc.write('\TOCentry{%s}{\pageref{%s.start}}\n' %
                   (misc[x],os.path.splitext(x)[0])),
-        filter(os.path.isfile,misc.keys()))
+        filter(os.path.isfile,list(misc.keys())))
     toc.write('\n\\cleardoublepage\n')
     toc.close()
     return 0
@@ -383,7 +383,7 @@ def report_all(target=None,source=None,env=None):
         all.write('\\GEOpaper{%s}{%s}\t\\include{%s}\n' % (tag[0],tag[1],stem))
         all.write('\\cleardoublepage\n')
     all.write('%% end of paper list\n')
-    for tex in misc.keys():
+    for tex in list(misc.keys()):
         all.write(include(os.path.splitext(tex)[0]))
 
     index = env.get('index')
@@ -510,7 +510,7 @@ class RSFReport(Environment):
         self.Command('toc.tex',papers, **kw)
         rsf.tex.Paper('toc',lclass='georeport',scons=0)
         map(lambda tex: self.Depends('toc.tex',tex),
-            filter(os.path.isfile,misc.keys()))
+            filter(os.path.isfile,list(misc.keys())))
         # make title page
         kw.update({'action':Action(report_tpg),
                    'varlist':['group','title1','authors','title2','line',
