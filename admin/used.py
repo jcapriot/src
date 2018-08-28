@@ -3,27 +3,28 @@
 Finds if programs in the current directory
 are used in any official examples.
 '''
+from __future__ import print_function
 import glob, os
 
 book = os.path.join(os.environ.get('RSFSRC'),'book')
 
 for main in glob.glob('M*.c'):
     name = main[1:-2]
-    print name + ':\n'
+    print(name + ':\n')
     grep = os.popen('grep %s %s/*/*/*/SConstruct %s/packages/*.py' %
                     (name,book,book), 'r').read()
     if not grep:
         #        os.system('svn delete --force %s' % main)
-        print "NO"
+        print("NO")
     else:
-        print grep
+        print(grep)
 
 for sub in glob.glob('[a-z]*.c'):
     head = sub[:-1]+'h'
-    print sub + ':\n'
+    print(sub + ':\n')
     grep = os.popen('grep %s *.c' % head, 'r').read()
     if not grep:
         os.system('svn delete %s' % sub)
     else:
-        print grep
+        print(grep)
 

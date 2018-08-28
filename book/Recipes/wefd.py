@@ -1,3 +1,4 @@
+from __future__ import print_function
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
 import fdmod,pplot
@@ -207,7 +208,7 @@ def emovie(wfld,custom,axis,par):
 # ------------------------------------------------------------
 # plot elastic image
 def eimage(plot,imag,clip,par):
-    print clip
+    print(clip)
     title=['pp','ps','sp','ss']
     for i in range(4):
         if(i!=0):

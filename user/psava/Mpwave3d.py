@@ -4,6 +4,7 @@ generate a plane in t-x-y-z space
 cx x + cy y + cz z - vel t = 0
 (the plane goes through the origin)
 '''
+from __future__ import print_function
 import rsf.api as rsf
 import numpy as np
 import sys
@@ -22,10 +23,10 @@ cy = par.float("cy",1.0)
 cz = par.float("cz",1.0)
 
 if verb:
-    print  >> sys.stderr,'t',nt,ot,dt,vel
-    print  >> sys.stderr,'x',nx,ox,dx,cx
-    print  >> sys.stderr,'y',ny,oy,dy,cy
-    print  >> sys.stderr,'z',nz,oz,dz,cz
+    print('t',nt,ot,dt,vel, file=sys.stderr)
+    print('x',nx,ox,dx,cx, file=sys.stderr)
+    print('y',ny,oy,dy,cy, file=sys.stderr)
+    print('z',nz,oz,dz,cz, file=sys.stderr)
 
 # ------------------------------------------------------------
 Fdat = rsf.Output() 

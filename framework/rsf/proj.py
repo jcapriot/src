@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 # Copyright (C) 2004 University of Texas at Austin
 #
@@ -64,13 +65,13 @@ def test(target=None,source=None,env=None):
     
     locked = re.sub('.*\/([^\/]+)\/([^\/]+)\/([^\/]+)\/Fig\/',
                     figdir+'/\\1/\\2/\\3/',os.path.abspath(src))
-    print "Comparing %s and %s" % (locked,src)
+    print("Comparing %s and %s" % (locked,src))
     if os.path.isfile(locked):
         diff = os.system(' '.join([os.path.join(bindir,sfprefix+'vplotdiff'),
                                    locked,src]))
         return diff
     else:
-        print 'No locked file "%s" ' % locked
+        print('No locked file "%s" ' % locked)
         return 0
 
 def echo(target,source,env):
@@ -117,14 +118,14 @@ def retrieve(target=None,source=None,env=None):
         password = private['password']
         server = private['server']
         if not server:
-            print 'Cannot access proprietary data server' 
+            print('Cannot access proprietary data server') 
             return 7
         try:
             session = ftplib.FTP(server,login,password)
             session.cwd(folder)
         except:
-            print 'Could not establish connection with "%s/%s" ' % (server,
-                                                                    folder)
+            print('Could not establish connection with "%s/%s" ' % (server,
+                                                                    folder))
             return 3
         for file in filter(lambda x: not os.path.abspath(x).startswith(env.path), 
                            map(str,target)):
@@ -139,10 +140,10 @@ def retrieve(target=None,source=None,env=None):
                                    lambda x: download.write(x))
                 download.close()
             except:
-                print 'Could not download file "%s" ' % file
+                print('Could not download file "%s" ' % file)
                 return 1
             if not os.stat(localfile)[6]: # if zero size file
-                print 'Could not download file "%s" ' % file
+                print('Could not download file "%s" ' % file)
                 os.unlink(localfile)
                 return 4
             if usedatapath:
@@ -159,7 +160,7 @@ def retrieve(target=None,source=None,env=None):
                 try:
                     os.symlink(remote,file)
                 except:
-                    print 'Could not link file "%s" ' % remote
+                    print('Could not link file "%s" ' % remote)
                     os.unlink(file)
                     return 6
         else:
@@ -174,11 +175,11 @@ def retrieve(target=None,source=None,env=None):
                 try:
                     urllib.urlretrieve(rdir,localfile)
                     if not os.stat(localfile)[6]:
-                        print 'Could not download file "%s" ' % localfile
+                        print('Could not download file "%s" ' % localfile)
                         os.unlink(localfile)
                         return 2
                 except:
-                    print 'Could not download "%s" from "%s" ' % (localfile,rdir)
+                    print('Could not download "%s" from "%s" ' % (localfile,rdir))
                     return 5
                 if usedatapath:
                     if os.path.isfile(file):

@@ -1,3 +1,4 @@
+from __future__ import print_function
 from Tkinter import *
 import os
 CWD = os.getcwd()
@@ -432,19 +433,19 @@ class Madagascar:
             newFiles.append(newFile)
         command = "cd " + LOCATION + "\n  pwd \n  scons &"
         os.system(command)
-        print 'newFiles'
-        print newFiles
+        print('newFiles')
+        print(newFiles)
         length = len(RSFfiles)
         for file in RSFfiles:
             trash = RSFfiles.pop()
         if length > 1:
             trash = RSFfiles.pop()
-        print 'midRSF'
-        print RSFfiles
+        print('midRSF')
+        print(RSFfiles)
         for file in newFiles:
             RSFfiles.append(file)
-        print 'RSF'
-        print RSFfiles
+        print('RSF')
+        print(RSFfiles)
 #--------------------
 # Fetch Files   
 #--------------------
@@ -681,11 +682,11 @@ class Madagascar:
         trash = RSFfiles.pop()            # Remove last entry 
         newFile='catFile_' + LOCATION 
         RSFfiles.append(newFile)
-        print RSFfiles
+        print(RSFfiles)
         
     def archive(self):
         command = 'cd ' + LOCATION + '\n' '\\rm update* info*'
-        print command
+        print(command)
         os.system(command)
        
 

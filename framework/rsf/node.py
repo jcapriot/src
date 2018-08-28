@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Copyright (C) 2013 University of Texas at Austin
 #
 # This program is free software; you can redistribute it and/or modify
@@ -111,7 +112,7 @@ class Hosts(object):
         if host != 'localhost':
             command = 'ssh %s \"%s\" ' % (host,command)
 
-        print command
+        print(command)
         retcode = os.system(command)
         
         self.nodes.append(host)

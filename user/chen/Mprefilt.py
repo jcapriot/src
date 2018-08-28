@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'prefilter bank of pwd'
+from __future__ import print_function
 
 ##   Copyright (C) 2012 Zhonghuan Chen, UT Austin, Tsinghua University
 ##  
@@ -23,7 +24,7 @@ try:
 	import rsf.user.pcmf as mf
 except Exception, e:
 	import sys
-	print 'ERROR: numpy needed'
+	print('ERROR: numpy needed')
 	sys.exit(1)
 
 

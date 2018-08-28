@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Conjugate-gradient method'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -27,7 +28,7 @@ def conjgrad(oper,dat,x0,niter):
         g = oper(adj=1)[R]
         G = oper(adj=0)[g]
         gn = g.dot(g)
-        print "iter %d: %g" % (iter+1,gn)
+        print("iter %d: %g" % (iter+1,gn))
         if 0==iter:
             s = g
             S = G
@@ -56,12 +57,12 @@ if __name__ == "__main__":
     # Using sfconjgrad
     x = rsf.conjgrad(mod=x0,niter=6)[y,matmult]
     y1 = matmult[x]
-    print x[:]
-    print y1[:]
+    print(x[:])
+    print(y1[:])
 
     # Using function above
     x = conjgrad(matmult,y,x0,6)
     y2 = matmult[x]
-    print x[:]
-    print y2[:]
+    print(x[:])
+    print(y2[:])
 

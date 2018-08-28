@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'generate circle wave snapshot'
+from __future__ import print_function
 
 ##   Copyright (C) 2012 Zhonghuan Chen, UT Austin, Tsinghua University
 ##  
@@ -22,7 +23,7 @@ try:
 	import rsf.api as rsf
 except Exception, e:
 	import sys
-	print 'ERROR : need numpy'
+	print('ERROR : need numpy')
 	sys.exit(1)
 
 par=rsf.Par()

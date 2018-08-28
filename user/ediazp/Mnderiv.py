@@ -6,6 +6,7 @@ of arbitrary order.
 
 So, it computes first, second, n derivative along axis 1,2 or 3.
 '''
+from __future__ import print_function
 
 
 import rsf.api as rsf
@@ -129,9 +130,9 @@ try:
   functions[axis](Fin,Fout,f,order,scale)
 except:
   import sys
-  print >> sys.stderr, '========== sfnderiv ERROR ==========='
-  print >> sys.stderr, 'Error: valid axis values are 1,2 or 3'
-  print >> sys.stderr, '====================================='
+  print('========== sfnderiv ERROR ===========', file=sys.stderr)
+  print('Error: valid axis values are 1,2 or 3', file=sys.stderr)
+  print('=====================================', file=sys.stderr)
   sys.exit(1)
 
 Fin.close()

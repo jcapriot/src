@@ -14,6 +14,7 @@
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+from __future__ import print_function
 import os, sys, string, re, tempfile
 import rsf.prog
 
@@ -106,7 +107,7 @@ if __name__ == "__main__":
     prog = sys.argv.pop(0)
     
     if argc < 2:
-        print '''
+        print('''
 Usage:
 %s [xbmin= xbmax= ybmin= ybmax=] [cropshift=n] [options] file.vpl [file.eps]
 
@@ -114,7 +115,7 @@ Converts vplot to encapsulated postscript.
 [xbmin= xbmax= ybmin= ybmax=] overrides the default bounding box.
 [cropshift=y] applies PS translate for every page (except for the first one)
 [options] are passed to pspen.
-        ''' % prog
+        ''' % prog)
         sys.exit(2)
 
     eps = sys.argv.pop()
@@ -145,5 +146,5 @@ Converts vplot to encapsulated postscript.
                     xbmin=xbmin, xbmax=xbmax, ybmin=ybmin, ybmax=ybmax,
                     cropshift=crshift)
     except:
-        print 'Failed to convert %s to %s' % (vpl,eps)
+        print('Failed to convert %s to %s' % (vpl,eps))
         sys.exit(1)

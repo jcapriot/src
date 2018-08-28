@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Add random noise using python.'
+from __future__ import print_function
 
 ##   Copyright (C) 2013 University of Texas at Austin
 ##  
@@ -22,7 +23,7 @@ try:
 	from numpy import *
 	import rsf.api as rsf
 except Exception, e:
-	print 'ERROR : need numpy'
+	print('ERROR : need numpy')
 	sys.exit(1)
 
 par=rsf.Par()

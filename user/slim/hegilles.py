@@ -3,6 +3,7 @@
 '''
 Utilities for Python-based Madagascar programs in RSFSRC/user/slim
 '''
+from __future__ import print_function
 
 # Author: G. Hennenfent
 #         Seismic Laboratory for Imaging and Modeling
@@ -44,11 +45,11 @@ def killtraces(N,perc=50,maxfactor=1,seed=None):
         __np.random.seed(int(seed))
 
     if maxfactor<1:
-        print "ERROR: maxfactor must be >=1"
+        print("ERROR: maxfactor must be >=1")
         return
 
     if perc<=0 or perc>=100:
-        print "ERROR: 0 < perc < 100"
+        print("ERROR: 0 < perc < 100")
         return        
         
     unifdist = 100./perc
@@ -88,7 +89,7 @@ def jitter(N,perc=50.,jit=None,seed=None):
         __np.random.seed(int(seed))
     
     if perc<=0 or perc>=100:
-        print "ERROR: 0 < perc < 100"
+        print("ERROR: 0 < perc < 100")
         return        
 
     sub = 100/perc

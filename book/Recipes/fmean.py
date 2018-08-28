@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import math
 
@@ -33,7 +34,7 @@ def Freqplots(out, inp,axes=' ', scalebar='n',
 
 def iscmplx(file):
    Flow('%s.par'%file, file, 'get parform=n data_format')
-   print 'ahem'
+   print('ahem')
    txt = open('%s.par'%file, 'r')
    line = txt.readlines()
    txt.close()

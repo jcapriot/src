@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import rsf.api as rsf
 import numpy as np
 import scipy as sp
@@ -10,28 +11,28 @@ import c_m8r as c_rsf
 # next challenge is to get input file names from command line
 # use Msfin.c as example
 
-print "program name",sys.argv[0]
-print "type sys.argv=",type(sys.argv)
+print("program name",sys.argv[0])
+print("type sys.argv=",type(sys.argv))
 if len(sys.argv)>1 :
-   print "parameters:",sys.argv[1:]
+   print("parameters:",sys.argv[1:])
 
 filenames=[]
 if not(os.isatty(file.fileno(sys.stdin))):
     filenames.append("in")
 
 for parameter in sys.argv[1:]:
-    print "processing parameter",parameter
+    print("processing parameter",parameter)
     if parameter.find("=")==-1 :
-        print "no = in parameter"
+        print("no = in parameter")
         filenames.append(parameter)
 
 if len(filenames)<1:
-    print "just to help me test, if there are no files in the list, I will"
-    print "append the file:"
-    print "/home/karl/m8r/madagascar-1.3/user/karl/model.rsf"
+    print("just to help me test, if there are no files in the list, I will")
+    print("append the file:")
+    print("/home/karl/m8r/madagascar-1.3/user/karl/model.rsf")
     filenames.append('/home/karl/m8r/madagascar-1.3/user/karl/model.rsf')
 
-print "list of file names:",filenames
+print("list of file names:",filenames)
 
 
 fin=rsf.Input(filenames[0])
@@ -45,9 +46,9 @@ fin=rsf.Input(filenames[0])
 #to get the name of the data file in rsf: fin.string("in")
 
 if not(fin.type == "float"):
-    print "oh no!! data is not float"
+    print("oh no!! data is not float")
 else:
-    print "all right!  data is float.  I can handle that."
+    print("all right!  data is float.  I can handle that.")
 
 data=np.memmap(fin.string("in"), dtype=np.float32, mode="r",shape=fin.shape())
 fin1=rsf.Input('/home/karl/m8r/madagascar-1.3/user/karl/model.rsf')

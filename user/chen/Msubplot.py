@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'subplot by python'
+from __future__ import print_function
 
 ##   Copyright (C) 2012 Zhonghuan Chen, UT Austin, Tsinghua University
 ##  
@@ -23,7 +24,7 @@ try:
 	from string import *
 	import rsf.api as rsf
 except Exception, e:
-	print 'ERROR: pylab needed'
+	print('ERROR: pylab needed')
 	sys.exit(1)
 
 def CustomLocator(ot, dt, min, max):

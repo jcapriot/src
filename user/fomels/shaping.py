@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Conjugate-gradient method'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -31,7 +32,7 @@ def conjgrad(oper,shape,eps,d,p0,niter):
         gr = oper(adj=0)[gx]
 
         gn = gp.dot(gp)
-        print "iter %d: %g" % (iter+1,gn)
+        print("iter %d: %g" % (iter+1,gn))
         if 0==iter:
             sp = gp
             sx = gx
@@ -65,6 +66,6 @@ if __name__ == "__main__":
 
     x = conjgrad(matmult,copy,1,y,x0,6)
     y2 = matmult[x]
-    print x[:]
-    print y2[:]
+    print(x[:])
+    print(y2[:])
 

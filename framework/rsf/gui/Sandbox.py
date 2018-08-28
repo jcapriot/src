@@ -1,3 +1,4 @@
+from __future__ import print_function
 from Tkinter import *
 from Flow import Flow
 from Flow import LinkedFlow
@@ -192,7 +193,7 @@ class Sandbox(Canvas):
                     lambda event, arg=flow: __linkFlows(event,arg) )
                 self.configure(cursor='crosshair')
             except:
-                print 'bad attempt at linking'
+                print('bad attempt at linking')
 
         def __unlinkFlow():
             '''

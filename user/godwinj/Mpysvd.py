@@ -3,6 +3,7 @@
 
 REQUIRES the PYTHON API, NUMPY AND SCIPY
 '''
+from __future__ import print_function
 import sys
 
 # Import RSF API
@@ -11,8 +12,7 @@ try:
     import numpy
     import scipy
 except Exception, e:
-    print \
-'''ERROR: NEED PYTHON API, NUMPY, SCIPY '''
+    print('''ERROR: NEED PYTHON API, NUMPY, SCIPY ''')
     sys.exit(1)
 
 # Initialize RSF command line parser    

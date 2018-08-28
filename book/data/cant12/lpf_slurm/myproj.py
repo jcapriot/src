@@ -60,16 +60,16 @@ def test(target=None,source=None,env=None):
     src = str(source[0])
     figdir = env.get('figdir')
     bindir = env.get('bindir')
-    
+
     locked = re.sub('.*\/([^\/]+)\/([^\/]+)\/([^\/]+)\/Fig\/',
                     figdir+'/\\1/\\2/\\3/',os.path.abspath(src))
-    print "Comparing %s and %s" % (locked,src)
+    print("Comparing %s and %s" % (locked,src)))
     if os.path.isfile(locked):
         diff = os.system(' '.join([os.path.join(bindir,sfprefix+'vplotdiff'),
                                    locked,src]))
         return diff
     else:
-        print 'No locked file "%s" ' % locked
+        print('No locked file "%s" ' % locked))
         return 0
 
 def echo(target,source,env):
@@ -104,14 +104,14 @@ def retrieve(target=None,source=None,env=None):
         password = private['password']
         server = private['server']
         if not server:
-            print 'Cannot access proprietary data server' 
+            print('Cannot access proprietary data server')
             return 7
         try:
             session = ftplib.FTP(server,login,password)
             session.cwd(folder)
         except:
-            print 'Could not establish connection with "%s/%s" ' % (server,
-                                                                    folder)
+            print('Could not establish connection with "%s/%s" ' % (server,
+                                                                    folder))
             return 3
         for file in map(str,target):
             remote = os.path.basename(file)
@@ -121,10 +121,10 @@ def retrieve(target=None,source=None,env=None):
                                     lambda x: download.write(x))
                  download.close()
             except:
-                 print 'Could not download file "%s" ' % file
+                 print('Could not download file "%s" ' % file)
                  return 1
             if not os.stat(file)[6]:
-                print 'Could not download file "%s" ' % file
+                print('Could not download file "%s" ' % file)
                 os.unlink(file)
                 return 4
         session.quit()
@@ -132,27 +132,27 @@ def retrieve(target=None,source=None,env=None):
         server = env.get('server')
         if server == 'local':
             for file in map(str,target):
-                remote = os.path.basename(file)  
+                remote = os.path.basename(file)
                 remote = os.path.join(folder,remote)
                 try:
                     os.symlink(remote,file)
                 except:
-                    print 'Could not link file "%s" ' % remote
+                    print('Could not link file "%s" ' % remote)
                     os.unlink(file)
                     return 6
         else:
             for file in map(str,target):
-                remote = os.path.basename(file)  
+                remote = os.path.basename(file)
                 rdir =  '/'.join([server,folder,remote])
                 try:
                     urllib.urlretrieve(rdir,file)
 
                     if not os.stat(file)[6]:
-                        print 'Could not download file "%s" ' % file
+                        print('Could not download file "%s" ' % file)
                         os.unlink(file)
                         return 2
                 except:
-                    print 'Could not download "%s" from "%s" ' % (file,rdir)
+                    print('Could not download "%s" from "%s" ' % (file,rdir))
                     return 5
     return 0
 
@@ -203,9 +203,9 @@ class Project(Environment):
         self.sfpen = os.path.join(self.bindir,'sfpen')
         self.pspen = os.path.join(self.bindir,'pspen')
         self.vppen = os.path.join(self.bindir,'vppen')
-        
+
         self.figs = os.environ.get('RSFFIGS',os.path.join(root,'share','madagascar','figs'))
-        
+
         cwd = os.getcwd()
         self.cwd = cwd
 
@@ -247,7 +247,7 @@ class Project(Environment):
                     LIBS=[libs],
                     PROGSUFFIX=exe)
         self.Prepend(LIBS=[self.get('DYNLIB','')+'rsf'])
-        
+
         minesjtk = self.get('MINESJTK',None)
         usejava = self.get('JAVA_HOME',None)
         if not usejava: usejava = self.get('JAVA_SDK',None)
@@ -256,24 +256,24 @@ class Project(Environment):
             classpath.append(os.path.join(libdir,'rsf.jar'))
             userclasspath = os.environ.get('CLASSPATH',None)
             if userclasspath: classpath.append(userclasspath)
-            if minesjtk: 
-                classpath.append(minesjtk) 
+            if minesjtk:
+                classpath.append(minesjtk)
                 self.Append(JAVACLASSPATH=':'.join(classpath))
             classpath.append('.')
             self.Append(ENV={'CLASSPATH':':'.join(classpath)})
-           
+
         path = {'darwin': '/opt/local/bin',
                 'irix': '/usr/freeware/bin',
                 'cygwin': '/usr/X11R6/bin:/usr/lib/lapack'}
         for plat in path.keys():
-            if sys.platform[:len(plat)] == plat:           
+            if sys.platform[:len(plat)] == plat:
                 self['ENV']['PATH'] = ':'.join([path[plat],
                                                 self['ENV']['PATH']])
         pythonpath = os.path.join(sys.prefix,'bin')
         if os.path.isdir(pythonpath):
             self['ENV']['PATH'] = ':'.join([pythonpath,
                                             self['ENV']['PATH']])
-        
+
         if sys.platform[:6] == 'cygwin':
             self['ENV']['SYSTEMROOT'] = os.environ.get('SYSTEMROOT')
 
@@ -310,7 +310,7 @@ class Project(Environment):
 
         self.environ = self.get('ENVIRON','')
 
-        
+
         self.jobs = GetOption('num_jobs')
         cluster = self.get('CLUSTER',os.environ.get('RSF_CLUSTER','localhost 1'))
         hosts = string.split(cluster)
@@ -334,14 +334,14 @@ class Project(Environment):
     def __Split(self,split,reduction,
                 sfiles,tfiles,flow,stdout,stdin,suffix,prefix,src_suffix):
         '''Split jobs for pscons'''
-        
+
         if self.jobs < split[1]:
-            jobs = self.jobs            
+            jobs = self.jobs
             w = int(1+float(split[1])/jobs) # length of one chunk
         else:
             jobs = split[1]
             w = 1
-                
+
         par_sfiles = copy.copy(sfiles)
         par_targets = {}
         for tfile in tfiles:
@@ -374,18 +374,18 @@ class Project(Environment):
                         nrotate = False
 
                     self.Flow(source,sfiles[j],
-                              'window n%d=%d f%d=%d squeeze=n | put icpu=%d ncpu=%d' % 
+                              'window n%d=%d f%d=%d squeeze=n | put icpu=%d ncpu=%d' %
                               (split[0],chunk,split[0],skip,i,jobs),noderotate=nrotate)
 
             par_tfiles = []
             for j in range(len(tfiles)):
                 tfile = tfiles[j]
                 par_tfile = tfile + '__' + str(i)
-                    
+
                 par_tfiles.append(par_tfile)
                 par_targets[tfile].append(par_tfile)
- 
-            # operation on one chunk    
+
+            # operation on one chunk
             self.Flow(par_tfiles,par_sfiles,cflow,
                       stdout,stdin,1,
                       suffix,prefix,src_suffix)
@@ -401,7 +401,7 @@ class Project(Environment):
              split=[],np=1,reduce='cat',local=0,noderotate=1):
 
         if not flow:
-            return None     
+            return None
 
         if type(target) is types.ListType:
             tfiles = target
@@ -429,7 +429,7 @@ class Project(Environment):
             else:
                 reduction = reduce
 
-            if split[1] == 'omp' or split[1] == 'mpi': 
+            if split[1] == 'omp' or split[1] == 'mpi':
                 splitpar = 'split=%d ' % split[0]
                 if reduce == 'add':
                     splitpar += ' join=0'
@@ -442,7 +442,7 @@ class Project(Environment):
                 # Split the flow into parallel flows
                 self.__Split(split,reduction,
                              sfiles,tfiles,flow,stdout,stdin,
-                             suffix,prefix,src_suffix)               
+                             suffix,prefix,src_suffix)
                 return
 
         sources = []
@@ -465,11 +465,11 @@ class Project(Environment):
                     self.ip=(self.ip+1)%len(self.nodes) # increment and modulo
                     numtries+=1
                 if(numtries>len(self.nodes)):
-                    print "having problems finding idle node"
+                    print("having problems finding idle node")
                 myip=self.ip # local variable remembers the ip being used
                 self.taskonnode[myip]=True
                 node = self.nodes[ip]
-                self.ip=(self.ip+1)%len(self.nodes) # increment and modulo 
+                self.ip=(self.ip+1)%len(self.nodes) # increment and modulo
 
         if node != 'localhost':
             if self.raddenv:
@@ -478,7 +478,7 @@ class Project(Environment):
                 remote = '%s %s ' % (WhereIs('env'),self.environ)
         else:
             remote = ''
-            
+
         command = rsf.flow.Flow(sources,flow,self.bindir,rsfflow,
                                 self.checkpar,self.coms,prefix,self.progsuffix,
                                 remote,stdout,stdin,self.timer,mpirun)
@@ -492,13 +492,13 @@ class Project(Environment):
             else:
                 command = string.join([WhereIs('ssh'),node,'\"cd ',
                                        self.cwd,';',command,'\"'])
-                        
+
         targets = []
         for file in tfiles:
             if (not re.search(suffix + '$',file)) and ('.' not in file):
                 file = file + suffix
             targets.append(file)
-            
+
         flow = self.Command(targets,sources,command)
         # free up the node for reuse
         if !local:
@@ -513,9 +513,9 @@ class Project(Environment):
                 Clean(flow,binaries)
 
         self.Default(flow)
-            
+
         return flow
-        
+
     def Plot (self,target,source,flow=None,suffix=vpsuffix,vppen=None,
               view=None,**kw):
         if not flow: # two arguments
@@ -531,7 +531,7 @@ class Project(Environment):
         if view:
             flow = flow + ' | %s pixmaps=y' % self.sfpen
             kw.update({'stdout':-1})
-        kw.update({'suffix':suffix})        
+        kw.update({'suffix':suffix})
         return apply(self.Flow,(target,source,flow),kw)
     def Result(self,target,source,flow=None,suffix=vpsuffix,**kw):
         if not flow: # two arguments
@@ -578,7 +578,7 @@ class Project(Environment):
         infofile = str(target[0])
         info = open(infofile,'w')
         info.write('uses=' + str(self.coms) + '\n')
-        info.write('data=' + str(self.data) + '\n')        
+        info.write('data=' + str(self.data) + '\n')
         info.close()
         sizes = os.path.join(self.get('RSFROOT',rsf.prog.RSFROOT),'bin','sfsizes')
         su = env.get('su',0)

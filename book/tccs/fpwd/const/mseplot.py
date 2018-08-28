@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'variance'
+from __future__ import print_function
 
 import sys
 import rsf.api as rsf
@@ -7,14 +8,14 @@ import rsf.api as rsf
 try:
 	import numpy as np
 except Exception, e:
-	print 'ERROR : need numpy'
+	print('ERROR : need numpy')
 	sys.exit(1)
 
 try:
 	from pylab import *
 	from matplotlib.colors import LogNorm
 except Exception, e:
-	print 'ERROR : need numpy'
+	print('ERROR : need numpy')
 	sys.exit(1)
 
 pi = rsf.Input()

@@ -5,6 +5,7 @@ a [file] : is taken from stdin
 b [file] : is taken from  "flt"
 Requires both files to have the same sampling interval
 '''
+from __future__ import print_function
 
 import rsf.api as rsf
 import numpy as np
@@ -35,7 +36,7 @@ db = Fb.float("d1")
 b = np.zeros(nb,'f')
 
 if not da == db:
-  print  >> sys.stderr, 'input files must have the same sampling interval'
+  print('input files must have the same sampling interval', file=sys.stderr)
   sys.exit(1)
   
 # ------------------------------------------------------------

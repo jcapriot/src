@@ -19,6 +19,7 @@
 
 # Modified from the original C-shell version by Joe Dellinger
 
+from __future__ import print_function
 import sys, os, time, string, re, shutil
 import rsf.prog
 
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     argc = len(sys.argv)
 
     if argc < 2:
-        print '''
+        print('''
         vplot2gif myplot.vpl [myplot.gif]
 
         Convert Vplot format to GIF format at 75 dots per inch, ideal
@@ -129,14 +130,14 @@ if __name__ == "__main__":
 
         If the output file is a directory, the individual frames are
         not combined into an animation.
-        '''
+        ''')
 
         sys.exit(1)
 
     infile = sys.argv[1]
 
     if not os.path.isfile(infile):
-        print "\"%s\" is not a file" % infile
+        print("\"%s\" is not a file" % infile)
         sys.exit(1)
 
     if argc < 3:

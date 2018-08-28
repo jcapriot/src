@@ -5,6 +5,7 @@ n1 and n2 are computed automatically. For consistency with sfdisfil and
 sfmatmult, output is C-style order (row-first), i.e. rows in input file 
 become dimension-1 columns in output. Output encoding is native. If n2=1 in
 output, the second dimension will not be written to the header.'''
+from __future__ import print_function
 
 # Copyright (C) 2010 Ioan Vlad
 #
@@ -82,7 +83,7 @@ def main(par):
         k = 0
         for name in line:
             k += 1
-            print 'key%d=%s' % (k,name)
+            print('key%d=%s' % (k,name))
         
     # Find max nr of elements in a row
     for line in stdin:

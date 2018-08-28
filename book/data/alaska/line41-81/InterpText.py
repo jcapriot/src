@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import math
  
 class InterpText:
@@ -145,7 +146,7 @@ for line in open('hdrfile.txt'):
         gstat=long(round(-gelev*1000.0/10000.0))
         tstat=long(round((-gelev-selev+sdepth)*1000.0/10000.0))
 
-    print str(ep)             \
+    print(str(ep)             \
          + " " + str(sx)      \
          + " " + str(sy)      \
          + " " + str(gx)      \
@@ -157,6 +158,6 @@ for line in open('hdrfile.txt'):
          + " " + str(gelev)   \
          + " " + str(sstat)   \
          + " " + str(gstat)   \
-         + " " + str(tstat)
+         + " " + str(tstat))
 
  

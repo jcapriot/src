@@ -16,6 +16,7 @@ pflt stands for "Print Files with Lines longer Than"
 If a pflt value is specified, a list of filenames will be given
 If no pflt is specified, output will have two columns: line length, nr of occurences
 '''
+from __future__ import print_function
 # Copyright (C) 2009 Ioan Vlad
 #
 # This program is free software; you can redistribute it and/or modify
@@ -42,13 +43,13 @@ except: # Madagascar's Python API not installed
 import os, sys, glob
 
 if not hasattr(os, 'walk'):
-    print 'Please get Python 2.3 or greater'
+    print('Please get Python 2.3 or greater')
     sys.exit(unix_error)
 
 try:
     import subprocess
 except:
-    print 'Please get Python 2.4 or greater, or just the subprocess module'
+    print('Please get Python 2.4 or greater, or just the subprocess module')
     sys.exit(unix_error)
 
 ###########################################################################
@@ -103,10 +104,10 @@ def main():
     if pflt > 0:
         guilty_files.sort()
         for file in guilty_files:
-            print file
+            print(file)
     else:
         for i in range(len(line_len_list)):
-            print '%d\t%d' % (i, line_len_list[i])
+            print('%d\t%d' % (i, line_len_list[i]))
 
     return unix_success
 

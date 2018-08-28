@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'A generic CGI script'
+from __future__ import print_function
 
 ##   Copyright (C) 2012 University of Texas at Austin
 ##  
@@ -66,8 +67,8 @@ def picture(directory,figure,par):
     lock = Lock()
 
     if os.chdir(directory):
-        print "Content-type: text/html\n"
-        print "<html><body>Wrong directory \"%s\".</body></html>" % directory
+        print("Content-type: text/html\n")
+        print("<html><body>Wrong directory \"%s\".</body></html>" % directory)
     else:
         lock.lock()
         
@@ -78,10 +79,10 @@ def picture(directory,figure,par):
         lock.unlock()
 
         if fail:
-            print "Content-type: text/html\n"
-            print "<html><body>Madagascar failure.</body></html>"
+            print("Content-type: text/html\n")
+            print("<html><body>Madagascar failure.</body></html>")
         else:    
-            print "Content-type: image/png\n"
+            print("Content-type: image/png\n")
             shutil.copyfileobj(open(png,"rb"), sys.stdout)
 
 if __name__ == "__main__":
@@ -91,8 +92,8 @@ if __name__ == "__main__":
     f = form.getvalue("fig")
 
     if not d or not f:
-        print "Content-type: text/html\n"
-        print "<html><body>Need dir= and fig=</body></html>"
+        print("Content-type: text/html\n")
+        print("<html><body>Need dir= and fig=</body></html>")
         sys.exit(1)
 
     par = ''

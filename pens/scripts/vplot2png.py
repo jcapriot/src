@@ -14,6 +14,7 @@
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+from __future__ import print_function
 import tempfile, os, sys, re
 import rsf.vplot2eps
 
@@ -40,11 +41,11 @@ if __name__ == "__main__":
     prog = sys.argv.pop(0)
     
     if argc < 2:
-        print '''
+        print('''
         Usage: %s [options] file.vpl [file.png]
         Converts vplot to PNG.
         [options] are passed to pspen.
-        ''' % prog
+        ''' % prog)
         sys.exit(2)
 
     png = sys.argv.pop()

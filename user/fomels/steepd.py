@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Steepest-descent method'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -27,7 +28,7 @@ def steepd(oper,dat,x0,niter):
         g = oper(adj=1)[R]
         G = oper(adj=0)[g]
         RG = R.dot(G)
-        print "iter %d: %g" % (iter+1,RG)
+        print("iter %d: %g" % (iter+1,RG))
 
         alpha = - RG/G.dot(G)
 
@@ -50,6 +51,6 @@ if __name__ == "__main__":
     # Using function above
     x = steepd(matmult,y,x0,100)
     y2 = matmult[x]
-    print x[:]
-    print y2[:]
+    print(x[:])
+    print(y2[:])
 

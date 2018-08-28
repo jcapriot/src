@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Conjugate-gradient method'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -26,7 +27,7 @@ def conjgrad(oper,d,x0,niter):
     for iter in range(niter):
         cg = oper[g]
         gn = g.dot(g)
-        print "iter %d: %g" % (iter+1,gn)
+        print("iter %d: %g" % (iter+1,gn))
         if 0==iter:
             s = g
             cs = cg
@@ -55,7 +56,7 @@ if __name__ == "__main__":
 
     x = conjgrad(matmult,d,x0,6)
     y2 = matmult[x]
-    print x[:]
-    print y2[:]
-    print d[:]
+    print(x[:])
+    print(y2[:])
+    print(d[:])
 

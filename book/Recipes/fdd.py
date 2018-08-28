@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import fdd,pot,pplot
 
@@ -165,7 +166,7 @@ def oneirNS_rot(inp,zdel,xdel,nu,m,n,custom,par):
     Flow('sinnu','nu','math output="sin(input*3.1415926/180)" ')
     nz=par['nzspk']
     nx=par['nxspk']
-    print nz,nx
+    print(nz,nx)
     for     jx in range(3):
         fx = (jx+1) * par['nx']/4 + 1
         for jz in range(3):
@@ -976,7 +977,7 @@ def SeperatorK3(kz,kx,ky,nu,alpha,index,index2,par):
     kh='kh'+index+'_nu'+index2
     kv='kv'+index+'_nu'+index2
 
-    print kp 
+    print(kp) 
 ## 
  #  P wave polarization
  ##

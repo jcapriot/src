@@ -1,3 +1,4 @@
+from __future__ import print_function
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
 import pplot,math
@@ -9,9 +10,9 @@ def myid(n): return '_'+reduce(add,['%d'%random.randint(0,9) for i in range(n)])
 
 # ------------------------------------------------------------
 def obsolete(old,new):
-    print "------------------------------------------------------------------"
-    print "the function",old,"is OBSOLETE; use",new
-    print "------------------------------------------------------------------"
+    print("------------------------------------------------------------------")
+    print("the function",old,"is OBSOLETE; use",new)
+    print("------------------------------------------------------------------")
 
 # ------------------------------------------------------------
 def Temp(o,i,r):

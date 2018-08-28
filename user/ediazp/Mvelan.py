@@ -15,6 +15,7 @@
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import print_function
 import rsf.api as rsf
 import matplotlib.pyplot as plt
 import numpy as np
@@ -254,7 +255,7 @@ gather = np.zeros((no,n1),'f')
 
 
 for i3 in range(n3):
-  print >> sys.stderr, 'CMP analysis %02d of %02d'%(i3+1,n3)
+  print('CMP analysis %02d of %02d'%(i3+1,n3), file=sys.stderr)
 
   Fsemb.read(panel)
   Fcmp.read(gather)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Generate geometry parameters for 2d/3d RTM'
+from __future__ import print_function
 
 ##   Copyright (C) 2016 University of Texas at Austin
 ##  
@@ -171,10 +172,10 @@ if __name__ == "__main__":
         npad   = int(sys.argv[14]) # computational domain padding
         noff   = int(sys.argv[15]) # near offset
         roll   = int(sys.argv[16]) # acquisition pattern: 0-> fixed-spread, 1-> towed-streamer to the negative
-        print "nz=",nz,", nx=",nx,", ny=",ny,", sou_z=",sou_z,", sou_ox=",sou_ox,", sou_oy=",sou_oy,", sou_jx=",sou_jx,", sou_jy=",sou_jy,", sou_nx=",sou_nx,", sou_ny=",sou_ny,", rec_z=",rec_z,", rec_nx=",rec_nx,", rec_ny=",rec_ny,", npad=",npad,", noff=",noff,", roll=",roll
+        print("nz=",nz,", nx=",nx,", ny=",ny,", sou_z=",sou_z,", sou_ox=",sou_ox,", sou_oy=",sou_oy,", sou_jx=",sou_jx,", sou_jy=",sou_jy,", sou_nx=",sou_nx,", sou_ny=",sou_ny,", rec_z=",rec_z,", rec_nx=",rec_nx,", rec_ny=",rec_ny,", npad=",npad,", noff=",noff,", roll=",roll)
     except:
-        print 'Usage:',sys.argv[0],'nz nx ny sou_z sou_ox sou_oy sou_jx sou_jy sou_nx sou_ny rec_z rec_nx rec_ny npad noff(if roll>0) roll'
-        print 'Output format:','mod_oz mod_ox mod_oy mod_nz mod_nx mod_ny sou_z sou_x sou_y rec_z rec_ox rec_oy rec_nx rec_ny'
+        print('Usage:',sys.argv[0],'nz nx ny sou_z sou_ox sou_oy sou_jx sou_jy sou_nx sou_ny rec_z rec_nx rec_ny npad noff(if roll>0) roll')
+        print('Output format:','mod_oz mod_ox mod_oy mod_nz mod_nx mod_ny sou_z sou_x sou_y rec_z rec_ox rec_oy rec_nx rec_ny')
         sys.exit("Execution failed.")
 
     # double check dimension

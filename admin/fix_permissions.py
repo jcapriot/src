@@ -5,6 +5,7 @@ Sets permissions properly for files that is known for sure to not be executable
 Call this program from the upper directory (RSFSRC) with no arguments, i.e.:
     ./admin/fix_permissions.py
 '''
+from __future__ import print_function
 # Copyright (C) 2009 Ioan Vlad
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,7 +26,7 @@ from rsf.user.ivlad import unix_success, unix_error
 import os, sys
 
 if not hasattr(os, 'walk'):
-    print 'Please get Python 2.3 or greater'
+    print('Please get Python 2.3 or greater')
     sys.exit(unix_error)
 
 ###############################################################################

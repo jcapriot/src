@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Convert LAS-2 well logs to RSF'
+from __future__ import print_function
 
 ##   Copyright (C) 2010 University of Texas at Austin
 ##  
@@ -55,7 +56,7 @@ Check the output using sfheaderattr < file.rsf segy=n
     '''
 
     if len(sys.argv) < 2:
-       print usage
+       print(usage)
        sys.exit(1)
     
     lasfile = sys.argv[1]

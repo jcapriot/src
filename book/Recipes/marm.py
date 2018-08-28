@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import fdmod,wefd,pcsutil,zomig,spmig,pplot,fdd,stiff
 
@@ -234,7 +235,7 @@ def AnalyInterp2d(suffix,uAz,uAx,cAref,nepdel,nnu,epsilon,delta,nu,par):
     for j in range(0,nnu):
         refnu="%01d"%j
         nux=nu[j]
-        print nux
+        print(nux)
         listP=[]
         listS=[]
         Flow('nu'+refnu,'','spike n1=1 mag=%f'%nux)
@@ -313,7 +314,7 @@ def interpSep2d(wtlst,uAz,uAx,cAref,n,par):
 
 
 def interpSep3d(wt,uAz,uAx,uAy,cAref,n,par,nuu,alpha):   
-    print wt
+    print(wt)
     for j in range(n):
 
          ref=wt+"-%02d"%j     

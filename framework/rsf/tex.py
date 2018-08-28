@@ -1,3 +1,4 @@
+from __future__ import print_function
 ##   Copyright (C) 2004 University of Texas at Austin
 ##  
 ##   This program is free software; you can redistribute it and/or modify
@@ -301,8 +302,8 @@ def latex2dvi(target=None,source=None,env=None):
     dvi = str(target[0])
     stem = suffix.sub('',dvi)   
     if not latex:
-        print '\n\tLaTeX is missing. ' \
-            'Please install a TeX package (teTeX or TeX Live)\n'
+        print('\n\tLaTeX is missing. ' \
+            'Please install a TeX package (teTeX or TeX Live)\n')
         return 1
     run = string.join([latex,tex],' ')
     # First latex run
@@ -313,7 +314,7 @@ def latex2dvi(target=None,source=None,env=None):
     for line in aux.readlines():
         if re.search("bibdata",line):
             if not bibtex:
-                print '\n\tBibTeX is missing.' 
+                print('\n\tBibTeX is missing.') 
                 return 1
             os.system(' '.join([bibtex,stem]))
             os.system(run)
@@ -328,7 +329,7 @@ def latex2dvi(target=None,source=None,env=None):
     idx = stem + '.idx'
     if os.path.isfile(idx):
         if not makeindex:
-            print '\n\tMakeIndex is missing.' 
+            print('\n\tMakeIndex is missing.') 
             return 1
         os.system(' '.join([makeindex,idx]))
         os.system(run)
@@ -659,11 +660,11 @@ def eps2png(target=None,source=None,env=None):
     command =  'PAPERSIZE=ledger %s %s -out %s' \
               + ' -type %s -interlaced -antialias -crop a %s'
     if not pstoimg:
-        print '\n\t"pstoimg" is missing. ' \
-            'Please install latex2html.\n'
+        print('\n\t"pstoimg" is missing. ' \
+            'Please install latex2html.\n')
         return 1
     command = command % (pstoimg,eps,png,itype,option)
-    print command
+    print(command)
     os.system(command)
     return 0
 
@@ -685,7 +686,7 @@ def eps2pdf(target=None,source=None,env=None):
     command = "LD_LIBRARY_PATH=%s %s %s --hires %s" % \
               (os.environ.get('LD_LIBRARY_PATH',''),gs_options,epstopdf,eps)
     
-    print command
+    print(command)
     os.system(command)
     return 0
 

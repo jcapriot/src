@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import math
  
 class InterpText:
@@ -107,7 +108,7 @@ for line in open('hdrfile.txt'):
         gx=long(round(r_gx))
         gy=long(round(r_gy))
 
-    print str(fldr)  \
+    print(str(fldr)  \
          + " " + str(ep)      \
          + " " + str(sx)      \
          + " " + str(sy)      \
@@ -116,6 +117,6 @@ for line in open('hdrfile.txt'):
          + " " + str(cdp)     \
          + " " + str(tracf)   \
          + " " + str(offset)  \
-         + " " + str(delrt) 
+         + " " + str(delrt)) 
 
  

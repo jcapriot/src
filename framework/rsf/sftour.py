@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import print_function
 import sys, string, os, signal, types
 
 def handler(signum, frame):
@@ -75,13 +76,13 @@ if __name__ == "__main__":
     # own user interface instead of that provided by RSF's Python API
     # because this script has users that do not have RSF
     if len(sys.argv) < 2:
-        print '''
+        print('''
         Usage: %s [-q] command
         visits lower-case subdirectories and executes command
         -q     quiet (suppress stdout)
 
         The '%%' character is replaced with the current directory
-        ''' % sys.argv[0]
+        ''' % sys.argv[0])
         sys.exit(0)
 
     ########

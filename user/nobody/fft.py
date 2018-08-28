@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import os,commands, re
 
 retime = re.compile('(\w+)\s([\d\.]+)m([\d\.]+)s')
@@ -16,7 +17,7 @@ for size in xrange(8813,50001):
         got = retime.match(time)
         if got and (got.group(1)=='user' or got.group(1)=='sys'):
             total += 60*float(got.group(2))+float(got.group(3))
-    print 'time[%d]=%g' % (size,total)
+    print('time[%d]=%g' % (size,total))
     out.write('%g\n' % total)
     os.system('sfrm %s %s' % (spike,fft))
 

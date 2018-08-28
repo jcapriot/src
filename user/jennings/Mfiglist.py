@@ -21,6 +21,7 @@ space   indicates files that are the same.
   -     indicates file in lockdir that is missing from figdir.
   +     indicates extra file in figdir that is missing from lockdir.
 number  is return code from sfvplotdiff indicating different files.'''
+from __future__ import print_function
 
 # Copyright (C) 2009 James W. Jennings Jr.
 #
@@ -143,12 +144,12 @@ def main(argv=sys.argv):
     options = ['none','diff','miss','all']
     if list is None:    list='all'
     if options.count(list) == 0:
-        print "Unknown list option: %s" % list
+        print("Unknown list option: %s" % list)
         return unix_error
 
     if show is None:    show='none'
     if options.count(show) == 0:
-        print "Unknown show option: %s" % show
+        print("Unknown show option: %s" % show)
         return unix_error
         
 ################    get environment variables
@@ -194,22 +195,22 @@ def main(argv=sys.argv):
     exist_lock  = os.path.exists(lockpath)
 
                                     # print fig directory path
-    print ""
+    print("")
     if exist_fig:
-        print "Fig directory:"
-        print figpath
+        print("Fig directory:")
+        print(figpath)
     else:
-        print "Fig directory does not exist:"
-        print figpath
+        print("Fig directory does not exist:")
+        print(figpath)
 
                                     # print lock directory path
-    print ""
+    print("")
     if exist_lock:
-        print "Lock directory:"
-        print lockpath
+        print("Lock directory:")
+        print(lockpath)
     else:
-        print "Lock directory does not exist:"
-        print lockpath
+        print("Lock directory does not exist:")
+        print(lockpath)
 
     if (not exist_fig) or (not exist_lock):
         if rsftest: rsftest_write(exist_fig,exist_lock,None,None,None,None,None)
@@ -251,7 +252,7 @@ def main(argv=sys.argv):
             extra = extra+1
 
                                     # find different files
-    print ""
+    print("")
     binpath = os.path.join(RSFROOT,'bin')
     command = os.path.join(binpath,sfprefix+'vplotdiff')
     for item in filelist:
@@ -262,7 +263,7 @@ def main(argv=sys.argv):
                                            '2>/dev/null']))
             if check != 0:
                 if copy:
-                    print "Copying %s from fig directory to lock directory." % item
+                    print("Copying %s from fig directory to lock directory." % item)
                     shutil.copy(figfile,lockfile)
                 else:
                     files[item] = '%2d' % (check//256)
@@ -292,17 +293,17 @@ def main(argv=sys.argv):
         if files[item] == ' +': lockfile = ''
         else:                   lockfile = os.path.join(lockpath,item)
 
-        if list_check: print " %s %s" % (files[item],item)
+        if list_check: print(" %s %s" % (files[item],item))
         if show_check: syswait(' '.join([command,figfile,lockfile]))
         if files[item] == '  ': same = same+1
 
-    print ""
-    print "Identical files:         %3d" % same
-    print "Different files:         %3d" % diff
-    print "Files missing from Fig:  %3d" % miss
-    print "Extra files in Fig:      %3d" % extra
-    print "Total vplot files:       %3d" % len(filelist)
-    print ""
+    print("")
+    print("Identical files:         %3d" % same)
+    print("Different files:         %3d" % diff)
+    print("Files missing from Fig:  %3d" % miss)
+    print("Extra files in Fig:      %3d" % extra)
+    print("Total vplot files:       %3d" % len(filelist))
+    print("")
 
                                         # write .rsftest file
     if rsftest: rsftest_write(exist_fig,exist_lock,miss,extra,diff,same,files)

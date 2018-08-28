@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 '''Finds RSF files with missing or incomplete binaries or headers.
 Delete them all with shell constructs like: rm -f `sfinvalid dir=.`'''
+from __future__ import print_function
 
 # Copyright (C) 2010 Ioan Vlad
 #
@@ -54,7 +55,7 @@ def main(par):
         myline = entry[0]
         if verb:
             myline += ': ' + entry[1]
-        print myline # This program's stdout is a list of files. Do not use msg
+        print(myline) # This program's stdout is a list of files. Do not use msg
 
     return ivlad.unix_success
 

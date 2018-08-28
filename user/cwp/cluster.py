@@ -36,6 +36,7 @@ Adapted for the Piz Daint cluster at CSCS, Switzerland
 author: Filippo Broggini, 5 JUL 2018, ETHZ
 
 '''
+from __future__ import print_function
 import rsf.proj, os, string, subprocess, sys
 import SCons
 import SCons.Script
@@ -236,7 +237,7 @@ def createPBSfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
 
     lines = []
     lines.append('#!/bin/bash')
-    print 'nodes: ',nodes
+    print('nodes: ',nodes)
     if nodetype:
 	    lines.append('#PBS -l nodes=%d:ppn=%d:%s' % (nodes,ppn,nodetype))
     else:
@@ -291,7 +292,7 @@ def createLSFfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
 
     lines = []
     lines.append('#!/bin/bash')
-    print 'nodes: ',nodes
+    print('nodes: ',nodes)
 #    if nodetype:
 #	    lines.append('#BSUB -l nodes=%d:ppn=%d:%s' % (nodes,ppn,nodetype))
 #    else:
@@ -508,7 +509,7 @@ def Cluster(name, email=None, cluster='mio', time=1,ppn=12,nodetype='psava',subm
 def Serial(time=None,ppn=None,tasks=None):
     global CURRENT_JOB, JOB_QUEUE, CLUSTER_CONFIGURED
     if not CLUSTER_CONFIGURED:
-        print "FATAL ERROR: You must initialize default parameters first, by calling the Cluster function"
+        print("FATAL ERROR: You must initialize default parameters first, by calling the Cluster function")
         sys.exit(155)
 
     if not time: time = DEFAULT_TIME
@@ -524,7 +525,7 @@ def Serial(time=None,ppn=None,tasks=None):
 def Fork(time=0,nodes=0,ipn=0,ppn=0):
     global CURRENT_JOB, JOB_QUEUE, CLUSTER_CONFIGURED
     if not CLUSTER_CONFIGURED:
-        print "FATAL ERROR: You must initialize default parameters first, by calling the Cluster function"
+        print("FATAL ERROR: You must initialize default parameters first, by calling the Cluster function")
         sys.exit(155)
     if not time or not nodes or not ipn:
         raise Exception('Must enter a value for nodes, time, and ipn')
@@ -537,7 +538,7 @@ def Iterate():
     try:
         CURRENT_JOB.flush()
     except:
-        print 'Could not find a valid Job type.  Did you forget to Fork?'
+        print('Could not find a valid Job type.  Did you forget to Fork?')
 
 def Join():
     global CURRENT_JOB
@@ -698,7 +699,7 @@ def End(**kw):
 
     if CSCONS and CLUSTER_CONFIGURED:
         if len(JOB_QUEUE) > 0:
-            print "Removing extra jobs..."
+            print("Removing extra jobs...")
             final_queue = []
             # We could possibly have jobs with no tasks
             # Remove these from the queue
@@ -706,14 +707,14 @@ def End(**kw):
                 if job.keep():
                     final_queue.append(job)
 
-            print "Found: %d jobs" % len(final_queue)
-            print 'Creating job directory...'
+            print("Found: %d jobs" % len(final_queue))
+            print('Creating job directory...')
             if not os.path.exists(pbs_dirt):
                 os.mkdir(pbs_dirt)
             else:
                 if os.path.isdir(pbs_dirt):
-                    print '......pbs directory already exists'
-                    print 'using this version'
+                    print('......pbs directory already exists')
+                    print('using this version')
                 else:
                     raise Exception('pbs directory exists, but is not suitable for script files?')
 
@@ -721,11 +722,11 @@ def End(**kw):
                 os.mkdir('Fig')
             else:
                 if os.path.isdir('Fig'):
-                    print '......Fig directory already exists'
+                    print('......Fig directory already exists')
                 else:
                     raise Exception('Fig directory exists but is not suitable for vpl files?')
 
-            print 'Preparing jobs...'
+            print('Preparing jobs...')
 
             global SCONSIGNS
 
@@ -735,7 +736,7 @@ def End(**kw):
                     job.name = JOB_NAME+'-l-%02d' % i
                 else:
                     job.name = JOB_NAME+'-s-%02d' % i
-                print 'Job %d/%d - %s - %s' % (i,n,str(job),job.name)
+                print('Job %d/%d - %s - %s' % (i,n,str(job),job.name))
                 if not job.relaunch:
                   job.prepare()
                   SCONSIGNS.extend(job.sconsign)
@@ -746,7 +747,7 @@ def End(**kw):
 
             SCONSIGNS = map(lambda x: pbs_dirt + '/' + x, SCONSIGNS)
 
-            print 'Making job files...'
+            print('Making job files...')
             i = 0
             for job in final_queue:
                 if i > 0:
@@ -759,7 +760,7 @@ def End(**kw):
                 job.make()
                 i += 1
 
-            print 'Submitting jobs...\n'
+            print('Submitting jobs...\n')
 
             pbs_names = []
 
@@ -782,12 +783,12 @@ def End(**kw):
                         command += '< %s/%s ' %(pbs_dirt, pbs)
                     else:
                         command += '%s/%s ' %(pbs_dirt, pbs)
-                    print 'Executing...',command
+                    print('Executing...',command)
                     process = subprocess.Popen(command,shell=True,stdout=subprocess.PIPE)
                     stdout,stderr  = process.communicate()
                     if len(stdout) < 3:
-                        print 'WARNING: submission was not successful?',stdout
-                    print 'Job submitted to: %s' % stdout
+                        print('WARNING: submission was not successful?',stdout)
+                    print('Job submitted to: %s' % stdout)
                     subjobs.append(stdout.strip('\n'))
 
                 pbs_names.append(subjobs)

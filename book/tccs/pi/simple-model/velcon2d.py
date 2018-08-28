@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 import math
 
@@ -39,7 +40,7 @@ def pi2d(epspi,erfi_input,fft,name,v_a,v_b,exp,opt,sym):
 
 	if exp == 1:
 
-		print exp
+		print(exp)
 
 		Flow(pi,pi_erfi_fft,
                 	  '''
@@ -53,7 +54,7 @@ def pi2d(epspi,erfi_input,fft,name,v_a,v_b,exp,opt,sym):
 
 	if exp != 1:
 
-		print exp
+		print(exp)
 
 		Flow(pi,pi_erfi_fft,
                 	  '''

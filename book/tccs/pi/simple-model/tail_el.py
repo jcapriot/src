@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rsf.proj import *
 
 def tail_el(path_int,happy,sad,
@@ -20,8 +21,8 @@ def tail_el(path_int,happy,sad,
         shifts_h.append(shift_h)
     Flow(shifts_h_cat,shifts_h,'cat ${SOURCES[1:%d]}' % len(shifts_h))
     #Result('shifts_h_nsh%d'%nsh,shifts_h_cat,'grey pclip=100 gainpanel=each title="shifts happy"')
-    print shifts_h
-    print shifts_h_cat
+    print(shifts_h)
+    print(shifts_h_cat)
 
     flt_h='flt_h_nsh%d'%nsh
     pre_h='pre_h_nsh%d'%nsh

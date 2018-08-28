@@ -3,6 +3,7 @@
 
 REQUIRES the PYTHON API, NUMPY AND SCIPY, MAyaVi2, VTK
 '''
+from __future__ import print_function
 # Import RSF API
 try:
     import rsf.api as rsf
@@ -11,7 +12,7 @@ try:
     from enthought.mayavi import mlab
 except Exception, e:
     import sys
-    print '\nERROR: NEED PYTHON API, NUMPY, SCIPY, MAYAVI\n', e
+    print('\nERROR: NEED PYTHON API, NUMPY, SCIPY, MAYAVI\n', e)
     sys.exit(1)
 
 class Header:

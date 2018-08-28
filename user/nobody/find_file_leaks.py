@@ -23,6 +23,7 @@ dirs_to_check at the beginning of this script) is not out of date.
 
 This script has grep as a dependency.
 '''
+from __future__ import print_function
 # Copyright (C) 2009 Ioan Vlad
 #
 # This program is free software; you can redistribute it and/or modify
@@ -43,13 +44,13 @@ from rsf.user.ivlad import unix_success, unix_error
 import os, sys
 
 if not hasattr(os, 'walk'):
-    print 'Please get Python 2.3 or greater'
+    print('Please get Python 2.3 or greater')
     sys.exit(unix_error)
 
 try:
     import subprocess
 except:
-    print 'Please get Python 2.4 or greater, or just the subprocess module'
+    print('Please get Python 2.4 or greater, or just the subprocess module')
     sys.exit(unix_error)
 
 ###############################################################################
@@ -70,10 +71,10 @@ def print_list(file_list, what_is_list):
     if file_list != []:
         msg = '\n-----------------------\nFound %d ' % len(file_list)
         msg += what_is_list + ':\n'
-        print msg
+        print(msg)
         file_list.sort()
         for file in file_list:
-            print file
+            print(file)
 
 ###############################################################################
 

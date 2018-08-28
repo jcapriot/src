@@ -1,3 +1,4 @@
+from __future__ import print_function
 ####### IWAVE/IWAVE++ numerical experiment SConstruct template ########
 #
 # Stores results (Flow targets) in working directory, from two 
@@ -131,8 +132,8 @@ def getFlowSignature(job, jobdict, envdict, workpath):
 
     # test for command definition
     if 'cmd' not in jobdict[job].keys():
-        print 'iwave.signature: job dictionary ' + job + ' does not include key = cmd,'
-        print 'so command cannot be determined'
+        print('iwave.signature: job dictionary ' + job + ' does not include key = cmd,')
+        print('so command cannot be determined')
         return
     
     # path to build directory
@@ -141,8 +142,8 @@ def getFlowSignature(job, jobdict, envdict, workpath):
     # create command to put abs pathnames in par file
     parcmd = getParamCommand(job,jobdict)
     if parcmd == None:
-        print 'iwave.signature: job dictionary ' + job + ' does not include key=dep'
-        print 'and/or key=tgt: cannot determine dependencies'
+        print('iwave.signature: job dictionary ' + job + ' does not include key=dep')
+        print('and/or key=tgt: cannot determine dependencies')
         return
     
     # batch execution
@@ -150,7 +151,7 @@ def getFlowSignature(job, jobdict, envdict, workpath):
         # detect batch system attributes
         bsys = getBatchAttributes(envdict[jobdict[job]['exe']['platf']]['batch'])
         if bsys == None:
-            print 'iwave.signature: failed to parse batch submission system'
+            print('iwave.signature: failed to parse batch submission system')
             return
         
         # create batch file names
@@ -306,8 +307,8 @@ def isMPI(job,jobdict):
             'ppn' in jobdict[job]['exe'].keys()):
             if (jobdict[job]['exe']['platf'] == 'mpi'):
                 if MPIROOT == None:
-                    print 'Note: MPIROOT not defined' 
-                    print '  -> command line MPI not available'
+                    print('Note: MPIROOT not defined') 
+                    print('  -> command line MPI not available')
                     return False
                 else:
                     return True    
@@ -361,8 +362,8 @@ def getBatchAttributes(batch):
             found = True
 
     if not found:
-        print 'Note: iwave.py supports only the following batch submission systems:'
-        print ' '.join(syslist)
+        print('Note: iwave.py supports only the following batch submission systems:')
+        print(' '.join(syslist))
         return
 
     bshl = ' '.join(exp) + ' bash'

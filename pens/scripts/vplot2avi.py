@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import print_function
 import os, sys, time
 import rsf.vplot2gif
 
@@ -32,13 +33,13 @@ if __name__ == "__main__":
     argc = len(sys.argv)
 
     if argc < 2:
-        print "No input"
+        print("No input")
         sys.exit(1)
 
     infile = sys.argv[1]
 
     if not os.path.isfile(infile):
-        print "\"%s\" is not a file" % infile
+        print("\"%s\" is not a file" % infile)
         sys.exit(1)
 
     if argc < 3:

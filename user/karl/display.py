@@ -1,3 +1,4 @@
+from __future__ import print_function
 from traits.api import HasTraits, Instance, Button, Enum, Int, Float
 from traitsui.api import View, Item, Group
 from chaco.api import HPlotContainer, Plot, ArrayPlotData, DataRange1D
@@ -16,34 +17,34 @@ class SeisData(HasTraits):
         
         self.model=m8r.Input(filename)
         self.vals = self.model[:,:,:]
-        print "vals.shape=",self.vals.shape
+        print("vals.shape=",self.vals.shape)
         for i in range(0,self.vals.shape[1]):
-            print "max(vals[:,%d,:])="%i,max(self.vals[:,i,:])
+            print("max(vals[:,%d,:])="%i,max(self.vals[:,i,:]))
 
         self.dim=len(self.vals.shape)
         self.axis_start=self.read_axis_float_info("o")
-        print "self.axis_start=",self.axis_start
+        print("self.axis_start=",self.axis_start)
         self.axis_delta=self.read_axis_float_info("d")
-        print "self.axis_delta=",self.axis_delta
+        print("self.axis_delta=",self.axis_delta)
 
         self.axis_end=[]
         for i in range(0,self.dim):
             self.axis_end.append(self.axis_start[i]+
                                  (self.vals.shape[i]-1)*self.axis_delta[i])
-        print "self.axis_end=",self.axis_end
+        print("self.axis_end=",self.axis_end)
         
-        print "compute min"
+        print("compute min")
         self.minval = nanmin(self.vals)
-        print "compute max"
+        print("compute max")
         self.maxval = nanmax(self.vals)
-        print "set model changed"
+        print("set model changed")
         self.model_changed = True
-        print "leaving m8rInput"
+        print("leaving m8rInput")
 
     def read_axis_float_info(self,letter):
         list_floats=[]
         for i in range(1,self.dim+1):
-            print "get parameter",letter+"%d"%i
+            print("get parameter",letter+"%d"%i)
             list_floats.append(self.model.float(letter+"%d"%i,1))
         list_floats.reverse()
         return tuple(list_floats)
@@ -67,13 +68,13 @@ class ContainerExample(HasTraits):
 
         filenames=[]
         for parameter in sys.argv[1:]:
-            print "processing parameter",parameter
+            print("processing parameter",parameter)
             if parameter.find("=")==-1 :
-                print "no = in parameter",parameter,"must be a file name"
+                print("no = in parameter",parameter,"must be a file name")
                 filenames.append(parameter)
         if len(filenames)<1:
-            print "just to help me test, if there are no files in the list, "
-            print "I will append the file foldplot1.rsf"
+            print("just to help me test, if there are no files in the list, ")
+            print("I will append the file foldplot1.rsf")
             filenames.append('foldplot1.rsf')
 
         self.seis_data_0=SeisData(filenames[0])
@@ -82,7 +83,7 @@ class ContainerExample(HasTraits):
         self.displayParameters=DisplayParameters()
 
         self.slice_y=self.displayParameters.slice_y
-        print "self.slice_y=",self.slice_y
+        print("self.slice_y=",self.slice_y)
         self.arrayPlotData=ArrayPlotData()
         self._update_images()
         bottomplot = Plot(self.arrayPlotData, padding=0, origin="top left")
@@ -92,8 +93,8 @@ class ContainerExample(HasTraits):
                                 colormap=self.cmap)[0]
         self.bottom = imgplot
 
-        print "x range=",self.seis_data_0.axis_start[0], self.seis_data_0.axis_end[0]
-        print "z range=",self.seis_data_0.axis_start[2], self.seis_data_0.axis_end[2]
+        print("x range=",self.seis_data_0.axis_start[0], self.seis_data_0.axis_end[0])
+        print("z range=",self.seis_data_0.axis_start[2], self.seis_data_0.axis_end[2])
         #print "colormap.shape=',colormap.shape)
         x = linspace(-14, 14, 100)
 
@@ -105,9 +106,9 @@ class ContainerExample(HasTraits):
         scatter.title="x**3"
         self.scatter=scatter
         #scatter.origin="top left"
-        print "make container"
+        print("make container")
         container = HPlotContainer(bottomplot)
-        print "container.add"
+        print("container.add")
         container.add(scatter)
         #container.spacing = 0
 
@@ -128,35 +129,35 @@ class ContainerExample(HasTraits):
     def _update_images(self):
         range = DataRange1D(low=self.seis_data_0.minval,
                             high=self.seis_data_0.maxval)
-        print "self.seis_data_0.min/max=",self.seis_data_0.minval,self.seis_data_0.maxval
+        print("self.seis_data_0.min/max=",self.seis_data_0.minval,self.seis_data_0.maxval)
         self.colormap = self.cmap(range)
 
-        print "self.slice_y=",self.slice_y
+        print("self.slice_y=",self.slice_y)
         slicexz=self.seis_data_0.vals[:, self.slice_y, :]
-        print "min/max slicexz=",min(slicexz),max(slicexz)
+        print("min/max slicexz=",min(slicexz),max(slicexz))
         colorslicexz=(self.colormap.map_screen(slicexz) * 255).astype(uint8)
         # Transposed required because img_plot() expects data in row-major order
 #        self.arrayPlotData.set_data("xz", transpose(colorslicexz,(1,0,2)))
         self.arrayPlotData.set_data("xz", colorslicexz)
-        print "colorslicexz.shape=",colorslicexz.shape
-        print "type(colorslicexz)=",type(colorslicexz)
-        print "type(colorslicexz[0,0,0])=",type(colorslicexz[0,0,0])
-        print "colorslicexz=",colorslicexz
-        print "min(colorslicexz[0,:,:,:]=",min(colorslicexz[:,:,0])
-        print "min(colorslicexz[1,:,:,:]=",min(colorslicexz[:,:,1])
-        print "min(colorslicexz[2,:,:,:]=",min(colorslicexz[:,:,2])
-        print "min(colorslicexz[3,:,:,:]=",min(colorslicexz[:,:,3])
+        print("colorslicexz.shape=",colorslicexz.shape)
+        print("type(colorslicexz)=",type(colorslicexz))
+        print("type(colorslicexz[0,0,0])=",type(colorslicexz[0,0,0]))
+        print("colorslicexz=",colorslicexz)
+        print("min(colorslicexz[0,:,:,:]=",min(colorslicexz[:,:,0]))
+        print("min(colorslicexz[1,:,:,:]=",min(colorslicexz[:,:,1]))
+        print("min(colorslicexz[2,:,:,:]=",min(colorslicexz[:,:,2]))
+        print("min(colorslicexz[3,:,:,:]=",min(colorslicexz[:,:,3]))
 
     def _marker_size_changed(self):
         self.scatter.marker_size = self.marker_size
     def _color_changed(self):
         self.scatter.marker_size = self.marker_size
     def _display_button_fired(self):
-        print "button pushed"
+        print("button pushed")
         self.displayParameters.edit_traits()
         
     def _next_fired(self):
-        print "next button pushed"
+        print("next button pushed")
 
 class DisplayParameters(HasTraits):
     gain = Float(10)
@@ -166,8 +167,8 @@ class DisplayParameters(HasTraits):
     
 class CustomTool(BaseTool):
     def normal_mouse_move(self, event):
-        print "type event=",type(event),"Screen point:", event.x, event.y
-        print "Data:", self.component.map_data((event.x, event.y))
+        print("type event=",type(event),"Screen point:", event.x, event.y)
+        print("Data:", self.component.map_data((event.x, event.y)))
         #print "current_pointer_position", event.current_pointer_position
         #print "scale_xy", event.scale_xy
         #print "event", event

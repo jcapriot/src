@@ -3,6 +3,7 @@
 
 REQUIRES NUMPY, SCIPY, and MAyaVi2
 '''
+from __future__ import print_function
 # Import RSF API
 try:
     import rsf.api as rsf
@@ -11,7 +12,7 @@ try:
     from mayavi import mlab
 except Exception, e:
     import sys
-    print '\nERROR: NEED NUMPY, SCIPY, and MAyaVi2\n', e
+    print('\nERROR: NEED NUMPY, SCIPY, and MAyaVi2\n', e)
     sys.exit(1)
 
 par = rsf.Par()

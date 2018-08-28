@@ -19,6 +19,7 @@ The program is run by:
 The hdrfile1.txt file is processed using a2b and sushw to load the headers in
 file line.su and output allshots.su 
 """
+from __future__ import print_function
  
 import math
  
@@ -165,7 +166,7 @@ for line in open(hdrfile):  # read each line in the hdrfile.txt file
 
     # Code paths for bad and good traces merge again here.
     # Print the header values to standard output.
-    print str(ep)              \
+    print(str(ep)              \
          + " " + str(sx)      \
          + " " + str(sy)      \
          + " " + str(gx)      \
@@ -177,7 +178,7 @@ for line in open(hdrfile):  # read each line in the hdrfile.txt file
          + " " + str(gelev)   \
          + " " + str(sstat)   \
          + " " + str(gstat)   \
-         + " " + str(tstat)
+         + " " + str(tstat))
 
 
  

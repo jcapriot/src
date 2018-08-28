@@ -2,6 +2,7 @@
 '''
 make a checkerboard
 '''
+from __future__ import print_function
 import rsf.api as rsf
 import numpy as np
 import sys
@@ -38,7 +39,7 @@ Fou.put("o3",oy)
 Fou.put("d3",dy)
 
 if(verb):
-    print >>sys.stderr,N,nx,ny,nz
+    print(N,nx,ny,nz, file=sys.stderr)
     
 # ------------------------------------------------------------
 ccc = np.zeros( (ny,nx,nz) ,'f')

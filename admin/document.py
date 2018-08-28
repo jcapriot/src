@@ -11,6 +11,7 @@ will produce something like
 etc..."
 Note: private projects are also included
 '''
+from __future__ import print_function
 
 from rsf.doc import progs
 import rsf.prog as rsfprog
@@ -28,8 +29,8 @@ programs = progs.keys()
 programs.sort(lambda x,y: nuses(y)-nuses(x))
 
 for prog in programs:
-    print '%s (%s) is used in %d projects' % (prog,progs[prog].file,nuses(prog))
+    print('%s (%s) is used in %d projects' % (prog,progs[prog].file,nuses(prog)))
     pars = progs[prog].pars
     for par in pars.keys():
         if not pars[par].desc.strip():
-            print '\t%s is not documented' % par 
+            print('\t%s is not documented' % par) 

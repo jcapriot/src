@@ -1,5 +1,6 @@
 #!/bin/env python
 # Make a list of unused subroutines in the current directory
+from __future__ import print_function
 import re, glob
 
 cfiles = glob.glob('*.c')
@@ -19,6 +20,6 @@ for cfile in cfiles:
 
 for cfile in cfiles:
     if 'M' != cfile[0] and 'T' != cfile[0] and not includes.get(cfile):
-        print cfile
+        print(cfile)
         
     

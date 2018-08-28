@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Conjugate-directions method'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -39,7 +40,7 @@ def conjdir(oper,dat,x0,niter):
         S.append(F)
         Sn.append(Fn)
 
-        print "iter %d: %g" % (iter+1,Fn)
+        print("iter %d: %g" % (iter+1,Fn))
  
         alpha = - R.dot(F)/Fn
         x = x+f*alpha
@@ -61,6 +62,6 @@ if __name__ == "__main__":
     # Using function above
     x = conjdir(matmult,y,x0,6)
     y2 = matmult[x]
-    print x[:]
-    print y2[:]
+    print(x[:])
+    print(y2[:])
 

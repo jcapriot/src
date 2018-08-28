@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import sys
 for line in sys.stdin.readlines():  
     tokens=line.split()
@@ -12,8 +13,8 @@ for line in sys.stdin.readlines():
         fldr += 200
 #    print "new =" + str(tracl) + " " + str(fldr) + " " + str(tracf)
         
-    print str(tracl)  \
+    print(str(tracl)  \
         + " " + str(fldr)      \
-        + " " + str(tracf) + " "
+        + " " + str(tracf) + " ")
 
  

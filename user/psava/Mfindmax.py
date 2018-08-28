@@ -2,6 +2,7 @@
 '''
 find max value in a file
 '''
+from __future__ import print_function
 import rsf.api as rsf
 import numpy as np
 import sys
@@ -37,7 +38,7 @@ dou[0]=mymax
 Fou.write(dou)
 
 if(verb):
-    print >>sys.stderr,'max=',mymax
+    print('max=',mymax, file=sys.stderr)
 
 # ------------------------------------------------------------
 Fin.close()

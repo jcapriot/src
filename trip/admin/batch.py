@@ -1,3 +1,4 @@
+from __future__ import print_function
 ####### IWAVE/IWAVE++ numerical experiment SConstruct template ########
 #
 # Stores results (Flow targets) in working directory, from two 
@@ -134,7 +135,7 @@ def getFlowSignature(workdir, jobdict, envdict):
         # detect batch system attributes
         bsys = getBatchAttributes(envdict[jobdict['exe']['platf']]['batch'])
         if bsys == None:
-            print 'iwave.signature: failed to parse batch submission system'
+            print('iwave.signature: failed to parse batch submission system')
             return
 
         # create batch file names
@@ -247,8 +248,8 @@ def isMPI(jobdict):
             'ppn' in jobdict['exe'].keys()):
             if (jobdict['exe']['platf'] == 'mpi'):
                 if MPIROOT == None:
-                    print 'Note: MPIROOT not defined' 
-                    print '  -> command line MPI not available'
+                    print('Note: MPIROOT not defined') 
+                    print('  -> command line MPI not available')
                     return False
                 else:
                     return True    
@@ -286,8 +287,8 @@ def getBatchAttributes(batch):
             found = True
 
     if not found:
-        print 'Note: iwave.py supports only the following batch submission systems:'
-        print ' '.join(syslist)
+        print('Note: iwave.py supports only the following batch submission systems:')
+        print(' '.join(syslist))
         return
 
     bshl = ' '.join(exp)

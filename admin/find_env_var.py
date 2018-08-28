@@ -5,6 +5,7 @@ Looks for "environ.get" in py progs (including SConstruct files),
 and "getenv" in c progs
 Run it from RSFSRC, i.e. admin/find_env_var.py
 '''
+from __future__ import print_function
 # Copyright (C) 2010 Ioan Vlad
 #
 # This program is free software; you can redistribute it and/or modify
@@ -31,7 +32,7 @@ if not hasattr(' ', 'partition'):
 try:
     import subprocess
 except:
-    print 'Please get Python 2.4 or greater, or just the subprocess module'
+    print('Please get Python 2.4 or greater, or just the subprocess module')
     sys.exit(unix_error)
 
 ###############################################################################
@@ -126,7 +127,7 @@ def main():
         env_var_list.sort()
         for v in env_var_list:
             if v not in known_vars:
-                print v
+                print(v)
 
     return ivlad.unix_success
 

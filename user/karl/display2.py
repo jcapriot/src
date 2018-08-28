@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 from traits.api import HasTraits, Instance, Button, Enum, Int, Float, Range
 from traitsui.api import View, Item, Group
 from chaco.api import HPlotContainer, Plot, ArrayPlotData, DataRange1D
@@ -21,20 +22,20 @@ class SeisData(HasTraits):
         self.model=m8r.Input(filename)
         self.vals = self.model[:,:,:]
 
-        print "input file shape=",self.vals.shape
+        print("input file shape=",self.vals.shape)
         self.dim=len(self.vals.shape)
         self.axis_start=self.read_axis_float_info("o")
-        print "self.axis_start=",self.axis_start
+        print("self.axis_start=",self.axis_start)
         self.axis_delta=self.read_axis_float_info("d")
-        print "self.axis_delta=",self.axis_delta
+        print("self.axis_delta=",self.axis_delta)
 
         self.axis_end=[]
         for i in range(0,self.dim):
             self.axis_end.append(self.axis_start[i]+
                                  (self.vals.shape[i]-1)*self.axis_delta[i])
-        print "self.axis_end=",self.axis_end
+        print("self.axis_end=",self.axis_end)
         
-        print "compute min/max"
+        print("compute min/max")
         
         max_n_samples=100
         inc=ones(self.dim,dtype=int)
@@ -51,12 +52,12 @@ class SeisData(HasTraits):
         #print "subsetvals.shape=",subsetvals.shape
         mymin=min(subsetvals)
         mymax=max(subsetvals)
-        print "min/max",mymin,mymax
+        print("min/max",mymin,mymax)
         self.maxval = max([abs(mymin),mymax])
         self.minval = -self.maxval
-        print "min=",self.minval,"max=",self.maxval
+        print("min=",self.minval,"max=",self.maxval)
 
-        print "leaving m8rInput"
+        print("leaving m8rInput")
 
     def read_axis_float_info(self,letter):
         list_floats=[]
@@ -95,13 +96,13 @@ class ContainerExample(HasTraits):
         # command line entries without = are assumed to be files
         filenames=[]
         for parameter in sys.argv[1:]:
-            print "processing parameter",parameter
+            print("processing parameter",parameter)
             if parameter.find("=")==-1 :
-                print "no = in parameter",parameter,"must be a file name"
+                print("no = in parameter",parameter,"must be a file name")
                 filenames.append(parameter)
         if len(filenames)<1:
-            print "just to help me test, if there are no files in the list, "
-            print "I will append the file foldplot1.rsf"
+            print("just to help me test, if there are no files in the list, ")
+            print("I will append the file foldplot1.rsf")
             filenames.append('foldplot1.rsf')
 
         # there should be a try while these files are opened to identify 
@@ -109,21 +110,21 @@ class ContainerExample(HasTraits):
 
         self.seis_data=[]
         for filename in filenames:
-            print "  "
-            print "+++++++++++++++++++++++++++++++++++++++++++"
-            print "+++++++++++++++++++++++++++++++++++++++++++"
-            print "open the file",filename
+            print("  ")
+            print("+++++++++++++++++++++++++++++++++++++++++++")
+            print("+++++++++++++++++++++++++++++++++++++++++++")
+            print("open the file",filename)
             self.seis_data.append(SeisData(filename))
 
         # kls files should be tested to make sure they are all same shape
-        print "number files=",len(filenames)
+        print("number files=",len(filenames))
         self.displayParameters=DisplayParameters()
         self.cmap = jet  # kls this should come from display parameters
 
         self.slice_y=self.displayParameters.slice_y # kls this should be pointer
 
 
-        print "self.slice_y=",self.slice_y
+        print("self.slice_y=",self.slice_y)
         self.arrayPlotDatas=[]
         for filename in filenames:
             self.arrayPlotDatas.append(ArrayPlotData())
@@ -172,7 +173,7 @@ class ContainerExample(HasTraits):
             rgain=1./self.displayParameters.gain
         else:
             rgain=1
-        print "rgain=",rgain
+        print("rgain=",rgain)
         range = DataRange1D(low=self.seis_data[number].minval*rgain,
                             high=self.seis_data[number].maxval*rgain)
         self.colormap = self.cmap(range)
@@ -195,38 +196,38 @@ class ContainerExample(HasTraits):
         self.scatter.marker_size = self.marker_size
 
     def _display_button_fired(self):
-        print "Display button pushed"
+        print("Display button pushed")
         self.displayParameters.edit_traits()
         self._update_images()
 
     def _prev_fired(self):
-        print "prev button pushed"
+        print("prev button pushed")
         slice_y = self.slice_y - self.displayParameters.slice_inc 
         if(slice_y < 0):
             slice_y =  self.seis_data[0].vals.shape[0]-1
-        print "after decrement slice_y=",slice_y
+        print("after decrement slice_y=",slice_y)
         self.slice_y=slice_y
         self._update_images()
 
     def _next_fired(self):
-        print "next button pushed"
+        print("next button pushed")
         slice_y = self.slice_y + self.displayParameters.slice_inc 
-        print "shape=",self.seis_data[0].vals.shape
+        print("shape=",self.seis_data[0].vals.shape)
         if(slice_y >= self.seis_data[0].vals.shape[0]):
             slice_y = 0
-        print "after increment slice_y=",slice_y
+        print("after increment slice_y=",slice_y)
         self.slice_y=slice_y
         self._update_images()
 
     def _unzoom_fired(self):
-        print "unzoom button pushed"
-        print "self.bottomplot.range2d=",self.bottomplot.range2d
-        print "xmin/xmax=", \
+        print("unzoom button pushed")
+        print("self.bottomplot.range2d=",self.bottomplot.range2d)
+        print("xmin/xmax=", \
             self.bottomplot.range2d.x_range.low, \
-            self.bottomplot.range2d.x_range.high
-        print "ymin/ymax=", \
+            self.bottomplot.range2d.x_range.high)
+        print("ymin/ymax=", \
             self.bottomplot.range2d.y_range.low, \
-            self.bottomplot.range2d.y_range.high
+            self.bottomplot.range2d.y_range.high)
 
         self.bottomplot.range2d.x_range.low=self.seis_data[0].axis_start[1]
         self.bottomplot.range2d.x_range.high=self.seis_data[0].axis_end[1]

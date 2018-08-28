@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Dot product test'
+from __future__ import print_function
 
 ##   Copyright (C) 2008 University of Texas at Austin
 ##  
@@ -25,8 +26,8 @@ def dottest(oper,mod,dat):
     'Dot product test'
     mod = random[mod]
     dat = random[dat]
-    print " L[m]*d=%g" % oper(adj=0)[mod].dot(dat)
-    print "L'[d]*m=%g" % oper(adj=1)[dat].dot(mod)
+    print(" L[m]*d=%g" % oper(adj=0)[mod].dot(dat))
+    print("L'[d]*m=%g" % oper(adj=1)[dat].dot(mod))
 
 if __name__ == "__main__":
     # Create random matrix

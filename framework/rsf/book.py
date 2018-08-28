@@ -1,3 +1,4 @@
+from __future__ import print_function
 ##   Copyright (C) 2004 University of Texas at Austin
 ##  
 ##   This program is free software; you can redistribute it and/or modify
@@ -104,7 +105,7 @@ def get_authors(source,default):
         tag = paper_tag(str(src))
         author = get_author(src,default,tag)
         if author:
-            print "%s: '%s'" % (tag[1],author)
+            print("%s: '%s'" % (tag[1],author))
             for person in re.split(r'\s*(?:[\,]|[\,]?\s*\band\b)\s*',author):
                 names = string.split(person)
                 if names:
@@ -121,15 +122,15 @@ def list_authors(all):
     lastone = all.pop()
     if len(all) == 0:
         author = lastone[1]
-        print "The author is " + author
+        print("The author is " + author)
     elif len(all) == 1:
         firstone = all.pop()
         author = '%s and %s' % (firstone[1],lastone[1])
-        print "The authors are " + author
+        print("The authors are " + author)
     else:                
         author = string.join(map(lambda k: k[1],all),', ')
         author = '%s, and %s' % (author,lastone[1])
-        print "The authors are " + author
+        print("The authors are " + author)
     return author
     
 
@@ -167,7 +168,7 @@ def report_toc(target=None,source=None,env=None):
             toc.write('\TOCentry[%s]{%s}{\pageref{%s.start}}\n' %
                       (author,title,tag[1]))
         else:
-            print "Could not find author or title"
+            print("Could not find author or title")
     toc.write('\n\\geosection*{\ }\n')
     year = get_year(env.get('year'))
     misc['pub.tex'] = '%s article published or in press, %s' % (group,year),
@@ -264,7 +265,7 @@ def thesis_intro(target=None,source=None,env=None):
             super = env.get('supervisor')
             if super:
                 if type(super) is types.ListType:
-                    print super
+                    print(super)
                     intro.write('\\supervisor[%s]{%s}\n' % (super[0],super[1]))
                 else:
                     intro.write('\\supervisor{%s}\n' % super)
@@ -296,11 +297,11 @@ def thesis_intro(target=None,source=None,env=None):
             intro.write(dedication.join(['\\begin{dedication}\n',
                                          '\n\\end{dedication}\n']))
         if os.path.isfile('ack.tex'):
-            print "Found ack.tex"
+            print("Found ack.tex")
             intro.write('\\input{ack}\n'.join(['\\begin{acknowledgments}\n',
                                                '\\end{acknowledgments}\n']))
         if os.path.isfile('abs.tex'):
-            print "Found abs.tex"
+            print("Found abs.tex")
             intro.write('\\utabstract\n\\indent\n\\input{abs}\n')
 
         intro.write('\\tableofcontents\n\\listoftables\n\\listoffigures\n')   
@@ -308,7 +309,7 @@ def thesis_intro(target=None,source=None,env=None):
         for pref in prefs:
             tex = pref+'.tex'
             if os.path.isfile(tex): # input if file exists
-                print "Found %s" % tex
+                print("Found %s" % tex)
                 intro.write('\\input{%s}\n' % pref)
         intro.write('\\afterpreface\n')
     intro.close()
@@ -335,9 +336,9 @@ def report_bio(target=None,source=None,env=None):
                 thisbio.close()
                 bio.write('}\n')
             else:
-                print 'No picture file for ' + name
+                print('No picture file for ' + name)
         else:
-            print 'No biography file for ' + name
+            print('No biography file for ' + name)
     bio.write('\\end{bios}\n')
     bio.close()
     return 0
@@ -345,7 +346,7 @@ def report_bio(target=None,source=None,env=None):
 def include(file,sep=''):
     tex = file+'.tex'
     if os.path.isfile(tex):
-        print "Found %s" % tex
+        print("Found %s" % tex)
         return '\\include{%s}\t%s\t\\newpage\n' % (file,sep)
     else:
         return ''
@@ -397,7 +398,7 @@ def report_all(target=None,source=None,env=None):
         all.write('\\cleardoublepage\n\\addcontentsline{toc}{chapter}{Bibliography}\n\\bibliographystyle{seg}\n\\bibliography{%s}\n'
                   % biblio)
     if os.path.isfile('vita.tex'):
-        print "Found vita.tex"
+        print("Found vita.tex")
         all.write('\\begin{vita}\n\\input{./vita}\n\\end{vita}\n')
     all.close()
     return 0
@@ -616,7 +617,7 @@ class RSFReport(Environment):
     # ------------------------------------------------------------
     def PartBook(self,chapters,**kw):
         self.collection = 1 # for now
-        print "BOOK"
+        print("BOOK")
 
         # make title page
         kw.update({'action':Action(book_tpg),'varlist':['author','title']})

@@ -9,6 +9,7 @@ mode [string]:
  'full': returns an M+N-1 array, boundary effects are visible.
  'same': returns a max(M,N) array, boundary effects are visible.
 '''
+from __future__ import print_function
 
 import rsf.api as rsf
 import numpy as np
@@ -40,7 +41,7 @@ db = Fb.float("d1")
 b = np.zeros(nb,'f')
 
 if not da == db:
-  print  >> sys.stderr, 'input files must have the same sampling interval'
+  print('input files must have the same sampling interval', file=sys.stderr)
   sys.exit(1)
 
 
@@ -59,8 +60,7 @@ try:
   Fc.put("n1",nc[mode])
   Fc.put("o1",oc[mode])
 except:
-  print >> sys.stderr, \
-      'mode %s'%mode+' is not recognized, valid modes are: "full" and "same"'
+  print('mode %s'%mode+' is not recognized, valid modes are: "full" and "same"', file=sys.stderr)
   sys.exit(1)
 
 # ------------------------------------------------------------

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'Lowrank prestack RTM as a linear operator'
+from __future__ import print_function
 
 ##   Copyright (C) 2010 University of Texas at Austin
 ##  
@@ -37,7 +38,7 @@ p = subprocess.Popen([cp],stdout=inpd,close_fds=True)
 p.wait()
 
 run = 'ibrun tacc_affinity %s input=%s output=%s %s' % (rtm,inpfile,outfile,' '.join(sys.argv[1:]))
-print run
+print(run)
 
 os.system(run)
 

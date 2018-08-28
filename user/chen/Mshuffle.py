@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 'shuffle the data'
+from __future__ import print_function
 
 ##   Copyright (C) 2012 Zhonghuan Chen, UT Austin, Tsinghua University
 ##  
@@ -22,7 +23,7 @@ try:
 	from numpy import *
 	import rsf.api as rsf
 except Exception, e:
-	print 'ERROR : need numpy'
+	print('ERROR : need numpy')
 	sys.exit(1)
 
 par=rsf.Par()

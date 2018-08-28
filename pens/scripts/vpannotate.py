@@ -16,6 +16,7 @@
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 # modified from vp_annotate by Martin Karrenbach
+from __future__ import print_function
 import os, sys, tempfile, signal
 from rsf.prog import RSFROOT
         
@@ -107,7 +108,7 @@ if __name__ == "__main__":
     ''' % prog
 
     if argc < 2:
-        print usage
+        print(usage)
         sys.exit(2)
 
     interactive = 1
@@ -136,7 +137,7 @@ if __name__ == "__main__":
         needfiles = 2
     
     if len(files) < needfiles:
-        print usage
+        print(usage)
         sys.exit(3)
 
     annotate(files,args,interactive,textfile)

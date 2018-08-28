@@ -1,3 +1,4 @@
+from __future__ import print_function
 ##   Copyright (C) 2004 University of Texas at Austin
 ##  
 ##   This program is free software; you can redistribute it and/or modify
@@ -25,7 +26,7 @@ bindir = os.path.join(topdir,'bin')
 try:
     suprogs = os.listdir(bindir)
 except:
-    print    
+    print()    
     sys.stderr.write("It looks like SU is not installed.\n")
     sys.stderr.write("exception from suprogs=listdir(bindir) (bindir=%s)\n"%
                      bindir)

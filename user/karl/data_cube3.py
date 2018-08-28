@@ -3,6 +3,7 @@ Allows isometric viewing of a 3D data cube.
 
 Click or click-drag in any data window to set the slice to view.
 """
+from __future__ import print_function
 
 # Outstanding TODOs:
 #  - need to add line inspectors to side and bottom plots, and synchronize
@@ -59,44 +60,44 @@ class Model(HasTraits):
         # get files names from command line
         filenames=[]
         for parameter in sys.argv[1:]:
-            print "processing parameter",parameter
+            print("processing parameter",parameter)
             if parameter.find("=")==-1 :
-                print "no = in parameter",parameter,"must be a file name"
+                print("no = in parameter",parameter,"must be a file name")
                 filenames.append(parameter)
         if len(filenames)<1:
-            print "just to help me test, if there are no files in the list, "
-            print "I will append the file foldplot1.rsf"
+            print("just to help me test, if there are no files in the list, ")
+            print("I will append the file foldplot1.rsf")
             filenames.append('foldplot1.rsf')
 
         model=m8r.Input(filenames[0])
         self.vals = model[:,:,:]
         # this makes seg fault in nanmin self.vals = model[:,:,::-1]
         npts_x, npts_y, npts_z = self.vals.shape
-        print "vals.shape=",self.vals.shape
+        print("vals.shape=",self.vals.shape)
 
         self.min_x=model.float("o3")
         self.min_y=model.float("o2")
         self.min_z=model.float("o1")
-        print "min x,y,z=",self.min_x,self.min_y,self.min_z
+        print("min x,y,z=",self.min_x,self.min_y,self.min_z)
         
         dx=model.float("d3")
         dy=model.float("d2")
         dz=model.float("d1")
-        print "dx,dy,dz=",dx,dy,dz
+        print("dx,dy,dz=",dx,dy,dz)
 
         self.max_x=self.min_x+dx*(npts_x-1)
         self.max_y=self.min_y+dy*(npts_y-1)
         self.max_z=self.min_z+dz*(npts_z-1)
 
-        print "compute linspace"
+        print("compute linspace")
 
-        print "compute min"
+        print("compute min")
         self.minval = nanmin(self.vals)
-        print "compute max"
+        print("compute max")
         self.maxval = nanmax(self.vals)
-        print "set model changed"
+        print("set model changed")
         self.model_changed = True
-        print "leaving m8rInput"
+        print("leaving m8rInput")
                 
 class ImageIndexTool(BaseTool):
     """ A tool to set the slice of a cube based on the user's mouse movements

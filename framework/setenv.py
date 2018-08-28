@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+from __future__ import print_function
 import os, sys, distutils.sysconfig
 
 ################################################################################
@@ -39,7 +40,7 @@ def get_local_site_pkgs(root=None, verb=False):
         local_site_pkgs = os.path.join(root,'lib')
 
     if verb:
-        print local_site_pkgs
+        print(local_site_pkgs)
         return 0 # UNIX success
     else:
         return local_site_pkgs

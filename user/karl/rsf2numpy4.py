@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import rsf.api as rsf
 import numpy as np
 import scipy as sp
@@ -11,10 +12,10 @@ import m8r
 # next challenge is to get input file names from command line
 # use Msfin.c as example
 
-print "program name",sys.argv[0]
-print "type sys.argv=",type(sys.argv)
+print("program name",sys.argv[0])
+print("type sys.argv=",type(sys.argv))
 if len(sys.argv)>1 :
-   print "parameters:",sys.argv[1:]
+   print("parameters:",sys.argv[1:])
 
 filenames=[]
 # i do not think I want to have option to input data on stdin
@@ -22,18 +23,18 @@ filenames=[]
 #    filenames.append("in")
 
 for parameter in sys.argv[1:]:
-    print "processing parameter",parameter
+    print("processing parameter",parameter)
     if parameter.find("=")==-1 :
-        print "no = in parameter"
+        print("no = in parameter")
         filenames.append(parameter)
 
 if len(filenames)<1:
-    print "just to help me test, if there are no files in the list, I will"
-    print "append the file:"
-    print "/home/karl/m8r/madagascar-1.3/user/karl/model.rsf"
+    print("just to help me test, if there are no files in the list, I will")
+    print("append the file:")
+    print("/home/karl/m8r/madagascar-1.3/user/karl/model.rsf")
     filenames.append('/home/karl/m8r/madagascar-1.3/user/karl/model.rsf')
 
-print "list of file names:",filenames
+print("list of file names:",filenames)
 
 fin={}
 for filename in filenames:
