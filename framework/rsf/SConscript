@@ -22,7 +22,7 @@ for sub in trip:
     env.InstallAs(os.path.join('.',py),
                   os.path.join('../..',sub,'main',py))
 
-env.Command('prog.py',map(lambda x: 'sf'+x+'.py',dirs),
+env.Command('prog.py',['sf'+x+'.py' for x in dirs],
             action=Action(rsf.doc.getprogs))
 env.Depends('prog.py',['vpplot.py','doc.py'])
 

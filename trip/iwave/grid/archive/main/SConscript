@@ -47,7 +47,7 @@ if len(srcs) > 0:
 if root:
     main = 'sf%s.py' % libname
     
-    docs = map(lambda prog: env.Doc(prog,prog),progs)
+    docs = [env.Doc(prog,prog) for prog in progs]
     env.Depends(docs,'#/framework/rsf/doc.py')
 
     doc = env.RSF_Docmerge(main,docs)
