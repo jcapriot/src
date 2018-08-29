@@ -29,6 +29,11 @@ try:
 except: # Python < 2.3
     have_datetime_module = False
 
+if sys.version_info[0] < 3:
+    import io
+    open = io.open
+encoding = 'utf-8'
+
 progs = {}
 data = {}
 
@@ -224,7 +229,7 @@ def html_section(title, fgcol, bgcol, contents, width=6,
 def bigsection(title, *args):
     """Format a section with a big heading."""
     title = '<big><strong>%s</strong></big>' % title
-    return html_section(*([title,]+args))
+    return html_section(title,*args)
 
 def multicolumn(list, format, cols=4):
     """Format a list of items into a multi-column list."""
@@ -461,7 +466,7 @@ class rsfprog(object):
     def mwiki(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.wiki'),'w')
+        file = open (os.path.join(dir,name + '.wiki'),'w', encoding=encoding)
         contents = '==%s==\n{| class="wikitable" ' % name
         contents += 'align="center" cellspacing="0" border="1"\n'
         desc = '! colspan="4" style="background:#ffdead;" | %s\n' % self.desc
@@ -483,7 +488,7 @@ class rsfprog(object):
     def man(self,dir,usedoc_max,rsfroot,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.1'),'w')
+        file = open (os.path.join(dir,name + '.1'),'w', encoding=encoding)
         contents = '.TH %s 1  ' % name
         if have_datetime_module:
             day = datetime.datetime.now()
@@ -533,7 +538,7 @@ class rsfprog(object):
     def latex(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.tex'),'w')
+        file = open (os.path.join(dir,name + '.tex'),'w', encoding=encoding)
         contents = '\\footnotesize\n'
         name = '\\subsection{%s: %s}\n' % (name,self.desc)
         contents = contents + name
@@ -557,7 +562,7 @@ class rsfprog(object):
         if not name:
             name = self.name
         if dir:
-            file = open (os.path.join(dir,name + '.txt'),'w')
+            file = open (os.path.join(dir,name + '.txt'),'w', encoding=encoding)
         contents = 'Program %s | %s\n' % (name,self.desc)
         if self.snps:
             contents = contents + '[SYNOPSIS]\n%s\n' % self.snps
@@ -581,7 +586,7 @@ class rsfprog(object):
     def spec(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.spec'),'w')
+        file = open (os.path.join(dir,name + '.spec'),'w', encoding=encoding)
         filedir = os.path.split(self.file)[0]
         doccmd = '%s | cat' % name
         contents = '''[%s]
@@ -623,7 +628,7 @@ DocCmd: %s
         file.write(contents)
         file.close()
     def html(self,dir,rep):
-        hfile = open (os.path.join(dir,self.name + '.html'),'w')
+        hfile = open (os.path.join(dir,self.name + '.html'),'w', encoding=encoding)
         name = '<big><big><strong>%s</strong></big></big>' % self.name
         if self.vers:
             name = name + " (%s)" % self.vers
@@ -695,7 +700,7 @@ def link(name):
 def html(dir,known_version):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,'index.html'),'w')
+    file = open (os.path.join(dir,'index.html'),'w', encoding=encoding)
     name = '<big><big><strong>Madagascar Programs</strong></big></big>'
     content = heading(name,'#ffffff','#7799ee')
 
@@ -738,7 +743,7 @@ def html(dir,known_version):
 def text(dir,name):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,name),'w')
+    file = open (os.path.join(dir,name),'w', encoding=encoding)
     file.write('Madagascar Programs\n')
     dirs = {}
     for prog in list(progs.keys()):
@@ -757,7 +762,7 @@ def text(dir,name):
 def spec(dir,name='extend.spec'):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,name),'w')
+    file = open (os.path.join(dir,name),'w', encoding=encoding)
     file.write('''
 # Madagascar Enumerations
 
@@ -1062,7 +1067,7 @@ def cli(rsfprefix = 'sf',rsfplotprefix='vp'):
     import rsf.prog
 
     this = sys.argv.pop(0)
-    class BadUsage: pass
+    class BadUsage(Exception): pass
 
     root = rsf.prog.RSFROOT
 
