@@ -15,12 +15,15 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os, stat, sys, copy, re,  urllib, ftplib
+import os, stat, sys, copy, re, ftplib
 import rsf.conf, rsf.path, rsf.flow, rsf.prog
 import SCons
 
-if sys.version_info[0] > 2:
+if sys.version_info[0]>2:
     basestring = str
+    from urllib.request import urlretrieve
+else:
+    from urllib import urlretrieve
 
 # The following adds all SCons SConscript API to the globals of this module.
 version = list(map(int,SCons.__version__.split('.')[:3]))
@@ -149,7 +152,7 @@ def retrieve(target=None,source=None,env=None):
                 remote = os.path.basename(file)
                 rdir =  '/'.join([server,folder,remote])
                 try:
-                    urllib.urlretrieve(rdir,file)
+                    urlretrieve(rdir,file)
 
                     if not os.stat(file)[6]:
                         print('Could not download file "%s" ' % file)

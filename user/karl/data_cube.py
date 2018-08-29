@@ -30,6 +30,11 @@ from enable.api import Window
 from traits.api import Any, Array, Bool, Callable, CFloat, CInt, \
         Event, Float, HasTraits, Int, Trait, on_trait_change
 
+if sys.version_info[0] > 2:
+    from urllib.request import urlopen
+else:
+    from urllib import urlopen
+
 # Will hold the path that the user chooses to download to. Will be an empty
 # string if the user decides to download to the current directory.
 dl_path = ''
@@ -336,7 +341,6 @@ def download_data():
         data_good = False
 
     if not data_good:
-        import urllib
         import tarfile
 
         if len(dl_path) > 0 and not os.path.exists(dl_path):
@@ -352,7 +356,7 @@ def download_data():
         try:
             # download and extract the file
             print("Downloading data, Please Wait (7.8MB)")
-            opener = urllib.urlopen('http://www-graphics.stanford.edu/data/voldata/MRbrain.tar.gz')
+            opener = urlopen('http://www-graphics.stanford.edu/data/voldata/MRbrain.tar.gz')
         except:
             print('Download error. Opening backup data.')
             run_cleanup = False
@@ -391,4 +395,3 @@ if __name__ == "__main__":
     demo_main(PlotFrame, size=(800,700), title="Cube analyzer")
     if run_cleanup:
         cleanup_data()
-

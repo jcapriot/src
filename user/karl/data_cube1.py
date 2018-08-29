@@ -32,6 +32,11 @@ from traits.api import Any, Array, Bool, Callable, CFloat, CInt, \
 
 import m8r
 
+if sys.version_info[0] > 2:
+    from urllib.request import urlopen
+else:
+    from urllib import urlopen
+
 # Will hold the path that the user chooses to download to. Will be an empty
 # string if the user decides to download to the current directory.
 dl_path = ''
@@ -101,7 +106,7 @@ class Model(HasTraits):
         self.min_y=model.float("o2")
         self.min_z=model.float("o3")
         print("min x,y,z=",self.min_x,self.min_y,self.min_z)
-        
+
         dx=model.float("d1")
         dy=model.float("d2")
         dz=model.float("d3")
@@ -118,7 +123,7 @@ class Model(HasTraits):
         self.minval = nanmin(self.vals)
         self.maxval = nanmax(self.vals)
         self.model_changed = True
-                
+
 class ImageIndexTool(BaseTool):
     """ A tool to set the slice of a cube based on the user's mouse movements
     or clicks.
@@ -341,7 +346,6 @@ def download_data():
         data_good = False
 
     if not data_good:
-        import urllib
         import tarfile
 
         if len(dl_path) > 0 and not os.path.exists(dl_path):
@@ -357,7 +361,7 @@ def download_data():
         try:
             # download and extract the file
             print("Downloading data, Please Wait (7.8MB)")
-            opener = urllib.urlopen('http://www-graphics.stanford.edu/data/voldata/MRbrain.tar.gz')
+            opener = urlopen('http://www-graphics.stanford.edu/data/voldata/MRbrain.tar.gz')
         except:
             print('Download error. Opening backup data.')
             run_cleanup = False
@@ -396,4 +400,3 @@ if __name__ == "__main__":
     demo_main(PlotFrame, size=(800,700), title="Cube analyzer")
     if run_cleanup:
         cleanup_data()
-
