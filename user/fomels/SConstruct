@@ -42,7 +42,7 @@ fftw = env.get('FFTW')
 if fftw:
     env.Prepend(CPPDEFINES=['SF_HAS_FFTW'])
 
-dynpre = env.get('DYNLIB','') 
+dynpre = env.get('DYNLIB','')
 
 libs = [dynpre+'rsf']+env.get('LIBS',[])
 dlibs = ['drsf']+env.get('LIBS',[])
@@ -145,7 +145,7 @@ if root: # no compilation, just rename
     for prog in pymains:
         binary = os.path.join(bindir,'sf'+prog+exe)
         env.InstallAs(binary,'M'+prog+'.py')
-        env.AddPostAction(binary,Chmod(str(binary),0755))
+        env.AddPostAction(binary,Chmod(str(binary),0o755))
     for mod in Split(pymods):
         env.Install(pkgdir,mod+'.py')
 
