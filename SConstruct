@@ -37,6 +37,7 @@ if not os.path.isfile('config.py'):
     conf.CheckAll()
     env = conf.Finish()
 
+cmp = lambda a, b: (a > b) - (a < b)
 Help(opts.GenerateHelpText(env,cmp))
 opts.Save('config.py',env)
 config = env.Command('config.py','framework/configure.py','')
@@ -84,14 +85,13 @@ env.Append(BUILDERS={'RSF_Include':bldutil.Header,
 # FRAMEWORK BUILD
 ##########################################################################
 
-system = filter(lambda x: x[0] != '.', os.listdir('system'))
+system = list([x for x in os.listdir('system') if x[0] != '.'])
 if os.path.isdir('user'):
-    user = filter(lambda x: x[0] != '.' and x != 'nobody', os.listdir('user'))
+    user = list([x for x in os.listdir('user') if x[0] != '.' and x != 'nobody'])
     # Avoid crashing when user places some files in RSFSRC/user
-    user = filter(lambda x: os.path.isdir(os.path.join('user',x)), user)
+    user = list([x for x in user if os.path.isdir(os.path.join('user',x))])
     # Avoid crashing when user places directories in RSFSRC/user
-    user = filter(lambda x: os.path.isfile(os.path.join('user',x,'SConstruct')), 
-        user)
+    user = list([x for x in user if os.path.isfile(os.path.join('user',x,'SConstruct'))])
 else:
     user = []
 
@@ -105,7 +105,7 @@ if os.path.isdir('trip'):
             dirs = (f.read().strip('\n')).split(':')
             f.close()
 
-            dirs = filter(lambda x: os.path.isdir(os.path.join(dir,x,'main')), dirs)
+            dirs = [x for x in dirs if os.path.isdir(os.path.join(dir,x,'main'))]
             trip.extend([os.path.join(dir,x) for x in dirs])
 
 dotproj = Glob('book/[a-z]*/[a-z]*/[a-z]*/.rsfproj')
@@ -129,7 +129,7 @@ for dir in [os.path.join('book',x) for x in Split('Recipes gallery')]:
         BuildDir(build,dir)
     SConscript(dirs=build,name='SConscript',exports='env srcdir pkgdir')
     Default(build)
-    
+
 ##########################################################################
 # API BUILD
 ##########################################################################
@@ -151,7 +151,7 @@ for dir in [os.path.join('api',x) for x in api]:
     api_exports = 'env root libdir incdir bindir'
     if dir == 'api/python':
         api_exports += ' pkgdir'
-        
+
     SConscript(dirs=build,name='SConstruct',exports=api_exports)
     Default(build)
 
@@ -281,8 +281,8 @@ if os.path.isdir('trip'):
 # INSTALLATION
 ##########################################################################
 
-docdir = os.path.join(shrdir, 'doc', 'madagascar') 	 
-for docfile in Split('AUTHORS COPYING NEWS'): 	 
+docdir = os.path.join(shrdir, 'doc', 'madagascar')
+for docfile in Split('AUTHORS COPYING NEWS'):
     env.Install(docdir,docfile+'.txt')
 env.Install(docdir,'README.md')
 
@@ -316,7 +316,7 @@ if 'install' in COMMAND_LINE_TARGETS:
 epydoc = WhereIs('epydoc')
 if epydoc:
     epydir = os.path.join(docdir,'epydoc')
-    envcmd = 'PYTHONPATH=%s %s' % (setenv.get_local_site_pkgs(root),epydoc)   
+    envcmd = 'PYTHONPATH=%s %s' % (setenv.get_local_site_pkgs(root),epydoc)
     epyargs = '--exclude rsf.use --exclude rsf.vplot --exclude rsf.sf* '
     epyargs += '--html -qqq --no-private --graph classtree rsf'
     env.Command(epydir, pkgdir, envcmd + ' -o $TARGET ' + epyargs)

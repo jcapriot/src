@@ -8,7 +8,7 @@ def filter(filt):
     return ('echo %s in=$TARGET n1=%d esize=0 data_format=ascii_float' %
             (' '.join(map(str,filt)),len(filt)))
 
-Flow('man0',None,filter(input))
+Flow('man0',None,list(filter(input)))
 Flow('man','man0','dd form=native')
 
 Flow('syn-0',None,
