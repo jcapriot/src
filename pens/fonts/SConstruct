@@ -25,7 +25,7 @@ for font in src:
     include = base+'.include'
     bin = base+'.bin'
        
-    aux = ' '.join(map(lambda x: '%s_%s' % (base,x),attr))
+    aux = ' '.join(['%s_%s' % (base,x) for x in attr])
 
     ldpath = ''
     for key in os.environ.keys():
