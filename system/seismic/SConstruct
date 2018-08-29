@@ -1,4 +1,4 @@
-import os, sys, re, string, types
+import os, sys, re,  types
 sys.path.append('../../framework')
 import bldutil
 
@@ -105,7 +105,7 @@ for prog in mains:
 
         if prog in alias.keys():
             for al in Split(alias[prog]):
-                other = string.replace(str(main[0]),prog,al)
+                other = str(main[0]).replace(prog,al)
                 env.InstallAs(os.path.join(bindir,other),main[0])
                 doc = os.path.splitext(other)[0]
                 docalias[doc] = 'sf'+prog

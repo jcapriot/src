@@ -1,4 +1,4 @@
-import os, sys, re, string, types
+import os, sys, re,  types
 sys.path.append('../../framework')
 import bldutil
 
@@ -68,7 +68,7 @@ for prog in mains:
              (WhereIs('install_name_tool'),libdir,install[0]))
 
         if prog in alias.keys():
-            other = string.replace(str(main[0]),prog,alias[prog])
+            other = str(main[0]).replace(prog,alias[prog])
             install = env.InstallAs(os.path.join(bindir,other),main[0])
 
             if dynlib and env['PLATFORM'] == 'darwin':
@@ -78,7 +78,7 @@ for prog in mains:
                 (WhereIs('install_name_tool'),libdir,install[0]))
 
             if env['PLATFORM'] == 'cygwin':
-                other = string.replace(other,'.exe','')
+                other = other.replace('.exe','')
             docalias[other] = 'sf'+prog
 
 for prog in Split('gaussshape2'):

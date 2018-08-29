@@ -169,7 +169,7 @@ def putcode():
 def getcode(s):
     global code
     options = s.group(1)
-    name = string.replace(s.group(2),'\\RSF',os.environ.get('RSFSRC'))
+    name = s.group(2).replace('\\RSF',os.environ.get('RSFSRC'))
     line = {'first':1,'last':9999}
     for mark in list(line.keys()):
         if options:

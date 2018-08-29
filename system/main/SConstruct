@@ -45,7 +45,7 @@ for prog in mains:
             
         if prog in alias.keys():
             for prog2 in Split(alias[prog]):
-                other = string.replace(str(main[0]),prog,prog2)
+                other = str(main[0]).replace(prog,prog2)
                 install = env.InstallAs(os.path.join(bindir,other),main[0])
 
                 if dynlib and env['PLATFORM'] == 'darwin':
@@ -55,7 +55,7 @@ for prog in mains:
                     (WhereIs('install_name_tool'),libdir,install[0]))
 
                 if env['PLATFORM'] == 'cygwin':
-                    other = string.replace(other,'.exe','')
+                    other = other.replace('.exe','')
                 docalias[other] = 'sf'+prog
 
 mpicc = env.get('MPICC')

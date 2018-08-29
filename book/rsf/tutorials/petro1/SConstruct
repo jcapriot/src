@@ -35,9 +35,9 @@ for case in ('brine-sand','oil-sand','shale'):
     hist = case+'-hist'
     Plot(hist,case,
          '''
-         window n1=1 f1=10 | histogram n1=51 o1=4200 d1=80 | dd type=float | 
+         window n1=1 f1=10 | histogram n1=51 o1=4200 d1=80 | dd type=float |
          graph plotcol=1 title="%s" label1=IP unit1="m/s*g/cc" label2=Occurence unit2=
-         ''' % ' '.join(map(string.capitalize,case.split('-'))))
+         ''' % ' '.join([x.capitalize() for x in case.split('-')]))
     hists.append(hist)
 
 Result('histogram',hists,'SideBySideIso')
@@ -51,14 +51,14 @@ for case in ('VSH','SW','PHI','IP','VPVS'):
     if case == 'SW':
         graph += ' plotcol=1 wantaxis=n wanttitle=n'
     if case == 'PHI':
-        graph += ' plotcol=5 wantaxis=n wanttitle=n' 
+        graph += ' plotcol=5 wantaxis=n wanttitle=n'
     if case == 'IP':
         graph += ' label2=Ip unit2="m/s*g/cc" '
     if case == 'VPVS':
         graph += ' label2=Vp/Vs unit2='
     Plot(case,['DEPTH',case],
          '''
-         cmplx ${SOURCES[1]} | window | 
+         cmplx ${SOURCES[1]} | window |
          graph transp=y yreverse=y label1=Depth unit1= wanttitle=n plotcol=7 labelsz=12
          ''' + graph)
 
@@ -84,7 +84,7 @@ Flow('lfc.csv','lfc.asc','disfil col=3 format="%g," number=n | sed s/,$//')
 
 Plot('LFC','LFC lfc.csv',
      '''
-     grey color=${SOURCES[1]} pclip=100 allpos=y bias=1 
+     grey color=${SOURCES[1]} pclip=100 allpos=y bias=1
      wantaxis=n title=LFC wherexlabel=b titlesz=15
      ''')
 
@@ -95,7 +95,7 @@ Flow('lfc-depth','LFC','byte pclip=100 allpos=y bias=1')
 Result('crossplot','IP VPVS lfc-depth lfc.csv',
        '''
        cmplx ${SOURCES[1]} | window |
-       graph symbol=* depth=${SOURCES[2]} color=${SOURCES[3]} grid=y 
+       graph symbol=* depth=${SOURCES[2]} color=${SOURCES[3]} grid=y
        label1=Ip unit1="m/s*g/cc" label2=Vp/Vs unit2= wanttitle=n screenratio=1
        ''')
 

@@ -161,7 +161,7 @@ def latexscan(node,env,path):
             check = isplot.search(line)
             if check:
                  plot = check.group(1)
-                 plot = string.replace(plot,'\_','_')
+                 plot = plot.replace('\_','_')
                  plots.append(os.path.join(resdir2,plot + ressuffix))
                  if re.search('angle=90',line):
                       plotoption[plot+pssuffix] = '-flip r90'
@@ -169,7 +169,7 @@ def latexscan(node,env,path):
             check = ismplot.search(line)
             if check:
                  mplot = check.group(1)
-                 mplot = string.replace(mplot,'\_','_')
+                 mplot = mplot.replace('\_','_')
                  for plot in mplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
                      if re.search('angle=90',line):
@@ -178,7 +178,7 @@ def latexscan(node,env,path):
             check = issmplot.search(line)
             if check:
                  smplot = check.group(1)
-                 smplot = string.replace(smplot,'\_','_')
+                 smplot = smplot.replace('\_','_')
                  for plot in smplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
                      if re.search('angle=90',line):
@@ -517,7 +517,7 @@ def colorize(target=None,source=None,env=None):
      html = str(target[0])
 
      src = open(py,'r').read()
-     raw = string.strip(string.expandtabs(src))
+     raw = src.expandtabs().strip()
 
      out = open(html,'w')
      out.write('''
@@ -564,7 +564,7 @@ def colorize(target=None,source=None,env=None):
      lines = [0, 0]
      _pos = 0
      while 1:
-          _pos = string.find(raw, '\n', _pos) + 1
+          _pos = raw.find('\n', _pos) + 1
           if not _pos: break
           lines.append(_pos)
      lines.append(len(raw))
@@ -703,7 +703,7 @@ def dummy(target=None,source=None,env=None):
      for src in source:
          fig = str(src)
          plt = os.path.splitext(os.path.basename(fig))[0]
-         plt2 = string.replace(plt,'_','\_')
+         plt2 = plt.replace('_','\_')
          fdir = os.path.split(os.path.split(fig)[0])[0]
          if fdir != dirold:
              tex.write('\n\\section{%s}\n' % fdir)

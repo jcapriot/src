@@ -23,7 +23,7 @@ local copy is not present.'''
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from urllib import urlopen
-import os, copy, string, sys
+import os, copy,  sys
 
 try: # Give precedence to local version
     import ivlad
@@ -262,7 +262,7 @@ def download_pages(hcp, pagelist, wiki_img_repl_dict):
             local_basename = page
         if '/' in local_basename:
             # Temporary fix -- this will break some links...
-            local_basename = string.replace(local_basename, '/', '')
+            local_basename = local_basename.replace('/', '')
         page_html = os.path.join(hcp['wiki_local'], local_basename+hcp['ext'])
         page_handle = urlopen(page_url)
         s = page_handle.read()

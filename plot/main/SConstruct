@@ -42,7 +42,7 @@ for prog in mains:
          
          if prog in alias.keys():
              for al in Split(alias[prog]):
-                 copy = string.replace(str(main[0]),prog,al)
+                 copy = str(main[0]).replace(prog,al)
                  env.InstallAs(os.path.join(bindir,copy),main[0])
                  doc = os.path.splitext(copy)[0]
                  docalias[doc] = 'sf'+prog

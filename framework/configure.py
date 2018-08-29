@@ -284,8 +284,7 @@ def cc(context):
                                               '/sw/lib')
     # Solaris
     elif plat['OS'] == 'sunos':
-        context.env['CFLAGS'] = string.replace(context.env.get('CFLAGS',''),
-                                               '-O2','-xO2')
+        context.env['CFLAGS'] = scontext.env.get('CFLAGS','').replace('-O2','-xO2')
 
 pkg['ar']={'fedora':'binutils'}
 
@@ -1867,7 +1866,7 @@ def sse(context):
 
 def api_options(context):
     context.Message("checking API options ... ")
-    api = map(string.lower,path_get(context,'API'))
+    api = [x.lower() for x in path_get(context,'API')]
 
     valid_api_options = ['','c++', 'fortran', 'f77', 'fortran-90',
                          'f90', 'python', 'matlab', 'octave', 'java']
@@ -2267,14 +2266,14 @@ def gcc(context):
     libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
     libs = filter (lambda x: re.search('gcc',x) and os.path.isdir(x),
                    libdirs)
-    context.env.Append(ENV={'LD_LIBRARY_PATH':string.join(libs,':')})
+    context.env.Append(ENV={'LD_LIBRARY_PATH':':'.join(libs)})
 
 def intel(context):
     '''Trying to fix weird intel setup.'''
     libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
     libs = filter (lambda x: re.search('intel',x) and os.path.isdir(x),
                    libdirs)
-    context.env.Append(ENV={'LD_LIBRARY_PATH':string.join(libs,':')})
+    context.env.Append(ENV={'LD_LIBRARY_PATH':':'.join(libs)})
     for key in ('INTEL_FLEXLM_LICENSE','INTEL_LICENSE_FILE','IA32ROOT'):
         license = os.environ.get(key)
         if license:

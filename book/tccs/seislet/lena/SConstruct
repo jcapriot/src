@@ -57,7 +57,7 @@ Result('slena',grey('Seismic Lena',0))
 nsp = 100
 k2 = ','.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)))
 k1 = ','.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)))
-    
+
 Flow('imps',None,
      '''
      spike nsp=%d k1=%s k2=%s n1=512 n2=512 |
@@ -69,9 +69,9 @@ Result('imps',grey('Wavelets',0))
 k1 = ','.join(map(lambda x: str(x+1), xrange(512)))
 
 Flow('spikes',None,
-     'math n1=128 n2=128 output="abs(x1-x2)" | mask max=0.5 | dd type=float') 
+     'math n1=128 n2=128 output="abs(x1-x2)" | mask max=0.5 | dd type=float')
 for type in ('haar','linear'):
-    Type = string.capitalize(type)
+    Type = type.capitalize()
     imps = 'i'+type
     Flow(imps,'spikes','dwt type=%s inv=y adj=y' % type)
     Result(imps,
@@ -128,7 +128,7 @@ for c in (1,5):
          seislet dip=${SOURCES[1]} inv=y unit=y | transp
          ''' % c)
     Result(rec,grey('Inverse Seislet Transform (%d%%)' % c,0))
-    
+
     wrec = 'wrec%d' % c
     Flow(wrec,'linear2',
          '''
@@ -137,7 +137,7 @@ for c in (1,5):
          dwt adj=y inv=y unit=y | transp
          ''' % c)
     Result(wrec,grey('Inverse Wavelet Transform (%d%%)' % c))
-    
+
     srec = 'wsrec%d' % c
     Flow(srec,'slena',
          'dwt | threshold pclip=%d | dwt adj=y inv=y' % c)
