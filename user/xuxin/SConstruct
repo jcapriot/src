@@ -3,7 +3,7 @@ sys.path.append('../../framework')
 import bldutil
 
 progs = '''
-integral1 swapbyte 
+integral1 swapbyte
 '''
 
 mpi_progs = '''
@@ -42,7 +42,7 @@ if lapack:
 elif root:
     place += ' pseudodepth'
     for prog in Split('pseudodepth'):
-        prog = env.RSF_Place('sf'+prog,None,var='LAPACK',package='lapack')     
+        prog = env.RSF_Place('sf'+prog,None,var='LAPACK',package='lapack')
         env.Install(bindir,prog)
 
 fftw = env.get('FFTW')
@@ -69,13 +69,13 @@ if mpicc and fftw:
         sources = ['M' + prog]
         bldutil.depends(env,sources,'M'+prog)
         env.StaticObject('M'+prog+'.c',CC=mpicc)
-    	prog = env.Program(prog,[x + '.o' for x in sources],CC=mpicc)
+        prog = env.Program(prog,[x + '.o' for x in sources],CC=mpicc)
         if root:
             env.Install(bindir,prog)
 else:
     place += mpi_progs
     for prog in mpi_mains:
-	prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
+        prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
         if root:
             env.Install(bindir,prog)
 
@@ -86,8 +86,8 @@ else:
 if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
-    
+
     docs = [env.Doc(prog,'M' + prog) for prog in mains+mpi_mains+Split(place)]
-    env.Depends(docs,'#/framework/rsf/doc.py')	
+    env.Depends(docs,'#/framework/rsf/doc.py')
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)

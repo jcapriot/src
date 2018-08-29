@@ -9,7 +9,7 @@ Testsolver1 trapepass lagrange heatexplitest heatimplitest hyperdif
 zerotrace hilbert cdivdir cabs cemd1 cemd2 snr2 snr3 snrcyk preerror
 threshold1 tsmf fxdecon simidenoise bin2rsf rsf2bin halfthr hradon
 suplane simidenoise1 rmtrace prekirch psmig pocssemb afd2d
-prekirchsr simpostkirch presr nlm1 nlm2 dblendseis svmf genshotscyk 
+prekirchsr simpostkirch presr nlm1 nlm2 dblendseis svmf genshotscyk
 afd2domp low addtrace matlr pnmomf expd
 '''
 ccprogs = 'diffcxx'
@@ -42,7 +42,7 @@ except: # local version
     root = None
     SConscript('../pwd/SConstruct')
 src = Glob('[a-z]*.c')
-dynpre = env.get('DYNLIB','') 
+dynpre = env.get('DYNLIB','')
 
 libs = [dynpre+'rsf']+env.get('LIBS',[])
 dlibs = ['drsf']+env.get('LIBS',[])
@@ -98,7 +98,7 @@ for prog in ccmains:
                            LIBS=[dynpre+'rsf++']+libs)
         if root:
             install = env.Install(bindir,prog)
-            
+
             if dynpre and env['PLATFORM'] == 'darwin':
                 env.AddPostAction(install,
                                   '%s -change build/api/c/libdrsf.dylib '
@@ -122,20 +122,20 @@ mpimains = Split(mpiprogs)
 
 mpilib = os.environ.get("MPILIB")
 mpicpp = os.environ.get("MPICPP")
- 
+
 for prog in mpimains:
     sources = ['M' + prog]
     bldutil.depends(env,sources,'M'+prog)
-    if lapack:	
-    	if mpicc and mpilib:
+    if lapack:
+        if mpicc and mpilib:
            env.Prepend(CPPPATH=[mpicpp],
                     LIBPATH=[mpilib],
                     LIBS='')
            prog = env.Program(prog,
                            [x + '.c' for x in sources],
                            CC=mpicc,LIBS=[libs,'X11'])
-    	else:
-	   prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
+        else:
+            prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
         if root:
            env.Install(bindir,prog)
 
@@ -167,7 +167,7 @@ for prog in cuda_mains:
                              ''')
     if root:
         env.Install(bindir,prog)
-        
+
 ######################################################################
 # Compiling testing programs
 ######################################################################
@@ -175,35 +175,35 @@ for prog in cuda_mains:
 tmains = Split(tprogs)
 for prog in tmains:
     if lapack:
-    	sources = ['Test' + prog]
-    	if prog=='clapack':
+        sources = ['Test' + prog]
+        if prog=='clapack':
            sources.append('solver')
-    	bldutil.depends(env,sources,'Test'+prog)
-    	sources = [x + '.o' for x in sources]
-    	env.Object('Test' + prog + '.c')
-    	prog=env.Program(sources,PROGPREFIX='',PROGSUFFIX='.x',LIBS=libs)
+        bldutil.depends(env,sources,'Test'+prog)
+        sources = [x + '.o' for x in sources]
+        env.Object('Test' + prog + '.c')
+        prog=env.Program(sources,PROGPREFIX='',PROGSUFFIX='.x',LIBS=libs)
 
 ######################################################################
 # PYTHON METAPROGRAMS (python API not needed)
 ######################################################################
 
 if root: # no compilation, just rename
-	pymains = Split(pyprogs)
-	exe = env.get('PROGSUFFIX','')
-	for prog in pymains:
-		env.InstallAs(os.path.join(bindir,'sf'+prog+exe),'M'+prog+'.py')
-	bldutil.install_py_modules(env,Split(pymods),pkgdir)
+    pymains = Split(pyprogs)
+    exe = env.get('PROGSUFFIX','')
+    for prog in pymains:
+        env.InstallAs(os.path.join(bindir,'sf'+prog+exe),'M'+prog+'.py')
+    bldutil.install_py_modules(env,Split(pymods),pkgdir)
 
 ######################################################################
 # SELF-DOCUMENTATION
 ######################################################################
 if root:
-	user = os.path.basename(os.getcwd())
-	main = 'sf%s.py' % user
-	
-	docs += [env.Doc(prog,'M' + prog) for prog in mains]  + \
+    user = os.path.basename(os.getcwd())
+    main = 'sf%s.py' % user
+
+    docs += [env.Doc(prog,'M' + prog) for prog in mains]  + \
            [env.Doc(prog,'M%s.cc' % prog,lang='c++') for prog in ccmains] + \
-		[env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains]
-	env.Depends(docs,'#/framework/rsf/doc.py')	
-	doc = env.RSF_Docmerge(main,docs)
-	env.Install(pkgdir,doc)
+        [env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains]
+    env.Depends(docs,'#/framework/rsf/doc.py')
+    doc = env.RSF_Docmerge(main,docs)
+    env.Install(pkgdir,doc)

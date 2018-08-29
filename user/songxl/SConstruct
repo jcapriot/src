@@ -4,20 +4,20 @@ sys.path.append('../../framework')
 import bldutil
 
 progs = '''
-wave1 wave4 wave124 sbd waveab wave2dss 
-wavefft1 pspig ffd1 
+wave1 wave4 wave124 sbd waveab wave2dss
+wavefft1 pspig ffd1
                                  fdb1 fd2bs
                                  pspifcos2bs
-                                 ffdcos2b 
+                                 ffdcos2b
                                  ffdantti4b_smsr ffd2_ps
 laplace laplace2
-ffd2dehf sp 
-ofd1 fd1 ofd1_5 fd1_5 ofd2_5 ofd2_7 ofd2_13 ofd2_10 fd2_10 
+ffd2dehf sp
+ofd1 fd1 ofd1_5 fd1_5 ofd2_5 ofd2_7 ofd2_13 ofd2_10 fd2_10
 ofd2_25 lfd2_25b
 lffd1_10 lffd2_an_25
 nxtfftn orthowave
 ffd2_den_omp
-ffd0 
+ffd0
 lffd2an25
 phasescan
 orp
@@ -70,9 +70,9 @@ for prog in mpi_mains:
     sources = ['M' + prog]
     bldutil.depends(env,sources,'M'+prog)
     if mpicc:
-    	prog = env.Program(prog,[x + '.c' for x in sources],CC=mpicc)
+        prog = env.Program(prog,[x + '.c' for x in sources],CC=mpicc)
     else:
-	prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
+        prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
     if root:
         env.Install(bindir,prog)
 
@@ -102,10 +102,9 @@ for prog in ccmains:
 if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
-    
+
     docs = [env.Doc(prog,'M' + prog) for prog in mains+mpi_mains] + \
            [env.Doc(prog,'M%s.cc' % prog,lang='c++') for prog in ccmains]
-    env.Depends(docs,'#/framework/rsf/doc.py')	
+    env.Depends(docs,'#/framework/rsf/doc.py')
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)
-

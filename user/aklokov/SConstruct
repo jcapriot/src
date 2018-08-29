@@ -4,9 +4,9 @@ import bldutil
 
 progs = '''
 ditime2d ditime3d
-crssemb crssemb3d 
+crssemb crssemb3d
 diptaper dvscan2d
-pick2d gammapick2d 
+pick2d gammapick2d
 pdrscan2d pdr2d
 dagap sumamp
 taperedge heal
@@ -25,7 +25,7 @@ tmigratorBase tmigrator2D tmigrator3D vsptmigrator2D
 dmigratorBase dmigrator2D
 curveDefinerBase curveDefinerDipOffset curveDefinerDipOffset3D
 iTracer2D
-depthBackfitMigrator2D 
+depthBackfitMigrator2D
 '''
 
 try:  # distributed version
@@ -55,7 +55,7 @@ mains = Split(progs)
 for prog in mains:
     sources = ['M' + prog]
     bldutil.depends (env, sources, 'M'+prog)
-    prog = env.Program (prog, map (lambda x: x + '.c',sources))
+    prog = env.Program (prog, [x + '.c' for x in sources])
     if root:
         env.Install (bindir, prog)
 
@@ -79,9 +79,9 @@ for prog in ccmains:
 if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
-    
+
     docs = [env.Doc(prog,'M' + prog) for prog in mains] + \
            [env.Doc(prog,'M%s.cc' % prog, lang='c') for prog in ccmains]
-    env.Depends(docs,'#/framework/rsf/doc.py')	
+    env.Depends(docs,'#/framework/rsf/doc.py')
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)

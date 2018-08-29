@@ -511,8 +511,8 @@ class Project(Environment):
 
         if suffix == sfsuffix:
             binaries = list(map(lambda x, self=self: self.path + x + '@',
-                           filter(lambda x, suffix=suffix:
-                                      x[-len(suffix):] == suffix,targets)))
+                           list(filter(lambda x, suffix=suffix:
+                                      x[-len(suffix):] == suffix,targets))))
             if binaries:
                 Clean(flow,binaries)
 

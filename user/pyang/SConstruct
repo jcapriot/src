@@ -6,7 +6,7 @@ import bldutil
 ######################################################################
 # 1. C main programs
 progs = '''
-cohn checkptdemo fwi2d fbrec2d istseislet lsrtm2d lsprtm2d 
+cohn checkptdemo fwi2d fbrec2d istseislet lsrtm2d lsprtm2d
 mythresh mshots mcaseislet modeling2d mysnr
 pocsseislet rtm2d rtmadcig rtmodcig rtmva2d
 Testfd2d Testfd3d Testeb Testelastic2d Testaniso Testspml
@@ -14,7 +14,7 @@ viscoa2d viscoe2d excitationic
 '''
 # lsprtm2d
 progs_fftw='''
-dlct fpocs2d fpocs3d istinterp lsinterp2d istpad 
+dlct fpocs2d fpocs3d istinterp lsinterp2d istpad
 pocs3d pocs ps2d mwni2d  myradon2
 '''
 #
@@ -33,7 +33,7 @@ mpifwi
 ######################################################################
 # 4. CUDA main programs
 cuda_progs = '''
-fbrec gpurtm gpufwi genshots gpufd3d gpufbrec3d 
+fbrec gpurtm gpufwi genshots gpufd3d gpufbrec3d
 '''
 
 ######################################################################
@@ -44,7 +44,7 @@ mpigpufwi
 
 ######################################################################
 # 6. Fortran 90 main programs
-f90_progs = ''' 
+f90_progs = '''
 '''
 #demofftw3
 
@@ -77,7 +77,7 @@ env.Prepend(CPPPATH=['../../include'],
                   env.get('DYNLIB','')+'rsf'])
 
 # fftw settings
-fftw = env.get('DFFTW') 		
+fftw = env.get('DFFTW')
 if fftw:
     env.Prepend(CPPDEFINES=['SF_HAS_FFTW'])
     if not isinstance(fftw,bool):
@@ -86,7 +86,7 @@ if fftw:
 # suitesparse settings
 sparsepath = env.get('SPARSEPATH')
 sparselibs = env.get('SPARSELIBS')
-    
+
 if sparsepath and sparselibs:
     env.Prepend(CPPPATH=sparsepath,
                 LIBS=sparselibs)
@@ -150,9 +150,9 @@ for prog in mpi_cmains:
     sources = ['M' + prog]
     bldutil.depends(env,sources,'M'+prog)
     if mpicc:
-    	prog = env.Program(prog,[x + '.c' for x in sources],CC=mpicc)
+        prog = env.Program(prog,[x + '.c' for x in sources],CC=mpicc)
     else:
-	prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
+        prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
     if root:
         env.Install(bindir,prog)
 
@@ -190,14 +190,14 @@ for prog in cuda_mains:
 
 # YOU MAY HAVE TO EDIT THIS SECTION!!!
 # MPI_LIB and MPI_INC must be defined for your specific system
-MPI_LIB = '/usr/lib/openmpi/lib'	# MPI lib directory (contains libmpi.so)
-MPI_INC = '/usr/lib/openmpi/include'	# MPI include directory	(contains mpi.h)
+MPI_LIB = '/usr/lib/openmpi/lib'    # MPI lib directory (contains libmpi.so)
+MPI_INC = '/usr/lib/openmpi/include'    # MPI include directory    (contains mpi.h)
 
 mpi_err = 0
 if not os.path.exists(MPI_LIB + "/libmpi.so"):
-	mpi_err += 1
+    mpi_err += 1
 if not os.path.exists(MPI_INC + "/mpi.h"):
-	mpi_err += 1 
+    mpi_err += 1
 
 
 cuda_mpi_mains = Split(cuda_mpi_progs)
@@ -234,7 +234,7 @@ for prog in f90_mains:
         prog = env.Program(prog,[x + '.f90' for x in sources],
                            LINK=env.get('F90'))
     else:
-        prog = env.RSF_Place('sf'+prog,None,var='F90')        
+        prog = env.RSF_Place('sf'+prog,None,var='F90')
     if root:
         env.Install(bindir,prog)
 
@@ -243,11 +243,11 @@ for prog in f90_mains:
 # 7. compiling python programs, python API not needed
 
 if root: # no compilation, just rename
-	pymains = Split(pyprogs)
-	exe = env.get('PROGSUFFIX','')
-	for prog in pymains:
-		env.InstallAs(os.path.join(bindir,'sf'+prog+exe),'M'+prog+'.py')
-	bldutil.install_py_modules(env,Split(pymods),pkgdir)
+    pymains = Split(pyprogs)
+    exe = env.get('PROGSUFFIX','')
+    for prog in pymains:
+        env.InstallAs(os.path.join(bindir,'sf'+prog+exe),'M'+prog+'.py')
+    bldutil.install_py_modules(env,Split(pymods),pkgdir)
 
 
 ######################################################################
@@ -256,14 +256,13 @@ if root: # no compilation, just rename
 if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
-    
+
     docs = [env.Doc(prog,'M' + prog) for prog in cmains+cmains_fftw+mpi_cmains] + \
            [env.Doc(prog,'M%s.cc' % prog,lang='c++') for prog in ccmains] +\
-	   [env.Doc(prog,'M' + prog+'.cu') for prog in cuda_mains + cuda_mpi_mains]+ \
-	   [env.Doc(prog,'M'+prog+'.f90',lang='f90') for prog in f90_mains]+\
-	   [env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains]
-    env.Depends(docs,'#/framework/rsf/doc.py')	
+       [env.Doc(prog,'M' + prog+'.cu') for prog in cuda_mains + cuda_mpi_mains]+ \
+       [env.Doc(prog,'M'+prog+'.f90',lang='f90') for prog in f90_mains]+\
+       [env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains]
+    env.Depends(docs,'#/framework/rsf/doc.py')
 
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)
-
