@@ -20,7 +20,7 @@ def Tflow(target, source, command,
 	if type(target) is types.ListType:
 		tfiles = target
 	else:
-		tfiles = string.split(target)
+		tfiles = target.split()
 	tfiles.insert(0, tfiles[0]+'_runtime')
 	pars=command.split()
 	p0=pars.pop(0)

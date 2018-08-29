@@ -21,7 +21,7 @@ import rsf.conf, rsf.path, rsf.flow, rsf.prog, rsf.node
 import SCons
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,string.split(SCons.__version__,'.')[:3])
+version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -349,7 +349,7 @@ class Project(Environment):
         self.jobs = GetOption('num_jobs') # getting information from scons -j
 
         cluster = self.get('CLUSTER',os.environ.get('RSF_CLUSTER','localhost 1'))
-        hosts = string.split(cluster)
+        hosts = cluster.split()
         self.nodes = []
         for i in range(1,len(hosts),2):
             nh = int(hosts[i])
@@ -445,13 +445,13 @@ class Project(Environment):
         if type(target) is types.ListType:
             tfiles = target
         else:
-            tfiles = string.split(target)
+            tfiles = target.split()
 
         if source:
             if type(source) is types.ListType:
                 sfiles = source
             else:
-                sfiles = string.split(source)
+                sfiles = source.split()
         else:
             sfiles = []
 
@@ -556,13 +556,13 @@ class Project(Environment):
             source = target
         if 'Annotate'==flow:
             if not type(source) is types.ListType:
-                source = string.split(source)
+                source = source.split()
             flow = os.path.join(self.bindir,'vpannotate') + \
               ' text=${SOURCES[1]} batch=y ${SOURCES[0]} $TARGET'
             kw.update({'src_suffix':vpsuffix,'stdin':0,'stdout':-1})
         elif flow in combine:
             if not type(source) is types.ListType:
-                source = string.split(source)
+                source = source.split()
             flow = combine[flow](*[self.vppen,len(source)])
             if vppen:
                 flow = flow + ' ' + vppen
@@ -631,7 +631,7 @@ class Project(Environment):
             self.data.append('LOCAL')
         else:
             if not type(files) is types.ListType:
-                files = string.split(files)
+                files = files.split()
             for fil in files:
                 if server != dataserver:
                     if top:

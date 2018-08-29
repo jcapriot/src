@@ -25,7 +25,7 @@ import rsf.prog
 import SCons
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,string.split(SCons.__version__,'.')[:3])
+version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -170,7 +170,7 @@ def latexscan(node,env,path):
             if check:
                  mplot = check.group(1)
                  mplot = string.replace(mplot,'\_','_')
-                 for plot in string.split(mplot,','):
+                 for plot in mplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
                      if re.search('angle=90',line):
                          plotoption[plot+pssuffix] = '-flip r90'
@@ -179,7 +179,7 @@ def latexscan(node,env,path):
             if check:
                  smplot = check.group(1)
                  smplot = string.replace(smplot,'\_','_')
-                 for plot in string.split(smplot,','):
+                 for plot in smplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
                      if re.search('angle=90',line):
                          plotoption[plot+pssuffix] = '-flip r90'
@@ -208,7 +208,7 @@ def latexscan(node,env,path):
         inp.close()
     bibs = []
     for bib in isbib.findall(contents):
-        for file in string.split(bib,','):
+        for file in bib.split(','):
             file = file+'.bib'
             if os.path.isfile(file):
                 bibs.append(file)
@@ -1076,8 +1076,8 @@ class TeXPaper(Environment):
         global colorfigs, hiresfigs
         if source == '':
             source = paper
-        colorfigs.extend(string.split(color))
-        hiresfigs.extend(string.split(hires))
+        colorfigs.extend(color.split())
+        hiresfigs.extend(hires.split())
         ltx = self.Latify(target=paper+'.ltx',source=source+'.tex',
                           use=use,lclass=lclass,options=options,
                           include=include,resdir=resdir)

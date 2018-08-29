@@ -107,7 +107,7 @@ def cite(s):
     fullref = s.group(1)
     keys = s.group(2)
     gref = []
-    for key in string.split(keys,','):
+    for key in keys.split(','):
         lref = refs.get(key)
         if lref:
             gref.append(lref)
@@ -120,7 +120,7 @@ def refer():
         if fullref:
             list.append('%s<ref>%s</ref>' % lref)
         else:
-            (name,year) = string.split(lref[0],', ')
+            (name,year) = lref[0].split(', ')
             list.append('%s<ref>%s</ref>' % (year,lref[1]))
     lrefs = '(%s)' % ';'.join(list)
     if fullref:
@@ -317,7 +317,7 @@ tilde = re.compile(r'[~]')
 def parse_bbl(bbl):
     "Parse a bbl file extracting a reference dictionary"
     global refs
-    for par in string.split(''.join(bbl.readlines()),'\n\n'):
+    for par in ''.join(bbl.readlines()).split('\n\n'):
         ref = bibitem.match(par)
         if ref:
             short = ref.group(1)

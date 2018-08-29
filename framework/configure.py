@@ -13,7 +13,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import sys, os, glob, string, re, types
+import sys, os, glob,  re, types
 
 try: # The subprocess module was introduced in Python 2.4
     import subprocess
@@ -26,7 +26,7 @@ except: # Python < 2.4
 import SCons
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,string.split(SCons.__version__,'.')[:3])
+version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:  # old style
@@ -2264,14 +2264,14 @@ def java(context):
 
 def gcc(context):
     '''Handle dynamic gcc libraries.'''
-    libdirs = string.split(os.environ.get('LD_LIBRARY_PATH',''),':')
+    libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
     libs = filter (lambda x: re.search('gcc',x) and os.path.isdir(x),
                    libdirs)
     context.env.Append(ENV={'LD_LIBRARY_PATH':string.join(libs,':')})
 
 def intel(context):
     '''Trying to fix weird intel setup.'''
-    libdirs = string.split(os.environ.get('LD_LIBRARY_PATH',''),':')
+    libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
     libs = filter (lambda x: re.search('intel',x) and os.path.isdir(x),
                    libdirs)
     context.env.Append(ENV={'LD_LIBRARY_PATH':string.join(libs,':')})

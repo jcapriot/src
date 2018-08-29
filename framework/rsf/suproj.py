@@ -58,7 +58,7 @@ class SUProject(rsf.proj.Project):
             source = target
         if flow == 'Merge':
             if not type(source) is types.ListType:
-                sources = string.split(source)
+                sources = source.split()
                 source = map(lambda x: x+pssuffix,sources)
             self.Command(target+pssuffix,source,
                          '%s %s > $TARGET' % \

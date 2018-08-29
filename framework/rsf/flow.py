@@ -23,13 +23,13 @@ def Flow(sources,flow,bindir,rsfflow=1,
          remote='', stdout=1,stdin=1,timer='',
          mpirun=None,workdir=None,batch=None,np=1,wall=''):
     'Output a command line'
-    lines = string.split(str(flow),'&&')
+    lines = str(flow).split('&&')
     steps = []
     for line in lines:
         substeps = []
-        sublines = string.split(line,'|')
+        sublines = line.split('|')
         for subline in sublines:           
-            pars = string.split(subline)
+            pars = subline.split()
             # command is assumed to be always first in line
             command = pars.pop(0)
             # check if this command is in our list

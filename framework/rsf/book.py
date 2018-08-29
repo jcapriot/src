@@ -19,7 +19,7 @@ import os,  re, glob, time, types, sys
 import SCons
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,string.split(SCons.__version__,'.')[:3])
+version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -107,7 +107,7 @@ def get_authors(source,default):
         if author:
             print("%s: '%s'" % (tag[1],author))
             for person in re.split(r'\s*(?:[\,]|[\,]?\s*\band\b)\s*',author):
-                names = string.split(person)
+                names = person.split()
                 if names:
                     person = names.pop(0) # first name
                     if names:
@@ -526,7 +526,7 @@ class RSFReport(Environment):
                 line = bio.readline()
                 name = re_bioname.search(line)
                 if name:
-                    name = string.split(name.group(1))
+                    name = name.group(1).split()
                     biofiles['~'.join([name[0],name[-1]])] = biofile
                 bio.close()
         if biofiles:

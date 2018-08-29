@@ -37,7 +37,7 @@ def convert(infile,outfile,args=''):
     lines = stats.readlines()
     stats.close()
 
-    stat = string.split(lines[0])
+    stat = lines[0].split()
 
     # find the number of frames
     retot = re.compile('Total\s+(\d+)')

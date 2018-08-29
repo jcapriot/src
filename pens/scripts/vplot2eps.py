@@ -40,7 +40,7 @@ def convert(vplot,eps,
     getbb = vppen + ' big=y stat=l %s < %s | head -1' % (opts,vplot)
     
     out = os.popen(getbb)
-    head = string.split(out.read())
+    head = out.read().split()
     out.close() 
     
     # Use parameters for bounding box if supplied.

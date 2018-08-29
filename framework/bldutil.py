@@ -3,7 +3,7 @@ import configure
 
 # The following adds all SCons SConscript API to the globals of this module.
 import SCons
-version = map(int,string.split(SCons.__version__,'.')[:3])
+version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1  or version[1] >= 97 or \
    (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
