@@ -15,7 +15,7 @@ from __future__ import print_function
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import rsf.proj, os, re, string, sys, array, types
+import rsf.proj, os, re,  sys, array, types
 
 susuffix = '.su'
 pssuffix = '.eps'
@@ -39,7 +39,7 @@ suplots = ['plot']
 for prog in suprogs:
     if prog[0] == 'x' and 'ps'+prog[1:] in suprogs:
         suplots.append(prog[1:])
-re_plots = re.compile(r'\b(su|s|)(?:x|ps)?(%s)\b' % string.join(suplots,'|'))
+re_plots = re.compile(r'\b(su|s|)(?:x|ps)?(%s)\b' % '|'.join(suplots))
 
 class SUProject(rsf.proj.Project):
     def __init__(self,**kw):
@@ -63,7 +63,7 @@ class SUProject(rsf.proj.Project):
             self.Command(target+pssuffix,source,
                          '%s %s > $TARGET' % \
                          (os.path.join(bindir,'psmerge'),
-                          string.join(map (lambda x: ' in=${SOURCES[%d]}' % x,
+                          " ".join(map (lambda x: ' in=${SOURCES[%d]}' % x,
                                            range(len(source))))))
         else:
             # X output

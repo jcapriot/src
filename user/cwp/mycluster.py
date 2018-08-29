@@ -25,7 +25,7 @@ author: Tonging Yang, Jun 16 2011, CWP
 
 '''
 from __future__ import print_function
-import rsf.proj, os, string, subprocess, sys
+import rsf.proj, os,  subprocess, sys
 import SCons
 import SCons.Script
 import SCons.Script.SConsOptions as SConsOptions
@@ -142,7 +142,7 @@ def createPBSfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
 #    lines.append('echo "JOB: %s running" >> pbs/jobs.txt' % name)
 
     if last:
-        depends = string.join(['%s' % item for item in last])
+        depends = ' '.join(['%s' % item for item in last])
 #        lines.append("""for i in %s; do  if [ -n "$(grep "$i done" pbs/jobs.txt)" ]; then echo "found $i"; elif [ -n "$(grep "$i running" pbs/jobs.txt)" ]; then echo "running $i"; if [ `grep "$i check" pbs/jobs.txt | wc -l` -ge 5 ]; then echo "already checked $i 5 times"; exit; else echo "JOB: $i check" >> pbs/jobs.txt; sleep 300; echo "Resubmitting myself"; ssh $PBS_O_HOST "source ~/.bash_profile; cd $PBS_O_WORKDIR; qsub pbs/%s" ; exit; fi; elif [ -n "$(grep "$i error" pbs/jobs.txt)" ]; then echo "error $i"; exit; else echo "did not find $i"; exit; fi; done""" % (depends, name))
 
     if parallel:
@@ -167,7 +167,7 @@ def createPBSfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
             lines.append('sfdbmerge outdb=%s %s ' % (project.path+'.sconsign.dbhash', ' '.join(SCONSIGNS)))
 
     file = open('%s/%s' % (pbs_dirt,name),'w')
-    text = string.join(lines,'\n')
+    text = '\n'.join(lines)
     if CLUSTER=='ra':
         text.replace('qsub','msub')
     file.write(text)
@@ -223,7 +223,7 @@ import dbhash
 proj = Project()
 proj.SConsignFile("%s",dbhash)
 ''' % (sconsign))
-            file.write(string.join(self.tasks,'\n'))
+            file.write('\n'.join(self.tasks))
             file.write('\n')
             file.write('End()\n')
             file.close()
@@ -315,7 +315,7 @@ proj.SConsignFile("%s",dbhash)
                 if inode == self.nodes or i == len(self.scripts)-1:
                     jobname = self.name+'-%02d' % ijob
                     file = open('%s/%s-shell'%(pbs_dirt,jobname),'w')
-                    file.write(string.join(['scons -f %s/SConstruct-%s'% (pbs_dirt,name) for name in names],'\n'))
+                    file.write('\n'.join(['scons -f %s/SConstruct-%s'% (pbs_dirt,name) for name in names]))
                     file.close()
                     ijob += 1
                     if i == len(self.scripts)-1 and inode != self.nodes:

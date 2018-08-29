@@ -18,7 +18,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import re, string, os
+import re,  os
 
 bdoc = None
 verbatim_mode = 0
@@ -122,7 +122,7 @@ def refer():
         else:
             (name,year) = string.split(lref[0],', ')
             list.append('%s<ref>%s</ref>' % (year,lref[1]))
-    lrefs = '(%s)' % string.join(list,';')
+    lrefs = '(%s)' % ';'.join(list)
     if fullref:
         return lrefs
     else:
@@ -133,7 +133,7 @@ def input_file(s):
     name = s.group(1)
     try:
         inp = open(name+'.wiki','r')
-        insert = string.join(inp.readlines(),'')
+        insert = ''.join(inp.readlines())
         inp.clos()
     except:
         inp = '[name]'
@@ -317,7 +317,7 @@ tilde = re.compile(r'[~]')
 def parse_bbl(bbl):
     "Parse a bbl file extracting a reference dictionary"
     global refs
-    for par in string.split(string.join(bbl.readlines(),''),'\n\n'):
+    for par in string.split(''.join(bbl.readlines()),'\n\n'):
         ref = bibitem.match(par)
         if ref:
             short = ref.group(1)

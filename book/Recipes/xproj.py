@@ -1,6 +1,6 @@
 'extra flows'
 
-import string, re, sys, os
+import  re, sys, os
 from rsf.proj import *
 
 
@@ -32,7 +32,7 @@ def Tflow(target, source, command,
 		p1=os.path.join('.',p0) # Mdip.exe
 
 	pars.insert(0,p1)
-	cmd=string.join(pars,' ')
+	cmd=' '.join(pars)
 	Flow(tfiles, source,
 		'''
 		( %s -f "%%U" %s <${SOURCES[0]} >${TARGETS[1]} ) 

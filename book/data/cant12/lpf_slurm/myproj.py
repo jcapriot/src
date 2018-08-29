@@ -15,7 +15,7 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os, stat, sys, types, copy, re, string, urllib, ftplib
+import os, stat, sys, types, copy, re,  urllib, ftplib
 import rsf.conf, rsf.path, rsf.flow, rsf.prog
 import SCons
 
@@ -78,13 +78,13 @@ def echo(target,source,env):
     if obj:
         trg = open(str(target[0]),'w')
         if type(obj) is types.ListType:
-            obj = string.join(obj)
+            obj = ' '.join(obj)
         trg.write(obj+'\n')
         trg.close()
     err = env.get('err','')
     if err:
         if type(err) is types.ListType:
-            err = string.join(err)
+            err = ' '.join(err)
         sys.stderr.write(err+'\n')
     return 0
 
@@ -488,10 +488,10 @@ class Project(Environment):
         if remote:
             command = re.sub('"','\\"',command)
             if self.raddenv:
-                command = string.join([WhereIs('ssh'),node,'\"',self.raddenv,
+                command = ' '.join([WhereIs('ssh'),node,'\"',self.raddenv,
                                       '; cd ',self.cwd,';',command,'\"'])
             else:
-                command = string.join([WhereIs('ssh'),node,'\"cd ',
+                command = ' '.join([WhereIs('ssh'),node,'\"cd ',
                                        self.cwd,';',command,'\"'])
 
         targets = []

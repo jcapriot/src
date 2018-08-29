@@ -13,12 +13,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import sys, os, glob, string, re, commands, types
+import sys, os, glob, string, re, types
 
 try: # The subprocess module was introduced in Python 2.4
     import subprocess
     have_subprocess=True
+    commands = subprocess
 except: # Python < 2.4
+    import commands
     have_subprocess=False
 
 import SCons
@@ -570,7 +572,7 @@ def ppm(context):
     if plat['OS'] == 'darwin':
         ppmpath = context.env.get('PPMPATH','/opt/local/include/netpbm')
     else:
-    	ppmpath = context.env.get('PPMPATH','/usr/include/netpbm')
+        ppmpath = context.env.get('PPMPATH','/usr/include/netpbm')
     if os.path.isfile(os.path.join(ppmpath,'ppm.h')):
         context.env['CPPPATH'] = oldpath + [ppmpath]
     else:
@@ -974,7 +976,7 @@ def blas(context):
     context.Message("checking for BLAS ... ")
     text = '''
     #ifdef __APPLE__
-    #include <Accelerate/Accelerate.h>   
+    #include <Accelerate/Accelerate.h>
     #else
     #ifdef HAVE_MKL
     #include <mkl.h>
@@ -1032,7 +1034,7 @@ def blas(context):
                    context.Result(res)
                    context.env['LIBS'] = LIBS
                    context.env['BLAS'] = 'tatlas'
-                else: 
+                else:
                    context.Result(context_failure)
                    context.env['CPPDEFINES'] = \
                       path_get(context,'CPPDEFINES','NO_BLAS')
@@ -1124,13 +1126,13 @@ def mpi(context):
         context.env.Append(ENV={'MPICH_CC':cc,'MPICH_CLINKER':cc})
         res = context.TryLink(text,'.c')
         context.env['CC'] = cc
-	if res:
-	        context.Result(res)
-        	context.env['MPICC'] = mpicc
+        if res:
+                context.Result(res)
+                context.env['MPICC'] = mpicc
         else: # failed to compile
                 context.Result(context_failure)
-        	need_pkg('mpi', fatal=False)
-        	context.env['MPICC'] = None
+                need_pkg('mpi', fatal=False)
+                context.env['MPICC'] = None
     else: # mpicc not found
         context.Result(context_failure)
         need_pkg('mpi', fatal=False)
@@ -1155,13 +1157,13 @@ def mpi(context):
         context.env.Append(ENV={'MPICH_CXX':cxx})
         res = context.TryLink(text,'.cc')
         context.env['CXX'] = cxx
-	if res:
-	        context.Result(res)
-        	context.env['MPICXX'] = mpicxx
+        if res:
+            context.Result(res)
+            context.env['MPICXX'] = mpicxx
         else: # failed to compile
-                context.Result(context_failure)
-        	need_pkg('mpi', fatal=False)
-        	context.env['MPICXX'] = None
+            context.Result(context_failure)
+            need_pkg('mpi', fatal=False)
+            context.env['MPICXX'] = None
     else: # mpicxx not found
         context.Result(context_failure)
         need_pkg('mpi', fatal=False)
@@ -2411,4 +2413,3 @@ def options(file):
     opts.Add('PFFT','The PFFT library')
 
     return opts
-

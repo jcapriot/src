@@ -2,17 +2,17 @@
 
 ##   Copyright (C) 1987 The Board of Trustees of Stanford University
 ##   Copyright (C) 2004 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -20,7 +20,7 @@
 # Modified from the original C-shell version by Joe Dellinger
 
 from __future__ import print_function
-import sys, os, time, string, re, shutil
+import sys, os, time,  re, shutil
 import rsf.prog
 
 def convert(infile,outfile,args=''):
@@ -31,7 +31,7 @@ def convert(infile,outfile,args=''):
     bindir = os.path.join(rsf.prog.RSFROOT,'bin')
     vppen  = os.path.join(bindir,'vppen') + ' ' + args
     ppmpen = os.path.join(bindir,'ppmpen')
-    
+
     # Use vppen to find out how big and where on the page the plot is.
     stats = os.popen(vppen + ' size=a stat=l < %s' % infile)
     lines = stats.readlines()
@@ -92,7 +92,7 @@ def convert(infile,outfile,args=''):
             # combine frames into an animated gif (requires gifsicle)
             gifsicle = 'gifsicle --merge --loopcount=forever --optimize'
             run = '%s --delay=%d %s > %s' % (gifsicle,int(delay),
-                                             string.join(gifs),outfile)
+                                             " ".join(gifs),outfile)
             os.system (run)
             map(os.unlink,gifs)
     else:

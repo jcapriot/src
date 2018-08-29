@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from __future__ import print_function
-import sys, string, os, signal, types
+import sys,  os, signal, types
 
 def handler(signum, frame):
     'signal handler for abortion [Ctrl-C]'
@@ -46,7 +46,7 @@ def tour(dirs=[],comm='',verbose=1):
     if not verbose: # no output to stdout
         sys.stdout = open("/dev/null","w")
     sys.stderr.write('Executing "%s"...\n' % comm)
-    sys.stderr.write(string.join(dirs,'::') + '\n')
+    sys.stderr.write('::'.join(dirs) + '\n')
 
     cwd = os.getcwd()
     for subdir in dirs:
@@ -62,11 +62,11 @@ def tour(dirs=[],comm='',verbose=1):
             sys.stderr.write('\n%s: wrong directory %s...\n' % (mycomm,subdir))
             sys.exit(1)
         os.environ['PWD'] = os.path.join(cwd,subdir)
-        sys.stderr.write(string.join(['+' * 44,subdir,'\n'],' '))
+        sys.stderr.write(' '.join(['+' * 44,subdir,'\n']))
         if mycomm:
             mycomm = mycomm.replace('%',subdir,1)
             syswait(mycomm)
-        sys.stderr.write(string.join(['-' * 44,subdir,'\n'],' '))
+        sys.stderr.write(' '.join(['-' * 44,subdir,'\n']))
     sys.stderr.write('Done.\n')
     os.chdir (cwd)
 
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     else:
         verbose = 1
 
-    comm = string.join(sys.argv,' ')
+    comm = ' '.join(sys.argv)
     dirs = filter(lambda x: x[-5:] != '_html',
                   filter(os.path.isdir,glob.glob('[a-z]*')))
 

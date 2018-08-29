@@ -37,7 +37,7 @@ author: Filippo Broggini, 5 JUL 2018, ETHZ
 
 '''
 from __future__ import print_function
-import rsf.proj, os, string, subprocess, sys
+import rsf.proj, os,  subprocess, sys
 import SCons
 import SCons.Script
 import SCons.Script.SConsOptions as SConsOptions
@@ -148,7 +148,7 @@ def createSlurmfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,conte
 #    lines.append('echo "JOB: %s running" >> pbs/jobs.txt' % name)
 
     if last:
-        depends = string.join(['%s' % item for item in last])
+        depends = ' '.join(['%s' % item for item in last])
     if parallel:
         lines.append('echo $SLURM_JOB_NODELIST > %s/%s-nodes' % (pbs_dirt,name))
         lines.append('mymatch %s/%s-shell > %s/%s-app' % (pbs_dirt,name,pbs_dirt,name))
@@ -167,7 +167,7 @@ def createSlurmfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,conte
         lines.append('sfdbmerge outdb=%s %s ' % (project.path+'.sconsign.dbhash', ' '.join(SCONSIGNS)))
 
     file = open('%s/%s' % (pbs_dirt,name),'w')
-    text = string.join(lines,'\n')
+    text = '\n'.join(lines)
     file.write(text)
     file.close()
 
@@ -204,7 +204,7 @@ def createSlurmfileCSCS(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,c
 #    lines.append('echo "JOB: %s running" >> pbs/jobs.txt' % name)
 
     if last:
-        depends = string.join(['%s' % item for item in last])
+        depends = ' '.join(['%s' % item for item in last])
     if parallel:
         #lines.append('hostlist -e $SLURM_JOB_NODELIST > %s/%s-nodes' % (pbs_dirt,name))
         lines.append('multiprog_cscs.py %s/%s-shell > %s/%s-app' % (pbs_dirt,name,pbs_dirt,name))
@@ -223,7 +223,7 @@ def createSlurmfileCSCS(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,c
         lines.append('sfdbmerge outdb=%s %s ' % (project.path+'.sconsign.dbhash', ' '.join(SCONSIGNS)))
 
     file = open('%s/%s' % (pbs_dirt,name),'w')
-    text = string.join(lines,'\n')
+    text = '\n'.join(lines)
     file.write(text)
     file.close()
 
@@ -258,7 +258,7 @@ def createPBSfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
     lines.append('cd %s' % os.getcwd())
 
     if last:
-        depends = string.join(['%s' % item for item in last])
+        depends = ' '.join(['%s' % item for item in last])
 
     if parallel:
         lines.append('sort -u $PBS_NODEFILE > %s/%s-nodes' % (pbs_dirt,name))
@@ -276,7 +276,7 @@ def createPBSfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
             lines.append('sfdbmerge outdb=%s %s ' % (project.path+'.sconsign.dbhash', ' '.join(SCONSIGNS)))
 
     file = open('%s/%s' % (pbs_dirt,name),'w')
-    text = string.join(lines,'\n')
+    text = '\n'.join(lines)
     if CLUSTER=='ra':
         text.replace('qsub','msub')
     file.write(text)
@@ -312,7 +312,7 @@ def createLSFfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
     lines.append('cd %s' % os.getcwd())
 
     if last:
-        depends = string.join(['%s' % item for item in last])
+        depends = ' '.join(['%s' % item for item in last])
 
     if parallel:
         lines.append('sort -u $LSB_DJOB_HOSTFILE  > %s/%s-nodes' % (pbs_dirt,name))
@@ -330,7 +330,7 @@ def createLSFfile(name,email,nodes,ppn,time,last,next,tasks,relaunch,run,content
             lines.append('sfdbmerge outdb=%s %s ' % (project.path+'.sconsign.dbhash', ' '.join(SCONSIGNS)))
 
     file = open('%s/%s' % (pbs_dirt,name),'w')
-    text = string.join(lines,'\n')
+    text = '\n'.join(lines)
     if CLUSTER=='ra':
         text.replace('qsub','msub')
     file.write(text)
@@ -388,7 +388,7 @@ import dbhash
 proj = Project()
 proj.SConsignFile("%s",dbhash)
 ''' % (sconsign))
-            file.write(string.join(self.tasks,'\n'))
+            file.write('\n'.join(self.tasks))
             file.write('\n')
             file.write('End()\n')
             file.close()
@@ -481,7 +481,7 @@ proj.SConsignFile("%s",dbhash)
                 if inode == self.nodes or i == len(self.scripts)-1:
                     jobname = self.name+'-%02d' % ijob
                     file = open('%s/%s-shell'%(pbs_dirt,jobname),'w')
-                    file.write(string.join(['scons -f %s/SConstruct-%s'% (pbs_dirt,name) for name in names],'\n'))
+                    file.write('\n'.join(['scons -f %s/SConstruct-%s'% (pbs_dirt,name) for name in names]))
                     file.close()
                     ijob += 1
                     if i == len(self.scripts)-1 and inode != self.nodes:

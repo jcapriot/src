@@ -15,7 +15,7 @@
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 from __future__ import print_function
-import os, sys, string, re, tempfile
+import os, sys,  re, tempfile
 import rsf.prog
 
 top = rsf.prog.RSFROOT
@@ -138,7 +138,7 @@ Converts vplot to encapsulated postscript.
         else:                               options.append(item)
     try:
         if options:
-            convert(vpl,eps,options=string.join(options,' '),
+            convert(vpl,eps,options=' '.join(options),
                     xbmin=xbmin, xbmax=xbmax, ybmin=ybmin, ybmax=ybmax,
                     cropshift=crshift)
         else:

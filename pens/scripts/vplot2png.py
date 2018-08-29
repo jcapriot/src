@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 
     if sys.argv:
-        convert(vpl,png,options=string.join(sys.argv,' '))
+        convert(vpl,png,options=' '.join(sys.argv))
     else:
         convert(vpl,png)
     sys.exit(0)

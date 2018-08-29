@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import string, sys, os, re
+import  sys, os, re
 import rsf.doc
 import rsf.prog
 
@@ -95,12 +95,12 @@ def Flow(sources,flow,bindir,rsfflow=1,
             if rsfprog and rsfprog.startswith(prefix+'mpi') and mpirun:
                 pars.insert(0,mpirun)
             #<- assemble the command line
-            substep = remote + string.join(pars,' ')
+            substep = remote + ' '.join(pars)
             substeps.append(substep)
         #<-
-        steps.append(string.join(substeps," | "))
+        steps.append(" | ".join(substeps))
     #<- assemble the pipeline
-    command = string.join(steps," && ")
+    command = " && ".join(steps)
     mpiprog = rsfprog and (rsfprog[:len(prefix)+3] == prefix+'mpi' or \
                            rsfprog == prefix+'conjgradmpi' or \
                            rsfprog == prefix+'cconjgradmpi')

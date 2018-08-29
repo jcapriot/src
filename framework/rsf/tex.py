@@ -15,7 +15,7 @@ from __future__ import print_function
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os, re, glob, string, types, pwd, shutil
+import os, re, glob,  types, pwd, shutil
 import cStringIO, token, tokenize, cgi, sys, keyword
 
 import rsf.conf, rsf.path, rsf.latex2wiki
@@ -305,7 +305,7 @@ def latex2dvi(target=None,source=None,env=None):
         print('\n\tLaTeX is missing. ' \
             'Please install a TeX package (teTeX or TeX Live)\n')
         return 1
-    run = string.join([latex,tex],' ')
+    run = ' '.join([latex,tex])
     # First latex run
     if os.system(run):
         return 1
@@ -815,7 +815,7 @@ if epstopdf:
     if matlab:
         matlabpath = os.environ.get('MATLABPATH')
         if matlabpath:
-            matlabpath = string.join([matlabpath,'Matlab'],':')
+            matlabpath = ':'.join([matlabpath,'Matlab'])
         else:
             matlabpath = 'Matlab'
         Matlab = Builder(action = 'MATLABPATH=%s DISPLAY=" " nohup %s -nodesktop '
