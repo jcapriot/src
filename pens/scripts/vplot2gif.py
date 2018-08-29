@@ -94,7 +94,7 @@ def convert(infile,outfile,args=''):
             run = '%s --delay=%d %s > %s' % (gifsicle,int(delay),
                                              " ".join(gifs),outfile)
             os.system (run)
-            map(os.unlink,gifs)
+            list(map(os.unlink,gifs))
     else:
         shutil.move(gifs[0],outfile)
 

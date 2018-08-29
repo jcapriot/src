@@ -29,7 +29,7 @@ if sys.version_info[0]>2:
 import SCons
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,SCons.__version__.split('.')[:3])
+version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:  # old style
@@ -1527,7 +1527,7 @@ def psp(context):
             psplibs += normallib.findall(lib)
         else:
             pspextra.append(lib)
-    context.env['LIBS'] = oldlibs+psplibs + map(File,pspextra)
+    context.env['LIBS'] = oldlibs+psplibs + list(map(File,pspextra))
 
     text = '''
     #include "psp.hpp"

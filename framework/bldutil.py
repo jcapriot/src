@@ -3,7 +3,7 @@ import configure
 
 # The following adds all SCons SConscript API to the globals of this module.
 import SCons
-version = map(int,SCons.__version__.split('.')[:3])
+version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1  or version[1] >= 97 or \
    (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
@@ -53,7 +53,7 @@ def __version(target=None,source=None,env=None):
 
 def __merge(target=None,source=None,env=None):
     global __local_include
-    sources = map(str,source)
+    sources = list(map(str,source))
     incs = []
     for src in sources:
         if not src in incs:
@@ -77,7 +77,7 @@ def __included(node,env,path):
     includes = __include.findall(contents)
     if file in includes:
         includes.remove(file)
-    return map(lambda x: x + '.h',includes)
+    return [x + '.h' for x in includes]
 
 Include = Scanner(name='Include', function=__included, skeys=['.c'])
 
@@ -264,7 +264,7 @@ def build_install_c_mpi(env, progs_c, srcroot, bindir, glob_build, bldroot):
         sources = ['M' + prog]
         depends(tenv, sources, 'M'+prog)
         if mpicc:
-            prog = tenv.Program(prog, map(lambda x: x + '.c',sources))
+            prog = tenv.Program(prog, [x + '.c' for x in sources])
         else:
             prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
 
@@ -272,7 +272,7 @@ def build_install_c_mpi(env, progs_c, srcroot, bindir, glob_build, bldroot):
             tenv.Install(bindir,prog)
 
     if glob_build:
-        docs_c = map(lambda prog: env.Doc(prog,'M'+prog),mains_c)
+        docs_c = [env.Doc(prog,'M'+prog) for prog in mains_c]
     else:
         docs_c = None
 
@@ -303,7 +303,7 @@ def build_install_c(env, progs_c, srcroot, bindir, libdir, glob_build, bldroot):
             chk_exists(prog)
         sources = ['M' + prog]
         depends(env, sources, 'M'+prog)
-        prog = env.Program(prog, map(lambda x: x + '.c',sources))
+        prog = env.Program(prog, [x + '.c' for x in sources])
         if glob_build:
             install = env.Install(bindir,prog)
 
@@ -314,7 +314,7 @@ def build_install_c(env, progs_c, srcroot, bindir, libdir, glob_build, bldroot):
                 '%s/libdrsf.dylib %s' % (libdir,install[0]))
 
     if glob_build:
-        docs_c = map(lambda prog: env.Doc(prog,'M'+prog),mains_c)
+        docs_c = [env.Doc(prog,'M'+prog) for prog in mains_c]
     else:
         docs_c = None
 
@@ -371,8 +371,7 @@ def build_install_f90(env, progs_f90, srcroot, bindir, api, bldroot, glob_build)
                 env.Install(bindir,prog)
 
     if glob_build:
-        docs_f90 = map(lambda prog: env.Doc(prog,'M'+prog+'.f90',lang='f90'),
-               mains_f90)
+        docs_f90 = [env.Doc(prog,'M'+prog+'.f90',lang='f90') for prog in mains_f90]
     else:
         docs_f90 = None
 
@@ -401,8 +400,7 @@ def install_py_mains(env, progs_py, bindir):
     # Self-doc
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
-    docs_py = map(lambda prog: env.Doc(prog,'M'+prog+'.py',lang='python'),
-           mains_py)
+    docs_py = [env.Doc(prog,'M'+prog+'.py',lang='python') for prog in mains_py]
 
     return docs_py
 
@@ -521,7 +519,7 @@ class UserSconsTargets:
             docs_c = build_install_c(env, self.c, srcroot, bindir, libdir, glob_build, bldroot)
 
         if self.c_place:
-            docs_c += map(lambda prog: env.Doc(prog,'M'+prog),Split(self.c_place))
+            docs_c += [env.Doc(prog,'M'+prog) for prog in Split(self.c_place)]
 
         if not self.c_mpi:
             docs_c_mpi = None
@@ -632,7 +630,7 @@ class HuiSconsTargets:
         for prog in mains_cc:
             sources = ['M' + prog]
             if 'c++' in env.get('API',[]) and self.has_lapack:
-                prog = env.Program(prog,map(lambda x: x + '.cc',sources))
+                prog = env.Program(prog,[x + '.cc' for x in sources])
             else:
                 prog = env.RSF_Place('sf'+prog,None,var='LAPACK',package='lapack')
 
@@ -645,7 +643,7 @@ class HuiSconsTargets:
                     'build/api/c++/libdrsf++.dylib '
                     '%s/libdrsf.dylib %s' % (libdir,install[0]))
         if glob_build:
-            docs_cc = map(lambda prog: env.Doc(prog,'M'+prog+'.cc'),mains_cc)
+            docs_cc = [env.Doc(prog,'M'+prog+'.cc') for prog in mains_cc]
         else:
             docs_cc = None
 
@@ -681,7 +679,7 @@ class HuiSconsTargets:
                     'build/api/c/libdrsf.dylib '
                     '%s/libdrsf.dylib %s' % (libdir,install[0]))
         if glob_build:
-            docs_cu = map(lambda prog: env.Doc(prog,'M'+prog+'.cu'),mains_cu)
+            docs_cu = [env.Doc(prog,'M'+prog+'.cu') for prog in mains_cu]
         else:
             docs_cu = None
 

@@ -45,8 +45,7 @@ def convert(vpl,format,opts,pars):
         return
 
     new = '.'.join([os.path.splitext(vpl)[0],format.lower()])
-    opts = ' '.join(map(lambda x: '='.join([x, str(pars[x].get())]), 
-                        list(pars.keys()))) + ' ' + opts
+    opts = ' '.join(['='.join([x, str(pars[x].get())]) for x in list(pars.keys())]) + ' ' + opts
     
     fail = vpconvert.convert(vpl,new,format,None,opts,False)
     

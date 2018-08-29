@@ -155,11 +155,11 @@ def selfdoc(target=None,source=None,env=None):
 
 def bold(text):
     """Format a string in bold by overstriking."""
-    return ''.join(map(lambda ch: ch + "\b" + ch, text))
+    return ''.join([ch + "\b" + ch for ch in text])
 
 def underline(text):
     """Format a string in underline by overstriking."""
-    return ''.join(map(lambda ch: ch + "\b_", text))
+    return ''.join([ch + "\b_" for ch in text])
 
 def underline_match(text):
     """Underline a matching expression"""
@@ -173,8 +173,7 @@ def replace(text, *pairs):
     return text
 
 def section(head,body):
-    text = "\n".join(map(lambda line: "\t" + line,
-                         body.split("\n")))
+    text = "\n".join(["\t" + line for line in body.split("\n")])
     return bold(head.upper()) + "\n" + text + "\n"
 
 def page(title, contents):
@@ -898,7 +897,7 @@ def getprog(file,out,lang = 'c',rsfprefix = 'sf',rsfsuffix='rsf',
     if first:
         tops = first.group('comment').split("\n")
         desc = tops.pop(0).lstrip()
-        first = '\n'.join(map(lambda x: x.lstrip(chars[lang]),tops))
+        first = '\n'.join([x.lstrip(chars[lang]) for x in tops])
     else:
         desc = None
     prog = rsfprog(name,source,desc)

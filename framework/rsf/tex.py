@@ -28,7 +28,7 @@ if sys.version_info[0]>2:
     basestring = str
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,SCons.__version__.split('.')[:3])
+version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -132,8 +132,7 @@ def latexscan(node,env,path):
         return []
     contents = node.get_contents()
     inputs = filter(os.path.isfile,
-                    map(lambda x: x+('.tex','')[os.path.isfile(x)],
-                        linput.findall(contents)))
+                    [x+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)])
     inputs.append(top[:-4]+'.tex')
     resdir = env.get('resdir','Fig')
     inputdir = env.get('inputdir','.')

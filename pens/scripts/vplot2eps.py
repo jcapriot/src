@@ -56,15 +56,15 @@ def convert(vplot,eps,
     else:           ybbp = ybmax
 
     # Compute bounding box
-    bm = map(lambda x: float(x)-space,[xbbm,ybbm])
-    bp = map(lambda x: float(x)+space,[xbbp,ybbp])
+    bm = [float(x)-space for x in [xbbm,ybbm]]
+    bp = [float(x)+space for x in [xbbp,ybbp]]
     
-    bbm = map(lambda x: x*ppi,bm)
-    bbp = map(lambda x: x*ppi,bp)
+    bbm = [x*ppi for x in bm]
+    bbp = [x*ppi for x in bp]
 
     # Round to integer
-    ibbm = map(int,bbm)
-    ibbp = map(lambda x: int(x)+1,bbp)
+    ibbm = list(map(int,bbm))
+    ibbp = [int(x)+1 for x in bbp]
     
     out = open(eps,"w")
     out.write("%!PS-Adobe-2.0 EPSF-2.0\n")

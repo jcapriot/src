@@ -24,7 +24,7 @@ if sys.version_info[0]>2:
     basestring = str
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,SCons.__version__.split('.')[:3])
+version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -131,7 +131,7 @@ def retrieve(target=None,source=None,env=None):
                                                                     folder))
             return 3
         for file in filter(lambda x: not os.path.abspath(x).startswith(env.path),
-                           map(str,target)):
+                           list(map(str,target))):
             remote = os.path.basename(file)
             if usedatapath:
                 localfile=env.path+remote
@@ -168,7 +168,7 @@ def retrieve(target=None,source=None,env=None):
                     return 6
         else:
             for file in filter(lambda x: not os.path.abspath(x).startswith(env.path),
-                               map(str,target)):
+                               list(map(str,target))):
                 remote = os.path.basename(file)
                 rdir =  '/'.join([server,folder,remote])
                 if usedatapath:
@@ -482,7 +482,7 @@ class Project(Environment):
                     join = re.search('cat\s+axis=(\d)',reduce)
                     if join:
                         splitpar += ' join=%s' % join.group(1)
-                flow = '|'.join(map(lambda x: ' '.join([split[1],splitpar,x]),flow.split('|')))
+                flow = '|'.join([' '.join([split[1],splitpar,x]) for x in flow.split('|')])
                 for k in split[2]:
                     # par=${SOURCES[k]} -> _par=${SOURCES[k]}
                     flow = re.sub(r'(\S+=\${SOURCES\[%d\]})' % k,'_\\1',flow)
@@ -543,9 +543,9 @@ class Project(Environment):
              Clean(flow,workdir)
 
         if suffix == sfsuffix:
-            binaries = map(lambda x, self=self: self.path + x + '@',
+            binaries = list(map(lambda x, self=self: self.path + x + '@',
                            filter(lambda x, suffix=suffix:
-                                      x[-len(suffix):] == suffix,targets))
+                                      x[-len(suffix):] == suffix,targets)))
             if binaries:
                 Clean(flow,binaries)
 

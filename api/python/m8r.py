@@ -1348,7 +1348,7 @@ class Filter(object):
             
         if mysrcs:    
             command = ' '.join(['< ',str(mysrcs[0]),first]+
-                               map(str,mysrcs[1:])+[pipe,second])  
+                               list(map(str,mysrcs[1:]))+[pipe,second])  
                 
         fail = os.system(command)
         if fail:

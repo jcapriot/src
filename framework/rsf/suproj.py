@@ -62,12 +62,11 @@ class SUProject(rsf.proj.Project):
         if flow == 'Merge':
             if isinstance(source, basestring):
                 sources = source.split()
-                source = map(lambda x: x+pssuffix,sources)
+                source = [x+pssuffix for x in sources]
             self.Command(target+pssuffix,source,
                          '%s %s > $TARGET' % \
                          (os.path.join(bindir,'psmerge'),
-                          " ".join(map (lambda x: ' in=${SOURCES[%d]}' % x,
-                                           range(len(source))))))
+                          " ".join([' in=${SOURCES[%d]}' % x for x in range(len(source))])))
         else:
             # X output
             xflow  = re_plots.sub('\\1x\\2',flow)
@@ -106,7 +105,7 @@ class SUProject(rsf.proj.Project):
             self.Alias('lock',self.lock+['.suproj'])
             self.Alias('test',self.test)
         if self.views:
-            self.Alias('view',map(lambda x: x+'.view',self.views))
+            self.Alias('view',[x+'.view' for x in self.views])
         else:
             self.Command('view',None,'echo "There is nothing to view" ')
 

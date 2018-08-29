@@ -211,8 +211,7 @@ class MainFrame(wx.Frame):
             return
 
         new = '.'.join([os.path.splitext(self.vpl)[0],self.format.lower()])
-        opts = ' '.join(map(lambda x: '='.join([x, self.pars[x]]), 
-                            list(self.pars.keys()))) + ' ' + self.opts
+        opts = ' '.join(['='.join([x, self.pars[x]]) for x in list(self.pars.keys())]) + ' ' + self.opts
     
         fail = vpconvert.convert(self.vpl,new,self.format,None,opts,False)
     
