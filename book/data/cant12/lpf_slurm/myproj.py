@@ -23,7 +23,7 @@ if sys.version_info[0] > 2:
     basestring = str
 
 # The following adds all SCons SConscript API to the globals of this module.
-version = map(int,SCons.__version__.split('.')[:3])
+version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
     from SCons.Script import *
 else:
@@ -441,7 +441,7 @@ class Project(Environment):
                     join = re.search('cat\s+axis=(\d)',reduce)
                     if join:
                         splitpar += ' join=%s' % join.group(1)
-                flow = '|'.join(map(lambda x: ' '.join([split[1],splitpar,x]),flow.split('|')))
+                flow = '|'.join([' '.join([split[1],splitpar,x]) for x in flow.split('|')])
             elif self.jobs > 1 and rsfflow and sfiles:
                 # Split the flow into parallel flows
                 self.__Split(split,reduction,
@@ -510,9 +510,9 @@ class Project(Environment):
                 self.taskonnode[myip]=FALSE
 
         if suffix == sfsuffix:
-            binaries = map(lambda x, self=self: self.path + x + '@',
+            binaries = list(map(lambda x, self=self: self.path + x + '@',
                            filter(lambda x, suffix=suffix:
-                                      x[-len(suffix):] == suffix,targets))
+                                      x[-len(suffix):] == suffix,targets)))
             if binaries:
                 Clean(flow,binaries)
 

@@ -3,9 +3,9 @@ import os
 # prepare for shot-profile migration
 def sppre(ngroup):
 
-    allsou = map(lambda x: '_s%03d.rsf' % x,range(ngroup))
-    allrec = map(lambda x: '_r%03d.rsf' % x,range(ngroup))
-    alljmg = map(lambda x: '_j%03d.rsf' % x,range(ngroup))
+    allsou = ['_s%03d.rsf' % x for x in range(ngroup)]
+    allrec = ['_r%03d.rsf' % x for x in range(ngroup)]
+    alljmg = ['_j%03d.rsf' % x for x in range(ngroup)]
     
     silent = ' -s '
     #silent = ' -Q '
@@ -25,8 +25,8 @@ def sppre(ngroup):
 # prepare for survey sinking migration
 def sgpre(ngroup):
 
-    alldat = map(lambda x: '_e%03d.rsf' % x,range(ngroup))
-    allimg = map(lambda x: '_i%03d.rsf' % x,range(ngroup))
+    alldat = ['_e%03d.rsf' % x for x in range(ngroup)]
+    allimg = ['_i%03d.rsf' % x for x in range(ngroup)]
     
     silent = ' -s '
     #silent = ' -Q '

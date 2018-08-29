@@ -46,7 +46,7 @@ for shot in shots:
          segyread tfile=${TARGETS[1]} hfile=${TARGETS[2]} bfile=${TARGETS[3]}
          ''')
 Flow('bpshots',shots,'cat axis=2 ${SOURCES[1:%d]}' % len(shots))
-Flow('tbpshots',map(lambda x: 't-'+x,shots),
+Flow('tbpshots',['t-'+x for x in shots],
      'cat axis=2 ${SOURCES[1:%d]}' % len(shots))
 
 def getshots(data):

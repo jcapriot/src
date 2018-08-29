@@ -126,7 +126,7 @@ def wave(refl,par):
         inp = 'inp%d' % (i+1)
         Flow('./'+inp+'.rsf',None,
              'echo %s in=$TARGET data_format=ascii_float n1=2 n2=%d' % \
-             ( ' '.join(map(lambda x: ' '.join(map(str,x)),layers[i])),
+             ( ' '.join([' '.join(map(str,x)) for x in layers[i]]),
               len(layers[i])))
         
     Flow(refl+'lay1','inp1','dd form=native | spline %s fp=%s' % (dim1,drvs))
@@ -165,7 +165,7 @@ def dips(refl,ang,par):
         inp = 'inp%d' % (i+1)
         Flow('./'+inp+'.rsf',None,
              'echo %s in=$TARGET data_format=ascii_float n1=2 n2=%d' % \
-             ( ' '.join(map(lambda x: ' '.join(map(str,x)),layers[i])),
+             ( ' '.join([' '.join(map(str,x)) for x in layers[i]]),
               len(layers[i])))
         
     Flow(refl+'lay1','inp1','dd form=native | spline %s fp=%s' % (dim1,drvs))

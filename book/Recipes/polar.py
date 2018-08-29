@@ -124,9 +124,9 @@ def ovl(ovl,jc,jr,custom,cco):
          (5.6,5.10,"0",0,0),stdin=0)
     
     Plot(ovl,
-         map(lambda x: ovl+'%02d' % x,range(jc,int((cco['n']-1)/2*cco['d']+jc),jc))+
-         map(lambda x: ovl+'%03d' % x,range(0,360,jr))+
-         map(lambda x: ovl+'%02dl'% x,range(jc,int((cco['n']-1)/2*cco['d']+jc),jc))+
+         [ovl+'%02d' % x for x in range(jc,int((cco['n']-1)/2*cco['d']+jc),jc)]+
+         [ovl+'%03d' % x for x in range(0,360,jr)]+
+         [ovl+'%02dl'% x for x in range(jc,int((cco['n']-1)/2*cco['d']+jc),jc)]+
          [ovl+'-ann000',ovl+'-ann090',ovl+'-ann180',ovl+'-ann270'],
          'Overlay')
 

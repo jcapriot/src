@@ -17,12 +17,12 @@ nh = 348;  h0 = 0.;       dh = 75*ft;  zr = 25*ft; Tr = 5.08e-3
 nC = 3;    C0 = 800;      dC = 800  # cig position
 nH = 64;                  dH = 1    # subsurface offset
 
-z = map(lambda t: z0 + t * dz, range(nz))
-x = map(lambda t: x0 + t * dx, range(nx))
-T = map(lambda t :T0 + t * dT, range(nT))
-t = map(lambda t: t0 + t * dt, range(nt))
-s = map(lambda t: s0 + t * ds, range(ns))
-h = map(lambda t: h0 + t * dh, range(nh))
+z = [z0 + t * dz for t in range(nz)]
+x = [x0 + t * dx for t in range(nx)]
+T = [T0 + t * dT for t in range(nT)]
+t = [t0 + t * dt for t in range(nt)]
+s = [s0 + t * ds for t in range(ns)]
+h = [h0 + t * dh for t in range(nh)]
 
 freq = 20
 j3 = 15; n3 = 1 + int((nt-1)/j3); d3 = dt * j3
@@ -293,11 +293,11 @@ def update_par(fpar,pseudo):
     for line in lines:
         key,val = line.replace('out : ','')[:-1].split('=')
         par[key] = val
-    Nx,bxl,bxh = map(lambda t: int(par[t]), ['Nx','bxl','bxh'])
+    Nx,bxl,bxh = [int(par[t]) for t in ['Nx','bxl','bxh']]
     if pseudo:
-        NT,bTl,bTh = map(lambda t: int(par[t]), ['Nz','bzl','bzh'])
+        NT,bTl,bTh = [int(par[t]) for t in ['Nz','bzl','bzh']]
     else:
-        Nz,bzl,bzh = map(lambda t: int(par[t]), ['Nz','bzl','bzh'])
+        Nz,bzl,bzh = [int(par[t]) for t in ['Nz','bzl','bzh']]
     n3 = int(par['n3'])
     d3 = float(par['d3'])
     ns = int(par['ns'])

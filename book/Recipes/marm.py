@@ -305,10 +305,10 @@ def interpSep2d(wtlst,uAz,uAx,cAref,n,par):
 
     for wt in wtlst:
         Flow('PP-'+wt,
-             map(lambda x: 'PP-%02d-' % x +wt, range(n)),
+             ['PP-%02d-' % x +wt for x in range(n)],
              'add ${SOURCES[1:%d]}'%n )
         Flow('SS-'+wt,
-             map(lambda x: 'SS-%02d-' % x +wt, range(n)),
+             ['SS-%02d-' % x +wt for x in range(n)],
                  'add ${SOURCES[1:%d]}'%n )
 
 
@@ -348,10 +348,10 @@ def interpSep3d(wt,uAz,uAx,uAy,cAref,n,par,nuu,alpha):
          Flow('HH'+ref,['wt'+wt,'SH'+ref],
               'window n4=1 f4=%d|add ${SOURCES[1]} mode=p'%j )
 
-    Flow('PPT-'+wt, map(lambda x: 'PP'+wt+'-%02d' % x, range(n)),
+    Flow('PPT-'+wt, ['PP'+wt+'-%02d' % x for x in range(n)],
          'add ${SOURCES[1:%d]}'%n)    
-    Flow('SVT-'+wt, map(lambda x: 'SS'+wt+'-%02d' % x, range(n)), 
+    Flow('SVT-'+wt, ['SS'+wt+'-%02d' % x for x in range(n)], 
          'add ${SOURCES[1:%d]}'%n)    
-    Flow('SHT-'+wt, map(lambda x: 'HH'+wt+'-%02d' % x, range(n)), 
+    Flow('SHT-'+wt, ['HH'+wt+'-%02d' % x for x in range(n)], 
          'add ${SOURCES[1:%d]}'%n)  
 

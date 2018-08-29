@@ -296,7 +296,7 @@ def shotcoord(ss,par):
         fdmod.point('ss'+etag,xsou,par['ozimg'],par)
         Plot(ss+etag,fdmod.ssplot('plotcol=5',par))
         
-    Plot(ss,map(lambda x: ss+'-e%03d'%x,range(par['ns'])),
+    Plot(ss,[ss+'-e%03d'%x for x in range(par['ns'])],
          'cat axis=3 space=n ${SOURCES[1:%d]} |' % par['ns']
          + fdmod.ssplot('plotcol=5',par))
 
@@ -323,7 +323,7 @@ def originaldata(sdat,rdat,sd,par):
             Plot(file+etag,file,
                  'window n3=1 f3=%d | put o2=%g |' % (iexp,par['jos']+iexp*par['jds'])
                  + fdmod.dgrey('pclip=99',par))
-            Result(file,map(lambda x: file+'-e%03d' % x,range(par['ns'])),'Movie')
+            Result(file,[file+'-e%03d' % x for x in range(par['ns'])],'Movie')
 
 
     encode.shot2grid('sdata-t','rdata-t','wav','swin',par)
@@ -397,7 +397,7 @@ def simulateddata(sdat,rdat,slo,sd,ss,par):
                     par['oximg'],
                     par['dximg'],) )
     Flow('spk',
-         map(lambda x: 'spk-e%03d'  % x,range(par['ns'])),
+         ['spk-e%03d'  % x for x in range(par['ns'])],
          'cat space=n axis=4 ${SOURCES[1:%d]}'%par['ns'])
 
     # datumed source data
@@ -455,7 +455,7 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
     # concatenate images and CIGs
     for k in ([img,drv,cig]):
         Flow(k+'-all',
-             map(lambda x: k+'-e%03d'  % x,range(par['ns'])),
+             [k+'-e%03d'  % x for x in range(par['ns'])],
              'cat space=n axis=2 ${SOURCES[1:%d]}'%par['ns'])
         Flow(k,k+'-all','stack | spray axis=2 n=1 o=0 d=1')
 
@@ -610,7 +610,7 @@ def adjoint(bsl,dim,swfl,rwfl,slo,ss,par):
              ''' % (par['nht'],par['oht'],par['dht'],spmig.param(par)))
 
     Flow(bsl+'-all',
-         map(lambda x: bsl+'-e%03d'  % x,range(par['ns'])),
+         [bsl+'-e%03d'  % x for x in range(par['ns'])],
          'cat space=n axis=2 ${SOURCES[1:%d]}'%par['ns'])
     Flow(bsl,bsl+'-all','stack | spray axis=2 n=1 o=0 d=1')
 
@@ -651,7 +651,7 @@ def forward(dsl,dim,swfl,rwfl,slo,ss,par):
              ''' % (par['nht'],par['oht'],par['dht'],spmig.param(par)))
 
     Flow(dim+'-all',
-         map(lambda x: dim+'-e%03d'  % x,range(par['ns'])),
+         [dim+'-e%03d'  % x for x in range(par['ns'])],
          'cat space=n axis=2 ${SOURCES[1:%d]}'%par['ns'])
     Flow(dim,dim+'-all','stack | spray axis=2 n=1 o=0 d=1')
 

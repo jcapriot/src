@@ -237,7 +237,7 @@ def script(EDIR,job,imag,cigs,slow,swfl,rwfl,par,ngroup,nshots):
     mycom = 'cp ' + bindir + '/sfsrmig2' + ' '+ EDIR
     os.system(mycom)
     
-    allk = map(lambda x: '%03d' % x,range(ngroup))
+    allk = ['%03d' % x for x in range(ngroup)]
     for k in allk:
         _j = '_' + imag + '.' + k + '.rsf'
         _c = '_' + cigs + '.' + k + '.rsf'
@@ -260,7 +260,7 @@ def execute(EDIR,JOB,ngroup,nshots,imag,cigs,slow,swfl,rwfl,par):
 
     f = open(script,'w')
 
-    allk = map(lambda x: '%03d' % x,range(ngroup))
+    allk = ['%03d' % x for x in range(ngroup)]
     for k in allk:
         _j = '_' + imag + '.' + k + '.rsf'
         _c = '_' + cigs + '.' + k + '.rsf'

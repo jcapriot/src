@@ -667,7 +667,7 @@ def wdfic(cii,
         
         # velocity (overlay)
         Plot(vel+ktag,[vel,rec+ktag,ico],'Overlay')
-    allvxx = map(lambda x: vel+'-%04d' % x,receivers)
+    allvxx = [vel+'-%04d' % x for x in receivers]
     Plot('allvxx',allvxx,'Movie')
 
     # ------------------------------------------------------------ 
@@ -741,7 +741,7 @@ def wdfic(cii,
     # wavefield
     # z*x-xs-t
     Flow(uxx+'-all',
-         map(lambda x: uxx+'-%04d' % x,receivers),
+         [uxx+'-%04d' % x for x in receivers],
          'cat axis=2 space=n ${SOURCES[1:%d]}' % (par['nrec']))
 
     # WDF over x

@@ -127,7 +127,7 @@ def script(EDIR,job,imag,slow,wfld,par,ngroup,nfreqs):
     mycom = 'cp ' + bindir + '/sfcamig' + ' '+ EDIR
     os.system(mycom)
     
-    allk = map(lambda x: '%03d' % x,range(ngroup))
+    allk = ['%03d' % x for x in range(ngroup)]
     for k in allk:
         _i = '_' + imag + '.' + k + '.rsf'
         _w = '_' + wfld + '.' + k + '.rsf'
@@ -147,7 +147,7 @@ def execute(EDIR,JOB,ngroup,nfreqs,imag,slow,wfld,par):
 
     f = open(script,'w')
 
-    allk = map(lambda x: '%03d' % x,range(ngroup))
+    allk = ['%03d' % x for x in range(ngroup)]
     for k in allk:
         _i = '_' + imag + '.' + k + '.rsf'
         _w = '_' + wfld + '.' + k + '.rsf'

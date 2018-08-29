@@ -28,7 +28,7 @@ def retiredplane(mod,s1,s2,aa,vi,vt,n1,o1,d1,n2,o2,d2):
         inp = mod+'inp%d.rsf' % (i+1)
         Flow('./'+inp,None,
              'echo %s in=$TARGET data_format=ascii_float n1=2 n2=%d' % \
-             ( ' '.join(map(lambda x: ' '.join(map(str,x)),layers[i])),
+             ( ' '.join([' '.join(map(str,x)) for x in layers[i]]),
               len(layers[i])))
         
     Flow(mod+'lay1',mod+'inp1','dd form=native | spline %s fp=%s' % (dim1,drvs))
@@ -122,7 +122,7 @@ def dipline(mod,s1,s2,e1,e2,vi,vt,n1,o1,d1,n2,o2,d2):
         inp = mod+'inp%d.rsf' % (i+1)
         Flow('./'+inp,None,
              'echo %s in=$TARGET data_format=ascii_float n1=2 n2=%d' % \
-             ( ' '.join(map(lambda x: ' '.join(map(str,x)),layers[i])),
+             ( ' '.join([' '.join(map(str,x)) for x in layers[i]]),
               len(layers[i])))
         
     Flow(mod+'lay1',mod+'inp1','dd form=native | spline %s fp=%s' % (dim1,drvs))
@@ -180,7 +180,7 @@ def angline(mod,s1,s2,aa,vi,vt,n1,o1,d1,n2,o2,d2):
         inp = mod+'inp%d.rsf' % (i+1)
         Flow('./'+inp,None,
              'echo %s in=$TARGET data_format=ascii_float n1=2 n2=%d' % \
-             ( ' '.join(map(lambda x: ' '.join(map(str,x)),layers[i])),
+             ( ' '.join([' '.join(map(str,x)) for x in layers[i]]),
               len(layers[i])))
         
     Flow(mod+'lay1',mod+'inp1','dd form=native | spline %s fp=%s' % (dim1,drvs))
@@ -249,7 +249,7 @@ def polargrid(cc,custom,par):
         Flow(cc+'tx'+str(k),cc+'t_','math output="input*cos(%g)" ' % (k*pi/180.))
         plotpolar(cc+'t'+str(k),cc+'tz'+str(k),cc+'tx'+str(k),custom+'')
         
-    allt =  map(lambda x: cc+'t%d.vpl' % x,range(0,360,30))
+    allt =  [cc+'t%d.vpl' % x for x in range(0,360,30)]
     Plot(cc+'t',allt,'Overlay')
 
     Flow(cc+'p_',None,'math n1=360 d1=1 o1=0  output="x1*%g"' % (pi/180.))
@@ -258,7 +258,7 @@ def polargrid(cc,custom,par):
         Flow(cc+'px'+str(l),cc+'p_','math output="%d*cos(input)" ' % l)
         plotpolar(cc+'p'+str(l),cc+'pz'+str(l),cc+'px'+str(l),custom+'')
 
-    allp =  map(lambda x: cc+'p%d.vpl' % x,range(30,91,30))
+    allp =  [cc+'p%d.vpl' % x for x in range(30,91,30)]
     Plot(cc+'p',allp,'Overlay')
     
     Plot(cc,[cc+'t',cc+'p'],'Overlay')

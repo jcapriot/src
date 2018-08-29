@@ -138,7 +138,7 @@ down = '''
 44236
 '''
 
-down = map(int,down.split())
+down = list(map(int,down.split()))
 ind = arange(len(down))
 width=0.75
 
