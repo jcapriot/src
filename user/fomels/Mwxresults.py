@@ -125,8 +125,7 @@ class TestFrame(wx.Frame):
         sys.exit()
 
     def flipit(self,event):
-        figs = map(lambda x: 'Fig/%s.vpl' % x,
-                   filter(lambda y: self.flip[y],self.results))
+        figs = ['Fig/%s.vpl' % x for x in filter(lambda y: self.flip[y],self.results)]
         if figs:
             self.pid = os.fork()
             if not self.pid:

@@ -114,7 +114,7 @@ def get_page_list(hcp, verb):
     p0 = '<a href="'
     p1 = '" title="'
     p2 = '/%s/' % hcp['wiki_basenm']
-    list2 = map(lambda x: after(before(x.lstrip(p0),p1),p2), list1)
+    list2 = [after(before(x.lstrip(p0),p1),p2) for x in list1]
     ivlad.msg('...done', verb)
     return sorted(list2)
 
@@ -293,7 +293,7 @@ def inspect_doc_dir(docdir_url, docdir_local, docs_to_download):
     s2 = after(s1,just_before_section)
     s3 = before(s2,just_after_section)
     list1 = s3.split('<a href="')
-    list2 = map(lambda x: before(x,'">').strip(),list1)
+    list2 = [before(x,'">').strip() for x in list1]
     list2.remove('-')
     for entry in list2:
         local_node = os.path.join(docdir_local, entry)

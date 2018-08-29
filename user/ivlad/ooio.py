@@ -57,7 +57,7 @@ class BaseFile:
         attribs = self.__dict__
         akeys = list(attribs.keys())
         akeys.sort()
-        max_nm_len = max(map(len,akeys))
+        max_nm_len = max(list(map(len,akeys)))
         ivlad.msg(ivlad.hr)
         ivlad.msg(varname + ': instance of ' + self.__class__.__name__)
         indent = '  '

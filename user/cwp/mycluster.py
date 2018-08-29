@@ -583,7 +583,7 @@ def End(**kw):
 
                 i += 1
 
-            SCONSIGNS = map(lambda x: pbs_dirt + '/' + x, SCONSIGNS)
+            SCONSIGNS = [pbs_dirt + '/' + x for x in SCONSIGNS]
 
             print('Making job files...')
             i = 0

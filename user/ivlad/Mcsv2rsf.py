@@ -89,7 +89,7 @@ def main(par):
     for line in stdin:
         if line == []: # throw away blank lines
             continue
-        curline = [float(x) for x in map(lambda x: x or '0', line)]
+        curline = [float(x) for x in [x or '0' for x in line]]
         if numtype == 'int':
             curline = [int(x) for x in curline]
         lines.append(curline)

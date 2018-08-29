@@ -61,8 +61,7 @@ def showall():
 
 def flipit():
     global results, pid, flip
-    figs = map(lambda x: 'Fig/%s.vpl' % x,
-               filter(lambda y: flip[y].get(),results))
+    figs = ['Fig/%s.vpl' % x for x in filter(lambda y: flip[y].get(),results)]
     if figs:
             pid = os.fork()
             if not pid:
@@ -84,7 +83,7 @@ results = commands.getoutput("scons -s results").split()
 c = results[-1:][0]
 if (c < 'A' or c > 'z'): 
     results.pop() # remove scons junk
-length = max(map(len,results))
+length = max(list(map(len,results)))
 
 def show(fig):
     def showfig():
