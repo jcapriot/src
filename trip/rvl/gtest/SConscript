@@ -68,7 +68,7 @@ if os.path.exists(thispath+'/lib'):
     liblist.append('lib'+thisname+'.a')
 
 # add other standard packages - headers in "include", library in "lib" with title
-# = lib[basename of package].a 
+# = lib[basename of package].a
 for n in deplist:
 # if root undefined, then not in madagascar environment
     # Madagascar branch
@@ -83,11 +83,11 @@ for n in deplist:
     testlibdir=testpath+'/lib'
     testlib='lib'+os.path.basename(testpath)+'.a'
     #    print 'testing for '+testlibdir
-    # only test for lib dir - lib may not yet be built! 
+    # only test for lib dir - lib may not yet be built!
     if os.path.exists(testlibdir):
         liblist.append(testlib)
         # Madagascar branch
-	if root:
+        if root:
             libdirlist.append(testbuildpath + '/lib')
         # Standalone branch
         else:
@@ -130,7 +130,7 @@ if os.path.exists(thispath+'/lib'):
     # build in lib
     SConscript('lib/SConscript')
 
-#test for main - build executables 
+#test for main - build executables
 if os.path.exists(thispath+'/main'):
     if root:
         Export('env root pkgdir bindir cpplist liblist libname libdirlist')
@@ -138,7 +138,7 @@ if os.path.exists(thispath+'/main'):
         Export('vars cpplist liblist libname libdirlist')
     SConscript('main/SConscript')
 
-#test for test flag, test source directories - build executables, run tests 
+#test for test flag, test source directories - build executables, run tests
 if testflag == 'yes':
    if os.path.exists('testsrc'):
        Export('vars', 'cpplist','liblist','libdirlist')
@@ -146,5 +146,3 @@ if testflag == 'yes':
    if os.path.exists('test'):
        Export('vars', 'cpplist','liblist','libdirlist')
        SConscript('test/SConscript')
-
-
