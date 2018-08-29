@@ -46,7 +46,7 @@ env.Install(bindir,'sfversion')
 
 env.Command('sfdoc','sfdoc.py','echo "#!%s" > $TARGET && cat $SOURCE >> $TARGET' % sys.executable)
 binary = env.Install(bindir,'sfdoc')
-env.AddPostAction(binary,Chmod(binary,0755))
+env.AddPostAction(binary,Chmod(binary,0o755))
 
 SConscript(dirs='gui',name='SConscript',exports='env bindir pkgdir system user dotproj')
 

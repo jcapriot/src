@@ -17,7 +17,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 from __future__ import print_function
-import sys,  os, signal, types
+import sys,  os, signal
+
+if sys.version_info>=2:
+    basestring=str
 
 def handler(signum, frame):
     'signal handler for abortion [Ctrl-C]'
@@ -50,11 +53,11 @@ def tour(dirs=[],comm='',verbose=1):
 
     cwd = os.getcwd()
     for subdir in dirs:
-        if type(comm) is types.ListType:
-            mycomm = comm.pop(0)
-        else:
+        if isinstance(comm, basestring):
             mycomm = comm
-            
+        else:
+            mycomm = list(comm).pop(0)
+
         os.chdir (cwd)
         try:
             os.chdir (subdir)
@@ -72,7 +75,7 @@ def tour(dirs=[],comm='',verbose=1):
 
 if __name__ == "__main__":
     import glob
-    
+
     # own user interface instead of that provided by RSF's Python API
     # because this script has users that do not have RSF
     if len(sys.argv) < 2:

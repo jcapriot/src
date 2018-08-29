@@ -15,7 +15,10 @@ from __future__ import print_function
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import rsf.proj, os, re,  sys, array, types
+import rsf.proj, os, re,  sys, array
+
+if sys.version_info[0]>2:
+    basestring = str
 
 susuffix = '.su'
 pssuffix = '.eps'
@@ -57,7 +60,7 @@ class SUProject(rsf.proj.Project):
             flow = source
             source = target
         if flow == 'Merge':
-            if not type(source) is types.ListType:
+            if isinstance(source, basestring):
                 sources = source.split()
                 source = map(lambda x: x+pssuffix,sources)
             self.Command(target+pssuffix,source,

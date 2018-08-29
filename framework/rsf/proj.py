@@ -16,9 +16,12 @@ from __future__ import print_function
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import os, stat, sys, types, copy, re,  urllib, ftplib, socket
+import os, stat, sys, copy, re,  urllib, ftplib, socket
 import rsf.conf, rsf.path, rsf.flow, rsf.prog, rsf.node
 import SCons
+
+if sys.version_info[0]>2:
+    basestring = str
 
 # The following adds all SCons SConscript API to the globals of this module.
 version = map(int,SCons.__version__.split('.')[:3])
@@ -78,13 +81,13 @@ def echo(target,source,env):
     obj = env.get('out','')
     if obj:
         trg = open(str(target[0]),'w')
-        if type(obj) is types.ListType:
+        if hasattr(obj, '__iter__') and not isinstance(obj, basestring):
             obj = ' '.join(obj)
         trg.write(obj+'\n')
         trg.close()
     err = env.get('err','')
     if err:
-        if type(err) is types.ListType:
+        if hasattr(err, '__iter__') and not isinstance(err, basestring):
             err = ' '.join(err)
         sys.stderr.write(err+'\n')
     return 0
@@ -442,16 +445,16 @@ class Project(Environment):
         if not flow:
             return None
 
-        if type(target) is types.ListType:
-            tfiles = target
-        else:
+        if isinstance(target, basestring):
             tfiles = target.split()
+        else:
+            tfiles = list(target)
 
         if source:
-            if type(source) is types.ListType:
-                sfiles = source
-            else:
+            if isinstance(source, basestring):
                 sfiles = source.split()
+            else:
+                sfiles = list(source)
         else:
             sfiles = []
 
@@ -555,13 +558,15 @@ class Project(Environment):
             flow = source
             source = target
         if 'Annotate'==flow:
-            if not type(source) is types.ListType:
+            if isinstance(source, basestring):
                 source = source.split()
+            else:
+                source = list(source)
             flow = os.path.join(self.bindir,'vpannotate') + \
               ' text=${SOURCES[1]} batch=y ${SOURCES[0]} $TARGET'
             kw.update({'src_suffix':vpsuffix,'stdin':0,'stdout':-1})
         elif flow in combine:
-            if not type(source) is types.ListType:
+            if isinstance(source, basestring):
                 source = source.split()
             flow = combine[flow](*[self.vppen,len(source)])
             if vppen:
@@ -630,7 +635,7 @@ class Project(Environment):
         elif server=='local':
             self.data.append('LOCAL')
         else:
-            if not type(files) is types.ListType:
+            if isinstance(files, basestring):
                 files = files.split()
             for fil in files:
                 if server != dataserver:

@@ -14,9 +14,12 @@ from __future__ import print_function
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-import os,  re, glob, time, types, sys
+import os,  re, glob, time, sys
 
 import SCons
+
+if sys.version_info[0] >2:
+    basestring = str
 
 # The following adds all SCons SConscript API to the globals of this module.
 version = map(int,SCons.__version__.split('.')[:3])
@@ -264,11 +267,12 @@ def thesis_intro(target=None,source=None,env=None):
         if univ == 'UT':
             super = env.get('supervisor')
             if super:
-                if type(super) is types.ListType:
+                if isinstance(super,basestring):
+                    intro.write('\\supervisor{%s}\n' % super)
+                else:
+                    super = list(super)
                     print(super)
                     intro.write('\\supervisor[%s]{%s}\n' % (super[0],super[1]))
-                else:
-                    intro.write('\\supervisor{%s}\n' % super)
             intro.write('\\committeemembers')
         for i in range(4):
             if len(committee) > i:
@@ -494,7 +498,8 @@ class RSFReport(Environment):
     def Papers(self,papers,**kw):
         self.collection = 1
         # get list of papers
-        if type(papers[0]) is types.TupleType:
+        papers = list(papers) #ensure papers is a list
+        if isinstance(papers[0], tuple):
             sections = Sections(papers)
             kw.update({'sections':sections})
             papers = Split(' '.join(map(lambda x: x[1],papers)))

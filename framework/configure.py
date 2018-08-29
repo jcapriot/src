@@ -13,7 +13,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import sys, os, glob,  re, types
+import sys, os, glob,  re
 
 try: # The subprocess module was introduced in Python 2.4
     import subprocess
@@ -22,6 +22,9 @@ try: # The subprocess module was introduced in Python 2.4
 except: # Python < 2.4
     import commands
     have_subprocess=False
+
+if sys.version_info[0]>2:
+    basestring = str
 
 import SCons
 
@@ -41,7 +44,7 @@ unix_failure = 1
 def path_get(context,name,new=None):
     'get a path list'
     path = context.env.get(name,[])
-    if type(path) is not types.ListType:
+    if isinstance(path, basestring):
         path = path.split(',')
     if new:
         path.append(new)

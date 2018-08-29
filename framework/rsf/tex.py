@@ -24,6 +24,9 @@ import rsf.prog
 
 import SCons
 
+if sys.version_info[0]>2:
+    basestring = str
+
 # The following adds all SCons SConscript API to the globals of this module.
 version = map(int,SCons.__version__.split('.')[:3])
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
@@ -244,8 +247,11 @@ def latify(target=None,source=None,env=None):
     else:
         notendfloat=True
     if use:
-         if type(use) is not types.ListType:
+         if isinstance(use, basestring):
               use = use.split(',')
+         else:
+             # ensure use is a list
+             use = list(use)
          for package in use:
               options = re.match(r'(\[[^\]]*\])\s*(\S+)',package)
               if options:
