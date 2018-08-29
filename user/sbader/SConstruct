@@ -113,8 +113,8 @@ if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
 
-    docs = list([env.Doc(prog,'M' + prog) for prog in mains]) +  \
-           list([env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains])
+    docs = [env.Doc(prog,'M' + prog) for prog in mains] +  \
+           [env.Doc(prog,'M'+prog+'.py',lang='python') for prog in pymains]
     env.Depends(docs,'#/framework/rsf/doc.py')
 
     doc = env.RSF_Docmerge(main,docs)

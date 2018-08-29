@@ -54,7 +54,7 @@ ccmains = Split(ccprogs)
 subs = Split(subs)
 
 if 'c++' in env.get('API',[]):
-    objs = list([env.StaticObject(x+'.cc') for x in subs])
+    objs = [env.StaticObject(x+'.cc') for x in subs]
 
 for prog in ccmains:
     if 'c++' in env.get('API',[]):

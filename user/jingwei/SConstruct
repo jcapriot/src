@@ -101,9 +101,9 @@ if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
 
-    docs = list([env.Doc(prog,'M' + prog) for prog in cmains]) + \
-           list([env.Doc(prog,'M%s.cc' % prog, lang='c++') for prog in mains]) + \
-           list([env.Doc(prog,'M%s.cc' % prog, lang='c++') for prog in smains])
+    docs = [env.Doc(prog,'M' + prog) for prog in cmains] + \
+           [env.Doc(prog,'M%s.cc' % prog, lang='c++') for prog in mains] + \
+           [env.Doc(prog,'M%s.cc' % prog, lang='c++') for prog in smains]
     env.Depends(docs,'#/framework/rsf/doc.py')
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)
