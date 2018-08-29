@@ -46,7 +46,7 @@ def main(par):
             valid_files_list += \
             ivlad.list_valid_rsf_files(root, files, chk4nan)
     else:
-        files = filter(lambda x:os.path.isfile(x),os.listdir(mydir))
+        files = [x for x in os.listdir(mydir) if os.path.isfile(x)]
         valid_files_list += \
         ivlad.list_valid_rsf_files(mydir, files, chk4nan)
 

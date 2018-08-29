@@ -65,8 +65,7 @@ def syswait(comm):
         os._exit(0)
 
 def subdirs():
-    return filter(lambda x: x[-5:] != '_html',
-                  filter(os.path.isdir,glob.glob('[a-z]*')))
+    return [x for x in list(filter(os.path.isdir,glob.glob('[a-z]*'))) if x[-5:] != '_html']
 
 def getversion(target=None,source=None,env=None):
     label = env.get('version')

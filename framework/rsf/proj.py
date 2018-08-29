@@ -130,8 +130,7 @@ def retrieve(target=None,source=None,env=None):
             print('Could not establish connection with "%s/%s" ' % (server,
                                                                     folder))
             return 3
-        for file in filter(lambda x: not os.path.abspath(x).startswith(env.path),
-                           list(map(str,target))):
+        for file in [x for x in list(map(str,target)) if not os.path.abspath(x).startswith(env.path)]:
             remote = os.path.basename(file)
             if usedatapath:
                 localfile=env.path+remote
@@ -167,8 +166,7 @@ def retrieve(target=None,source=None,env=None):
                     os.unlink(file)
                     return 6
         else:
-            for file in filter(lambda x: not os.path.abspath(x).startswith(env.path),
-                               list(map(str,target))):
+            for file in [x for x in list(map(str,target)) if not os.path.abspath(x).startswith(env.path)]:
                 remote = os.path.basename(file)
                 rdir =  '/'.join([server,folder,remote])
                 if usedatapath:
@@ -544,8 +542,8 @@ class Project(Environment):
 
         if suffix == sfsuffix:
             binaries = list(map(lambda x, self=self: self.path + x + '@',
-                           filter(lambda x, suffix=suffix:
-                                      x[-len(suffix):] == suffix,targets)))
+                           list(filter(lambda x, suffix=suffix:
+                                      x[-len(suffix):] == suffix,targets))))
             if binaries:
                 Clean(flow,binaries)
 

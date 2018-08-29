@@ -131,8 +131,8 @@ def latexscan(node,env,path):
     if top[-4:] != '.ltx':
         return []
     contents = node.get_contents()
-    inputs = filter(os.path.isfile,
-                    [x+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)])
+    inputs = list(filter(os.path.isfile,
+                    [x+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)]))
     inputs.append(top[:-4]+'.tex')
     resdir = env.get('resdir','Fig')
     inputdir = env.get('inputdir','.')

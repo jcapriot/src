@@ -98,8 +98,7 @@ if __name__ == "__main__":
         verbose = 1
 
     comm = ' '.join(sys.argv)
-    dirs = filter(lambda x: x[-5:] != '_html',
-                  filter(os.path.isdir,glob.glob('[a-z]*')))
+    dirs = [x for x in list(filter(os.path.isdir,glob.glob('[a-z]*'))) if x[-5:] != '_html']
 
     tour(sorted(dirs),comm,verbose)
     sys.exit(0)

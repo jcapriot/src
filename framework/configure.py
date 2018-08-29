@@ -477,9 +477,7 @@ def x11(context):
     oldpath = path_get(context,'CPPPATH')
 
     res = None
-    for path in filter(lambda x:
-                       os.path.isfile(os.path.join(x,'X11/Xaw/Label.h')),
-                       INC+xinc):
+    for path in [x for x in INC+xinc if os.path.isfile(os.path.join(x,'X11/Xaw/Label.h'))]:
         context.env['CPPPATH'] = oldpath + [path,]
         res = context.TryCompile(text,'.c')
 
@@ -1242,9 +1240,9 @@ def cuda(context):
         context.env['CC'] = nvcc
         context.env['CFLAGS'] = cudaflags
         context.env['LIBS'] = ['cudart']
-        context.env['LIBPATH'] = filter(os.path.isdir,
+        context.env['LIBPATH'] = list(filter(os.path.isdir,
                                         [os.path.join(CUDA_TOOLKIT_PATH,'lib64'),
-                                        os.path.join(CUDA_TOOLKIT_PATH,'lib')])
+                                        os.path.join(CUDA_TOOLKIT_PATH,'lib')]))
         context.env['LINKFLAGS'] = ''
         res = context.TryLink(text,'.c')
         context.env['CC'] = cc
@@ -2267,15 +2265,13 @@ def java(context):
 def gcc(context):
     '''Handle dynamic gcc libraries.'''
     libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
-    libs = filter (lambda x: re.search('gcc',x) and os.path.isdir(x),
-                   libdirs)
+    libs = [x for x in libdirs if re.search('gcc',x) and os.path.isdir(x)]
     context.env.Append(ENV={'LD_LIBRARY_PATH':':'.join(libs)})
 
 def intel(context):
     '''Trying to fix weird intel setup.'''
     libdirs = os.environ.get('LD_LIBRARY_PATH','').split(':')
-    libs = filter (lambda x: re.search('intel',x) and os.path.isdir(x),
-                   libdirs)
+    libs = [x for x in libdirs if re.search('intel',x) and os.path.isdir(x)]
     context.env.Append(ENV={'LD_LIBRARY_PATH':':'.join(libs)})
     for key in ('INTEL_FLEXLM_LICENSE','INTEL_LICENSE_FILE','IA32ROOT'):
         license = os.environ.get(key)

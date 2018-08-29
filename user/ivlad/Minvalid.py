@@ -45,7 +45,7 @@ def main(par):
             invalid_files_list += \
             ivlad.list_invalid_rsf_files(root, files, chk4nan)
     else:
-        files = filter(lambda x:os.path.isfile(x),os.listdir(mydir))
+        files = [x for x in os.listdir(mydir) if os.path.isfile(x)]
         invalid_files_list += \
         ivlad.list_invalid_rsf_files(mydir, files, chk4nan)
 

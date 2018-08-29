@@ -104,10 +104,10 @@ if __name__ == "__main__":
     vp.fat(3)
     
     vp.color(7)
-    filter(vp,8,4,'A')
+    list(filter(vp,8,4,'A'))
     
     vp.color(6)
-    filter(vp,6,6,'B')
+    list(filter(vp,6,6,'B'))
 
     sys.exit(0)
 

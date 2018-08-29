@@ -61,7 +61,7 @@ def showall():
 
 def flipit():
     global results, pid, flip
-    figs = ['Fig/%s.vpl' % x for x in filter(lambda y: flip[y].get(),results)]
+    figs = ['Fig/%s.vpl' % x for x in [y for y in results if flip[y].get()]]
     if figs:
             pid = os.fork()
             if not pid:

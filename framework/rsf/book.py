@@ -179,7 +179,7 @@ def report_toc(target=None,source=None,env=None):
     list(map(lambda x:
         toc.write('\TOCentry{%s}{\pageref{%s.start}}\n' %
                   (misc[x],os.path.splitext(x)[0])),
-        filter(os.path.isfile,list(misc.keys()))))
+        list(filter(os.path.isfile,list(misc.keys())))))
     toc.write('\n\\cleardoublepage\n')
     toc.close()
     return 0
@@ -515,7 +515,7 @@ class RSFReport(Environment):
         self.Command('toc.tex',papers, **kw)
         rsf.tex.Paper('toc',lclass='georeport',scons=0)
         list(map(lambda tex: self.Depends('toc.tex',tex),
-            filter(os.path.isfile,list(misc.keys()))))
+            list(filter(os.path.isfile,list(misc.keys())))))
         # make title page
         kw.update({'action':Action(report_tpg),
                    'varlist':['group','title1','authors','title2','line',

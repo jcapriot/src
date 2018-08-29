@@ -46,7 +46,7 @@ def main(par):
             valid_files_list += \
             ivlad.list_valid_rsf_files(root, files, chk4nan)
     else:
-        files = filter(lambda x:os.path.isfile(x),os.listdir(mydir))
+        files = [x for x in os.listdir(mydir) if os.path.isfile(x)]
         valid_files_list += \
         ivlad.list_valid_rsf_files(mydir, files, chk4nan=False)
 
@@ -60,8 +60,7 @@ def main(par):
         hdr_str = ivlad.getout('find',[mydir, '-type', 'f', '-name', '"*.rsf"'])
         hdr_list = hdr_str.split('\n')
     else:
-        hdr_list = filter(lambda x:os.path.isfile(x),
-                          glob.glob(os.path.join(mydir,'*.rsf')))
+        hdr_list = [x for x in glob.glob(os.path.join(mydir,'*.rsf')) if os.path.isfile(x)]
 
     for f in hdr_list:
         ivlad.msg(f)

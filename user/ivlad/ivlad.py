@@ -476,7 +476,7 @@ def list_invalid_rsf_files(dirname, flist, chk4nan=False):
 
     invalid_files = []
 
-    rsf_files = filter(lambda x:os.path.splitext(x)[1]==ext, flist)
+    rsf_files = [x for x in flist if os.path.splitext(x)[1]==ext]
     rsf_files.sort()
 
     for f in rsf_files:
@@ -496,7 +496,7 @@ def list_valid_rsf_files(dirname, flist, chk4nan=False):
 
     valid_files = []
 
-    rsf_files = filter(lambda x:os.path.splitext(x)[1]==ext, flist)
+    rsf_files = [x for x in flist if os.path.splitext(x)[1]==ext]
     rsf_files.sort()
 
     for f in rsf_files:
