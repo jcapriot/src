@@ -52,7 +52,7 @@ for prog in mains:
     bldutil.depends(env,sources,'M'+prog)
 
     if sparsepath and sparselibs:
-        prog = env.Program(prog,map(lambda x: x + '.c',sources))
+        prog = env.Program(prog,[x + '.c' for x in sources])
     else:
         prog = env.RSF_Place('sf'+prog,None,var='SPARSELIBS',
                              package='suitesparse')
@@ -67,7 +67,7 @@ if root:
     user = os.path.basename(os.getcwd())
     main = 'sf%s.py' % user
     
-    docs = map(lambda prog: env.Doc(prog,'M' + prog),mains)
+    docs = [env.Doc(prog,'M' + prog) for prog in mains]
     env.Depends(docs,'#/framework/rsf/doc.py')	
     doc = env.RSF_Docmerge(main,docs)
     env.Install(pkgdir,doc)
