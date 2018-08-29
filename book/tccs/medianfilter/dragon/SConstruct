@@ -22,7 +22,7 @@ w1= 6
 
 Flow('frame.asc',None,
      'echo %s n1=10 data_format=ascii_int in=$TARGET' % \
-     string.join(map(str,(x,y,x+w,y,x+w,y+w1,x,y+w1,x,y))))
+     ' '.join(map(str,(x,y,x+w,y,x+w,y+w1,x,y+w1,x,y))))
 Plot('frame','frame.asc',
      '''
      dd type=complex form=native |
@@ -133,7 +133,7 @@ w01= 6
 
 Flow('frame1.asc',None,
      'echo %s n1=10 data_format=ascii_int in=$TARGET' % \
-     string.join(map(str,(x1,y1,x1+w0,y1,x1+w0,y1+w01,x1,y1+w01,x1,y1))))
+     ' '.join(map(str,(x1,y1,x1+w0,y1,x1+w0,y1+w01,x1,y1+w01,x1,y1))))
 Plot('frame1','frame1.asc',
      '''
      dd type=complex form=native |

@@ -55,8 +55,8 @@ Result('slena',grey('Seismic Lena',0))
 
 
 nsp = 100
-k2 = string.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)),',')
-k1 = string.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)),',')
+k2 = ','.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)))
+k1 = ','.join(map(lambda x: str(random.randint(1,512)), xrange(nsp)))
     
 Flow('imps',None,
      '''
@@ -66,7 +66,7 @@ Flow('imps',None,
      ''' % (nsp,k1,k2))
 Result('imps',grey('Wavelets',0))
 
-k1 = string.join(map(lambda x: str(x+1), xrange(512)),',')
+k1 = ','.join(map(lambda x: str(x+1), xrange(512)))
 
 Flow('spikes',None,
      'math n1=128 n2=128 output="abs(x1-x2)" | mask max=0.5 | dd type=float') 

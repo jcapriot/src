@@ -185,7 +185,7 @@ w1=4.5
 
 ## frame2
 Flow('frame2.asc',None,'echo %s n1=10 data_format=ascii_float in=$TARGET'% \
-	string.join(map(str,(x2,y2,x2+w,y2,x2+w,y2+w2,x2,y2+w2,x2,y2))))
+	' '.join(map(str,(x2,y2,x2+w,y2,x2+w,y2+w2,x2,y2+w2,x2,y2))))
 Plot('frame2','frame2.asc',
 	'''
 	dd type=complex form=native |
@@ -194,7 +194,7 @@ Plot('frame2','frame2.asc',
 	''')
 ## frame1
 Flow('frame1.asc',None,'echo %s n1=10 data_format=ascii_float in=$TARGET'% \
-	string.join(map(str,(x1,y1,x1+w,y1,x1+w,y1+w1,x1,y1+w1,x1,y1))))
+	' '.join(map(str,(x1,y1,x1+w,y1,x1+w,y1+w1,x1,y1+w1,x1,y1))))
 Plot('frame1','frame1.asc',
 	'''
 	dd type=complex form=native |

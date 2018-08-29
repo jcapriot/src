@@ -25,7 +25,7 @@ par['iframe']=4
 par['dabc']='y'
 #-------------------------------------------------------------
 def arr2str(array,sep=' '):
-    return string.join(map(str,array),sep)
+    return sep.join(map(str,array))
 #-------------------------------------------------------------
 # Create Layers
 layers = ((0.01,0.01,0.01,0.01,0.01),
@@ -35,7 +35,7 @@ layers = ((0.01,0.01,0.01,0.01,0.01),
 n1 = len(layers[0])
 n2 = len(layers)
 
-layers1 = string.join(map(arr2str,layers),' ')
+layers1 = ' '.join(map(arr2str,layers))
 
 Flow('layers',None,
      '''

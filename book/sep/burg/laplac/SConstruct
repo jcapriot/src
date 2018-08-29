@@ -38,7 +38,7 @@ Flow('lag2.asc',None,
      echo %s n1=%d n=100,100
      data_format=ascii_int
      in=$TARGET
-     ''' % (string.join(map(str,lag),' '),len(lag)))
+     ''' % (' '.join(map(str,lag)),len(lag)))
 
 for asc in ['lag','lag2']+filter.keys():
     Flow(asc,asc+'.asc','dd form=native')

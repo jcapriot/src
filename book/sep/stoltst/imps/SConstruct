@@ -77,7 +77,7 @@ for c in range(2):
     casc = 'casc%d' % c
     nc = ncut[c]-1
     Flow(casc,'vel1','cascade ncut=%d ntcut=%s' % 
-         (nc-1,string.join(map(str,ntcut[c][1:nc]),',')))
+         (nc-1,','.join(map(str,ntcut[c][1:nc]))))
     
     data = 'spike'
     migs = []

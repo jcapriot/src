@@ -72,13 +72,13 @@ n1 = 512
 n2 = 256
 
 nr = n1
-k1 = string.join(map(rnd,range(nsp)),',')
+k1 = ','.join(map(rnd,range(nsp)))
 nr = n2
-k2 = string.join(map(rnd,range(nsp)),',')
+k2 = ','.join(map(rnd,range(nsp)))
 
 nr = 12544
 nsp=10000
-k3 = string.join(map(rnd,range(nsp)),',')
+k3 = ','.join(map(rnd,range(nsp)))
 
 #Flow('seislets','conflictn-slet dip',
 #     '''

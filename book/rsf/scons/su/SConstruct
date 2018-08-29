@@ -30,8 +30,8 @@ def model(refl):
 Flow('model',None,
      '''
      echo %s | unif2 ninf=4 nx=%d nz=%d dx=%g dz=%g v00=%s
-     ''' % (string.join(map(model,[[0,0]]+reflectors)),nx,nz,dx,dz,
-            string.join(map(str,velocities),',')))
+     ''' % (' '.join(map(model,[[0,0]]+reflectors)),nx,nz,dx,dz,
+            ','.join(map(str,velocities))))
 Result('model',
        '''
        image n1=%d f1=%g d1=%g n2=%d f2=%d d2=%d windowtitle="Model"
@@ -50,7 +50,7 @@ Flow('data',None,
      nxs=12 fxs=1.4 dxs=-0.1 |
      suchw key1=cdp key2=gx key3=sx b=1 c=1 d=2 |
      suaddnoise sn=50 f1=4.0 f2=8.0 f3=20.0 f4=25.0 seed=2004
-     ''' % string.join(map(ref,reflectors)))
+     ''' % ' '.join(map(ref,reflectors)))
 
 Result('data',
        '''
@@ -105,7 +105,7 @@ if not os.path.isfile('stkvel.p1'): # interactive processing
                ''' % (n1,d1,n1,d1,cdp),stdin=0)
     Command('stkvel.p1',pick,
             'echo cdp=%s > $TARGET && cat $SOURCES >> $TARGET' %
-            string.join(map(str,cdps),','))
+            ','.join(map(str,cdps)))
 
 Flow('nmo','data stkvel.p1','sunmo par=${SOURCES[1]}')
 Result('nmo',

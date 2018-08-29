@@ -93,7 +93,7 @@ for case in ('wcos','wcost'):
     Flow(case,[case+'1',case+'2'],
          '''
          cat axis=3 ${SOURCES[1]} |
-         smooth rect1=40 rect2=40 
+         smooth rect1=40 rect2=40
          ''')
     Result(case,[case+'1',case+'2'],'OverUnderAniso')
 
@@ -115,14 +115,14 @@ Flow(['time']+pnames,'wcos',
      dijkstra ref1=150 ref2=18
      nf=%d paths=%s fin1=%s fin2=%s
      ''' % (len(pnames),
-            string.join(map(lambda x: '${TARGETS[%d]}' % x,
-                            range(1,len(pnames)+1)),':'),
-            string.join(map(str,paths[0]),','),
-            string.join(map(str,paths[1]),',')))
+            ':'.join(map(lambda x: '${TARGETS[%d]}' % x,
+                            range(1,len(pnames)+1))),
+            ','.join(map(str,paths[0])),
+            ','.join(map(str,paths[1]))))
 Plot('time',
      '''
      grey color=j allpos=y
-     title="Minimum Time" transp=n yreverse=n 
+     title="Minimum Time" transp=n yreverse=n
      screenht=2.8 screenwd=14.6
      label1=Inline unit1=m label2=Crossline unit2=m
      labelsz=6 wanttitle=n
@@ -137,17 +137,17 @@ Flow('wtime2','wcos',
 Result('wtime2',
        '''
        grey color=j allpos=y
-       title="Minimum Time" transp=n yreverse=n 
+       title="Minimum Time" transp=n yreverse=n
        screenht=2.8 screenwd=14.6
        label1=Inline unit1=m label2=Crossline unit2=m
        labelsz=6 wanttitle=n
        ''')
-    
+
 for path in pnames:
     Plot('w'+path,path,plotpath(7,1))
     Plot('b'+path,path,plotpath(0,6))
     Plot(path,['b'+path,'w'+path],'Overlay')
-    
+
 Result('wtime',['time']+pnames,'Overlay')
 
 Flow('wpick3','dips seed wcos',
@@ -167,7 +167,7 @@ Result('wflat',cubeplot(' '))
 
 Flow('wcont','win',
      '''
-     window n2=1 n3=1 f2=150 f3=18 | pad beg1=25 end1=35 | envelope | 
+     window n2=1 n3=1 f2=150 f3=18 | pad beg1=25 end1=35 | envelope |
      max1 | window n1=25 | real
      ''')
 Plot('wcont','wpick wcont',
@@ -180,7 +180,7 @@ Result('wcont','win wcont','Overlay')
 
 Flow('k1.p','wcont',
      '''
-     math output="1.5+(input-612.5)/12.5" | 
+     math output="1.5+(input-612.5)/12.5" |
      dd type=int form=ascii format="%d," line=25 --out=$TARGET
      ''',stdout=0)
 Command('k1.par','k1.p',

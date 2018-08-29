@@ -1,7 +1,7 @@
 from rsf.proj import *
 from math import *
 import sys
-import string, spmig, adcig
+import spmig, adcig
 
 # ------------------------------------------------------------
 par = {
@@ -88,33 +88,33 @@ deg  = (0,15,30,45,60)
 ndeg = len(deg)
 
 # ------------------------------------------------------------
-ppan = string.join(map(lambda a: str(a),deg),',')
-psan = string.join(map(lambda a: str(
+ppan = ','.join(map(lambda a: str(a),deg))
+psan = ','.join(map(lambda a: str(
     atan(tan( ( asin(sin(a*pi/180)/par['vpvs']) + a*pi/180 )/2 ))/pi*180
-    ),deg),',')
+    ),deg))
 
-tppan = string.join(map(lambda a: str(
+tppan = ','.join(map(lambda a: str(
     tan(a*pi/180)
-    ),deg),',')
-tpsan = string.join(map(lambda a: str(
+    ),deg))
+tpsan = ','.join(map(lambda a: str(
     tan( ( asin(sin(a*pi/180)/par['vpvs']) + a*pi/180 )/2 )
-    ),deg),',')
+    ),deg))
 
-dpth = string.join(map(lambda a: str(
+dpth = ','.join(map(lambda a: str(
     ( 300+1000*tan(a*pi/180) ) / 5
-    ),deg),',')
-    
+    ),deg))
+
 # ------------------------------------------------------------
 
 Flow('dip',None,
-     'spike n1=%d d1=%g o1=%g n2=%d nsp=%d k2=%s mag=%s' % 
+     'spike n1=%d d1=%g o1=%g n2=%d nsp=%d k2=%s mag=%s' %
      (par['nx'],
       par['dx'],
       par['ox'],
       ndeg,
       ndeg,
-      string.join(map(str,range(1,1+ndeg)),','),
-      string.join(map(lambda a: str(tan(a*pi/180)),deg),',')
+      ','.join(map(str,range(1,1+ndeg))),
+      ','.join(map(lambda a: str(tan(a*pi/180)),deg))
       )
      )
 Flow('ref','dip','math output="300+input*x1" ')
@@ -244,7 +244,7 @@ for case in ('pp','ps'):
                 Flow(ang,[ssk,'vpvp','dipa'],hssk2ang())
             if(case=='ps'):
                 Flow(ang,[ssk,'vpvs','dipa'],hssk2ang())
-                
+
             Plot(  ang,igrey(alabel+OSCR))
             Result(ang,[ang,ovl],'Overlay')
 
@@ -261,7 +261,7 @@ for case in ('pp','ps'):
             Result(ang,[ang,ovl],'Overlay')
 
 # ------------------------------------------------------------
-## 
+##
  # NEW RULES
  ##
 # ------------------------------------------------------------
@@ -284,7 +284,7 @@ Flow('ssk',None,
      n1=%(nz)d d1=%(dz)g o1=%(oz)g
      n2=400    d2=10     o2=1000
      k1=60,113,175,260,406
-     k2=28,35,55,98,190 | 
+     k2=28,35,55,98,190 |
      bandpass fhi=0.03 | smooth rect2=7 repeat=1
      ''' % par)
 Plot('cor',['ssk','vp','vpvs','dipa'],

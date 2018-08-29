@@ -1,5 +1,5 @@
 from rsf.proj import *
-import math, string, random
+import math,  random
 
 random.seed(2004)
 
@@ -44,7 +44,7 @@ for case in range(len(combs)):
     name = 'comb%d' % case
     Flow(name,None,
          'spike n1=%d o1=0 d1=1 nsp=%d k1=%s' %
-         (n1,len(comb),string.join(map(str,comb),',')))
+         (n1,len(comb),','.join(map(str,comb))))
     signals.append(name)
     labels = labels + ':cmb%d' % (case+1)
 
@@ -84,11 +84,11 @@ rand = range(nsig)
 shuffle(rand)
 Flow('head1.asc',None,
      'echo %s n1=%d esize=0 data_format=ascii_float in=$TARGET' %
-     (string.join(map(str,rand)),nsig))
+     (' '.join(map(str,rand)),nsig))
 shuffle(rand)
 Flow('head2.asc',None,
      'echo %s n1=%d esize=0 data_format=ascii_float in=$TARGET' %
-     (string.join(map(str,rand)),nsig))
+     (' '.join(map(str,rand)),nsig))
 
 Plot('randauto',
      'auto head2.asc','headersort head=${SOURCES[1]} |' + \

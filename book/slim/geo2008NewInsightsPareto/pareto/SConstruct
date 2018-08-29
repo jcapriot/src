@@ -47,7 +47,7 @@ amp = np.random.randn(k)
 
 Flow('x0',None,
      'sfspike n1=%d nsp=%d k1=%s mag=%s'
-     %(N,k,string.join(map(str,pos),','),string.join(map(str,amp),',')) )
+     %(N,k,','.join(map(str,pos)),','.join(map(str,amp))) )
 
 ########################################################################
 # COMPUTE PARETO CURVE

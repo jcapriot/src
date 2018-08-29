@@ -29,7 +29,7 @@ Flow('synt','vrms',
      mag=1,1,1,1,-1,1,1,-1,1,1,1,-1,1,1,-1,1,1 |
      bandpass flo=4 fhi=20 |
      inmo velocity=$SOURCE half=n
-     ''' % string.join(map(str,range (100,916,48)),','), stdin=0)
+     ''' % ','.join(map(str,range (100,916,48))), stdin=0)
 Plot('synt','grey title="(a) Clean data"  font=2 labelfat=4')
 Result('synt',
        '''
