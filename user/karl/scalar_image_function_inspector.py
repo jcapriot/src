@@ -91,8 +91,8 @@ class Model(HasTraits):
         x, y = meshgrid(gridx, gridy)
         try:
             d = dict(x=x, y=y)
-            exec "from scipy import *" in d
-            exec "from scipy.special import *" in d
+            exec("from scipy import *", d)
+            exec("from scipy.special import *", d)
             self.zs = eval(self.function, d)
             self.minz = nanmin(self.zs)
             self.maxz = nanmax(self.zs)

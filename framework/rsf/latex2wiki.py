@@ -62,7 +62,7 @@ def end_list(s):
     item = item[:-1] # remove last char
     if not item:
         el = "\n"
-	
+
 def start_doc(s):
     global bdoc;
     bdoc = 1
@@ -88,7 +88,7 @@ def line_math():
     else:
         in_math = 1
         return r"<math>\1</math>"
-    
+
 def start_verbatim(s):
     global verbatim_mode
     verbatim_mode = 1
@@ -256,26 +256,26 @@ tr_list2 = [
     (r"\\begin{array[*]?}", (lambda :r"\\begin{matrix}"), toggle_math),
     (r"\\end{eqnarray[*]?}", (lambda :r"\\end{matrix}</math></center>"), toggle_math),
     (r"\\end{array[*]?}", (lambda :r"\\end{matrix}"), toggle_math),
-    #	(r"(\\begin{.*?})", decide_math_replace, dummy),
-    #	(r"(\\end{.*?})",decide_math_replace, dummy),
+    #    (r"(\\begin{.*?})", decide_math_replace, dummy),
+    #    (r"(\\end{.*?})",decide_math_replace, dummy),
     (r"\\cite(\[\])?\{([^\}]+)\}",refer,cite),
     (r"~\\ref{([^}]*)}",(lambda : r" ---\1---"),dummy),
     (r"\\subsubsection{(.*?)}", (lambda : r"====\1===="), dummy),
     (r"\\subsection{(.*?)}", (lambda : r"===\1==="), dummy),
     (r"\\section{(.*?)}", (lambda : r"==\1=="), dummy),
     (r"\\_", (lambda :"_"), dummy),
-    #	(r"\\title{(.*)}", (lambda :r"= \1 ="),dummy),
+    #    (r"\\title{(.*)}", (lambda :r"= \1 ="),dummy),
     #        (r"\\author{(.*)}", (lambda :r"\1"),dummy),
     (r"\\date{(.*)}", (lambda :r"\1"),dummy),
     (r"\\begin{quote}",(lambda : r"<blockquote>"),dummy),
     (r"\\end{quote}",(lambda : r"</blockquote>"),dummy),
     (r"\\thispagestyle{.*?}", None, dummy),
     (r"\n$", decide_el, dummy),
-    #	(r"[^\\]?\{", None, dummy),
-    #	(r"[^\\]?\}", None, dummy),
+    #    (r"[^\\]?\{", None, dummy),
+    #    (r"[^\\]?\}", None, dummy),
     (r"\\\$",(lambda : r"&#36;"),dummy),
     (r"\\\'[\{]?a[\}]?",(lambda : r"&#225;"),dummy),
-    #	(r"\$(.*?)\$",(lambda :r"<math>\1</math>"),dummy),
+    #    (r"\$(.*?)\$",(lambda :r"<math>\1</math>"),dummy),
     (r"%.*$",None, dummy),
     (r"\\r{(.*?)}", (lambda : r"\\mathrm{\1}"), dummy),
     (r"\\d ", (lambda : r"\\,\mathrm{d} "), dummy),
@@ -330,29 +330,29 @@ def parse_bbl(bbl):
             llong = bf.sub("'''\\1'''",llong)
             llong = tilde.sub(' ',llong)
             llong = blank.sub('',llong)
-            
+
             refs[key] = (short,llong)
-        
+
 def convert(in_stream,out_stream):
     "Convert LaTeX to MediaWiki"
     global reg, math_mode, in_math
     for i in in_stream.readlines():
-	mystr = i
+        mystr = i
 
-	for r in reg:
+        for r in reg:
             s = r[0].search(mystr)
             if s:
                 r[2](s)
             if r[1]:
                 mysub = r[1]()
             else:
-                mysub = ""                
+                mysub = ""
             mystr = r[0].sub(mysub, mystr)
             if in_math:
                 in_math = 0
                 break
 
-	if bdoc:
+    if bdoc:
             out_stream.write(mystr)
 
 if __name__ == "__main__":
@@ -365,5 +365,5 @@ if __name__ == "__main__":
             bbl.close()
         except:
             pass
-    
+
     convert(sys.stdin,sys.stdout)

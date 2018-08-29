@@ -580,8 +580,10 @@ def colorize(target=None,source=None,env=None):
      text = cStringIO.StringIO(raw)
      out.write('<pre><font face="Lucida,Courier New">')
 
-     def call(toktype, toktext, (srow,scol), (erow,ecol), line):
+     def call(toktype, toktext, srowcol, erowcol, line):
           global _pos
+          srow, scol = srowcol
+          erow, ecol = erowcol
 
           # calculate new positions
           oldpos = _pos
@@ -619,7 +621,7 @@ def colorize(target=None,source=None,env=None):
 
      try:
           tokenize.tokenize(text.readline, call)
-     except tokenize.TokenError, ex:
+     except tokenize.TokenError as ex:
           msg = ex[0]
           line = ex[1][0]
           out.write("<h3>ERROR: %s</h3>%s\n" % (msg, raw[lines[line]:]))
@@ -634,7 +636,7 @@ def colorize(target=None,source=None,env=None):
          progs = sout.read()
          sout.close()
 
-         exec progs in locals()
+         exec(progs)
 
          if uses:
              out.write('</div><p><div class="progs">')
@@ -725,7 +727,7 @@ def dummy(target=None,source=None,env=None):
 def pylab(target=None,source=None,env=None):
     global epstopdf
     pycomm = open(str(source[0]),'r').read()
-    exec pycomm in locals()
+    exec(pycomm)
     os.system('%s junk_py.eps -o=%s' % (epstopdf,target[0]))
     os.unlink('junk_py.eps')
     return 0
@@ -754,7 +756,7 @@ Build = Builder(action = Action(pstexpen),
 
 if epstopdf:
     PDFBuild = Builder(action = Action(eps2pdf),
-		       src_suffix=pssuffix,suffix='.pdf')
+               src_suffix=pssuffix,suffix='.pdf')
 
 if fig2dev:
     XFig = Builder(action = fig2dev + ' -L pdf -p dummy $SOURCES $TARGETS',
@@ -850,8 +852,8 @@ class TeXPaper(Environment):
         self.Append(ENV={'XAUTHORITY':
                          os.path.join(os.environ.get('HOME'),'.Xauthority'),
                          'DISPLAY': os.environ.get('DISPLAY'),
-			 'RSF_REPOSITORY': os.environ.get('RSF_REPOSITORY',github),
-			 'RSF_ENSCRIPT': WhereIs('enscript'),
+             'RSF_REPOSITORY': os.environ.get('RSF_REPOSITORY',github),
+             'RSF_ENSCRIPT': WhereIs('enscript'),
                          'HOME': os.environ.get('HOME')},
                     SCANNERS=LaTeXS,
                     BUILDERS={'Latify':Latify,
@@ -966,7 +968,7 @@ class TeXPaper(Environment):
                 pdf = re.sub(pssuffix+'$','.pdf',ps)
                 self.PDFBuild(pdf,ps)
                 erfigs.append(pdf)
-		self.Install2(resdir2,pdf)
+                self.Install2(resdir2,pdf)
             if latex2html and pstoimg:
                 png = re.sub(pssuffix+'$','.'+itype,ps)
                 self.PNGBuild(png,ps)

@@ -59,12 +59,13 @@ if not sparsepath or not sparselibs:
         src.remove(source)
 
 mpicc = env.get('MPICC')
-mpi_src = Glob('P[a-z]*.c')
-for source in mpi_src:
-    inc = env.RSF_Include(source,prefix='')
-    obj = env.StaticObject(source,CC=mpicc)
-    env.Ignore(inc,inc)
-    env.Depends(obj,inc)
+if mpicc:
+    mpi_src = Glob('P[a-z]*.c')
+    for source in mpi_src:
+        inc = env.RSF_Include(source,prefix='')
+        obj = env.StaticObject(source,CC=mpicc)
+        env.Ignore(inc,inc)
+        env.Depends(obj,inc)
 
 for source in src:
     inc = env.RSF_Include(source,prefix='')
@@ -88,17 +89,20 @@ for prog in mains:
     if root:
         env.Install(bindir,prog)
 
-mpi_mains = Split(mpi_progs)
-for prog in mpi_mains:
-    sources = ['M' + prog]
-    bldutil.depends(env,sources,'M'+prog)
-    if mpicc:
-        env.StaticObject('M'+prog+'.c',CC=mpicc)
-        prog = env.Program(prog,[x + '.o' for x in sources],CC=mpicc)
-    else:
-        prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
-    if root:
-        env.Install(bindir,prog)
+if mpicc:
+    mpi_mains = Split(mpi_progs)
+    for prog in mpi_mains:
+        sources = ['M' + prog]
+        bldutil.depends(env,sources,'M'+prog)
+        if mpicc:
+            env.StaticObject('M'+prog+'.c',CC=mpicc)
+            prog = env.Program(prog,[x + '.o' for x in sources],CC=mpicc)
+        else:
+            prog = env.RSF_Place('sf'+prog,None,var='MPICC',package='mpi')
+        if root:
+            env.Install(bindir,prog)
+else:
+    mpi_mains = []
 
 
 ######################################################################

@@ -72,10 +72,11 @@ def getversion(target=None,source=None,env=None):
     name = str(target[0])
     out = open(name,'w')
     out.write('#!/usr/bin/env python\n\n')
+    out.write('from __future__ import print_function\n')
     out.write('label="%s"\n\n' % label)
     out.write('''
 if __name__ == "__main__":
-    print label
+    print(label)
     ''')
     out.close()
     os.chmod(name,0o775)

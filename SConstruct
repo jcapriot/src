@@ -51,9 +51,9 @@ Clean(config,['#/config.log','#/.sconf_temp',
               '#/framework/rsf/doc.pyc',
               '#/framework/rsf/path.pyc'])
 env.Alias('config',config)
-env.Install(etcdir,'config.py') 
+env.Install(etcdir,'config.py')
 
-env.InstallAs('#/build/framework/rsf/conf.py','framework/configure.py') 
+env.InstallAs('#/build/framework/rsf/conf.py','framework/configure.py')
 
 # ----------- Environment variable setup scripts -----------
 

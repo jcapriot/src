@@ -22,25 +22,25 @@ def Temp(o,i,r):
 # default parameters
 def param(par):
     if('verb' not in par):     par['verb']='n'
-    
+
     if('ot' not in par):       par['ot']=0.
     if('nt' not in par):       par['nt']=1
     if('dt' not in par):       par['dt']=1.
     if('lt' not in par):       par['lt']='t'
     if('ut' not in par):       par['ut']='s'
-            
+
     if('ox' not in par):       par['ox']=0.
     if('nx' not in par):       par['nx']=1
     if('dx' not in par):       par['dx']=1.
     if('lx' not in par):       par['lx']='x'
     if('ux' not in par):       par['ux']='km'
-    
+
     if('oy' not in par):       par['oy']=0.
     if('ny' not in par):       par['ny']=1
     if('dy' not in par):       par['dy']=1.
-    if('ly' not in par):       par['ly']='y'    
+    if('ly' not in par):       par['ly']='y'
     if('uy' not in par):       par['uy']='km'
-     
+
     if('oz' not in par):       par['oz']=0.
     if('nz' not in par):       par['nz']=1
     if('dz' not in par):       par['dz']=1.
@@ -79,7 +79,7 @@ def param(par):
     if('ompnth' not in par):   par['ompnth']=0
     if('free' not in par):     par['free']='n'
     if('fsrf' not in par):     par['fsrf']='n'
-   
+
     if('ratio' not in par):
         if(dx==0.0):
             par['ratio']=1.0
@@ -110,26 +110,26 @@ def param(par):
     else                  : yzratio=1.0*dz/(dz+dy)
     if((2*dt+dy) == 0.0)  : ytratio=1.0
     else                  : ytratio=2*dt/(2*dt+dy);
-    
+
     par['pointt']=ytratio;
     par['pointz']=yzratio;
     par['pointx']=yxratio;
-    
+
     if((dx+dy) == 0.0):
         par['ratio3d']=1
     else:
         par['ratio3d']=(dz+dy)/(dx+dy)
-        
+
     if(par['ratio3d']>1):
         par['height3d']=10
     else:
         par['height3d']=14*par['ratio3d']
-        
+
     if((dx+dy) == 0.0):
         par['tratio3d']=1
     else:
         par['tratio3d']=(2*dt+dy)/(dx+dy)
-        
+
     if(par['tratio3d']>1):
         par['theight3d']=10
     else:
@@ -137,7 +137,7 @@ def param(par):
 
     if('scalebar' not in par): par['scalebar']='n'
     if('labelattr' not in par): par['labelattr']=' parallel2=n labelsz=6 labelfat=3 titlesz=12 titlefat=3 '
-    
+
     if('nqz' not in par): par['nqz']=par['nz']
     if('oqz' not in par): par['oqz']=par['oz']
     if('dqz' not in par): par['dqz']=par['dz']
@@ -186,12 +186,12 @@ def default(par):
     if('nqx' not in par):      par['nqx']=par['nx']
     if('oqx' not in par):      par['oqx']=par['ox']
     if('dqx' not in par):      par['dqx']=par['dx']
-    
+
 # ------------------------------------------------------------
 # plotting functions
 def cgrey(custom,par):
     return '''
-    grey 
+    grey
     title=""
     pclip=100 gainpanel=a
     min1=%g max1=%g label1=%s unit1=%s
@@ -209,7 +209,7 @@ def ccut3d(custom,par):
     ''' % (par['zmin'],par['zmax'],
            par['xmin'],par['xmax'],
            par['ymin'],par['ymax'],
-	   custom)
+       custom)
 
 #    byte gainpanel=a pclip=100 %s |
 def cgrey3d(custom,par):
@@ -397,7 +397,7 @@ def spectrum(custom,par):
 # create wavelet
 def wavelet(wav,frequency,par):
     par['frequency'] = frequency
-    
+
     Flow(wav,None,
          '''
          spike nsp=1 mag=1 n1=%(nt)d d1=%(dt)g o1=%(ot)g k1=%(kt)d |
@@ -405,8 +405,8 @@ def wavelet(wav,frequency,par):
          ricker1 frequency=%(frequency)g |
          window n1=%(nt)d |
          scale axis=123 |
-         put label1=t 
-         ''' % par)    
+         put label1=t
+         ''' % par)
 
 # ------------------------------------------------------------
 def oldhorizontal(cc,coord,par):
@@ -423,11 +423,11 @@ def oldhorizontal(cc,coord,par):
 def horizontal(cc,coord,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     cco=cc+'o'+myid(16)
     ccz=cc+'z'+myid(16)
     ccx=cc+'x'+myid(16)
-    
+
     Flow(cc,None,
          '''
          %smath output=0 n1=%d o1=%g d1=%g >%s datapath=%s/;
@@ -441,7 +441,7 @@ def horizontal(cc,coord,par):
          '''
          %scat axis=2 space=n %s %s | transp | put label1="" unit1="" label2="" unit2="">${TARGETS[0]};
          '''%(M8R,ccx,ccz) +
-         '''     
+         '''
          %srm %s %s %s
          '''%(M8R,cco,ccx,ccz),
               stdin=0,
@@ -450,25 +450,25 @@ def horizontal(cc,coord,par):
 
 def horizontalupercent(cc,coord,par):
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     cco=cc+'o'+myid(16)
     ccz=cc+'z'+myid(16)
     ccx=cc+'x'+myid(16)
-    
+
     Flow(cc,None,
-         '''  
+         '''
          math output=0 n1=%d o1=%g d1=%g >%s datapath=%s/ &&
          '''%(par['nx'],par['ox'],par['dx'],cco,DPT) +
-         '''  
+         '''
          math <%s output="%g" >%s datapath=%s/ &&
          '''%(cco,coord,ccz,DPT) +
-         '''  
+         '''
          math <%s output="x1" >%s datapath=%s/ &&
          '''%(cco,ccx,DPT) +
-         '''  
+         '''
          cat axis=2 space=n %s %s | transp | put label1="" unit1="" label2="" unit2="">${TARGETS[0]} &&
          '''%(ccx,ccz) +
-         '''  
+         '''
          rm %s %s %s
          '''%(cco,ccx,ccz),
               stdin=0,
@@ -478,11 +478,11 @@ def horizontalupercent(cc,coord,par):
 def cable2d(cc,zrec,orec,nrec,drec,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     cco=cc+'o'+myid(16)
     ccz=cc+'z'+myid(16)
     ccx=cc+'x'+myid(16)
-    
+
     Flow(cc,None,
          '''
          %smath output=0 n1=%d o1=%g d1=%g >%s datapath=%s/;
@@ -496,7 +496,7 @@ def cable2d(cc,zrec,orec,nrec,drec,par):
          '''
          %scat axis=2 space=n %s %s | transp | put label1="" unit1="" label2="" unit2="">${TARGETS[0]};
          '''%(M8R,ccx,ccz) +
-         '''     
+         '''
          %srm %s %s %s
          '''%(M8R,cco,ccx,ccz),
               stdin=0,
@@ -525,9 +525,9 @@ def horizontal3d(cc,coord,par):
 
     Flow(cc,[cc+'_x',cc+'_y',cc+'_z'],
          '''
-         cat axis=3 space=n ${SOURCES[1:3]} | 
+         cat axis=3 space=n ${SOURCES[1:3]} |
          transp plane=13 | transp plane=23 |
-	     put label1="" unit1="" label2="" unit2=""
+         put label1="" unit1="" label2="" unit2=""
          ''')
 
 def oldvertical(cc,coord,par):
@@ -536,19 +536,19 @@ def oldvertical(cc,coord,par):
     Temp(cc+'_z',cc+'_','math output="x1" ')
     Flow(cc,[cc+'_x',cc+'_z'],
          '''
-         cat axis=2 space=n ${SOURCES[1]} | 
+         cat axis=2 space=n ${SOURCES[1]} |
          transp |
          put label1="" unit1="" label2="" unit2=""
          ''')
-    
+
 def vertical(cc,coord,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     cco=cc+'o'+myid(16)
     ccz=cc+'z'+myid(16)
     ccx=cc+'x'+myid(16)
-    
+
     Flow(cc,None,
          '''
          %smath output=0 n1=%d o1=%g d1=%g >%s datapath=%s/;
@@ -562,12 +562,12 @@ def vertical(cc,coord,par):
          '''
          %scat axis=2 space=n %s %s | transp | put label1="" unit1="" label2="" unit2="">${TARGETS[0]};
          '''%(M8R,ccx,ccz) +
-         '''     
+         '''
          %srm %s %s %s
          '''%(M8R,cco,ccx,ccz),
               stdin=0,
               stdout=0)
-    
+
 
 def vertical3d(cc,coordx,coordy,par):
     M8R='$RSFROOT/bin/sf'
@@ -594,7 +594,7 @@ def vertical3d(cc,coordx,coordy,par):
          '''
          %scat axis=2 space=n %s %s %s |
          transp |
-	 put label1="" unit1="" label2="" unit2="" >${TARGETS[0]};
+     put label1="" unit1="" label2="" unit2="" >${TARGETS[0]};
          '''%(M8R,ccx,ccy,ccz) +
          '''
          %srm %s %s %s %s
@@ -602,15 +602,15 @@ def vertical3d(cc,coordx,coordy,par):
          stdin=0,
          stdout=0
         )
-    
+
 def point(cc,xcoord,zcoord,par):
     Flow(cc,None,
          'spike nsp=2 mag=%g,%g n1=2 k1=1,2'%(xcoord,zcoord))
-    
+
 def point3d(cc,xcoord,ycoord,zcoord,par):
     Flow(cc,None,
          'spike nsp=3 mag=%g,%g,%g n1=3 k1=1,2,3'%(xcoord,ycoord,zcoord))
-    
+
 def point3(cc,xcoord,zcoord,magn,par):
     Flow(cc,None,
          'spike nsp=3 mag=%g,%g,%g n1=3 k1=1,2,3'%(xcoord,zcoord,magn))
@@ -619,7 +619,7 @@ def point3(cc,xcoord,zcoord,magn,par):
 def circle(cc,xcenter,zcenter,radius,sampling,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     ccx=cc+'x'+myid(16)
     ccz=cc+'z'+myid(16)
 
@@ -645,7 +645,7 @@ def circle(cc,xcenter,zcenter,radius,sampling,par):
 def sphere(cc,xcenter,ycenter,zcenter,radius,nlat,nlng,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
-    
+
     ccx=cc+'x'+myid(16)
     ccx=cc+'y'+myid(16)
     ccz=cc+'z'+myid(16)
@@ -680,7 +680,7 @@ def sphere(cc,xcenter,ycenter,zcenter,radius,nlat,nlng,par):
          stdin=0,
          stdout=0
         )
-    
+
 # ------------------------------------------------------------
 def ellipse(cc,xcenter,zcenter,semiA,semiB,sampling,par):
     Temp(cc+'_r',None,
@@ -702,7 +702,7 @@ def ellipse(cc,xcenter,zcenter,semiA,semiB,sampling,par):
          ${SOURCES[0]} ${SOURCES[1]} | transp |
          put label1="" unit1="" label2="" unit2=""
          ''', stdin=0)
-    
+
 def dipping(cc,intercept,slope,par):
     Temp(cc+'_',None,'math n1=%(nx)d d1=%(dx)g o1=%(ox)g output=0' % par)
     Temp(cc+'_z',cc+'_','math output="%g+x1*%g" '%(intercept,slope))
@@ -711,7 +711,7 @@ def dipping(cc,intercept,slope,par):
          '''
          cat axis=2 space=n
          ${SOURCES[0]} ${SOURCES[1]} | transp |
-	 put label1="" unit1="" label2="" unit2=""
+     put label1="" unit1="" label2="" unit2=""
          ''', stdin=0)
 
 def boxarray(cc,nz,oz,dz,nx,ox,dx,par):
@@ -735,7 +735,7 @@ def boxarray(cc,nz,oz,dz,nx,ox,dx,par):
          '''
          %scat axis=2 space=n %s %s | transp >${TARGETS[0]};
          '''%(M8R,ccx,ccz) +
-         '''     
+         '''
          %srm %s %s %s
          '''%(M8R,cco,ccx,ccz),
               stdin=0,
@@ -749,8 +749,8 @@ def boxarray3d(cc,nz,oz,dz,nx,ox,dx,ny,oy,dy,par):
          n2=%d d2=%g o2=%g
          n3=%d d3=%g o3=%g
          ''' % (nz,dz,oz,
-	 	nx,dx,ox,
-		ny,dy,oy) )
+         nx,dx,ox,
+        ny,dy,oy) )
     Temp(cc+'_z',cc+'_','math output="x1" | put n1=%d n2=1 n3=1' % (nz*nx*ny))
     Temp(cc+'_x',cc+'_','math output="x2" | put n1=%d n2=1 n3=1' % (nz*nx*ny))
     Temp(cc+'_y',cc+'_','math output="x3" | put n1=%d n2=1 n3=1' % (nz*nx*ny))
@@ -762,10 +762,10 @@ def boxarray3d(cc,nz,oz,dz,nx,ox,dx,ny,oy,dy,par):
          ''',stdin=0)
 
 #
-# distribute random locations within a defined box 
+# distribute random locations within a defined box
 #
 #       _________________  <-- zmin
-#      | . .  .  .   .   | 
+#      | . .  .  .   .   |
 #      |    .   .   .  . |
 #      | .         .   . |
 #      |     .   .   .   |
@@ -773,19 +773,19 @@ def boxarray3d(cc,nz,oz,dz,nx,ox,dx,ny,oy,dy,par):
 #      ^                 ^
 #      |                 |
 #     xmin              xmax
-#    
+#
 # ns: number of random points
 #
-# seed: seed that start the pseudo-random number sequence. 
-#       It is hardcoded on purpose, so the results can be 
-#       reproduced   
+# seed: seed that start the pseudo-random number sequence.
+#       It is hardcoded on purpose, so the results can be
+#       reproduced
 #
 
 def rand_boxarray(rsrc,xmin,xmax,zmin,zmax,ns,seed=33121):
 
     m8r='$RSFROOT/bin/sf'
-    xrand='xrand'+rsrc 
-    zrand='zrand'+rsrc 
+    xrand='xrand'+rsrc
+    zrand='zrand'+rsrc
 
     custom1=' seed=%d'%seed
     custom2=' seed=%d'%(seed*4+1)
@@ -793,16 +793,16 @@ def rand_boxarray(rsrc,xmin,xmax,zmin,zmax,ns,seed=33121):
     Flow(rsrc,None,
         '''
         spike n1=%d | noise type=n rep=y range=1 mean=0 %s |
-	    add add=1 | scale axis=123 | add scale=%f |
+        add add=1 | scale axis=123 | add scale=%f |
         add add=%g > %s ;
         '''%(ns,custom1,(xmax-xmin),xmin,xrand)+
         '''
         %sspike n1=%d | noise type=n rep=y range=1 mean=0 %s |
-	    add add=1 | scale axis=123 | add scale=%f |
+        add add=1 | scale axis=123 | add scale=%f |
         add add=%g > %s ;
         '''%(m8r,ns,custom2,(zmax-zmin),zmin,zrand)+
         '''
-        %scat axis=2 %s %s |transp >${TARGETS[0]} ; 
+        %scat axis=2 %s %s |transp >${TARGETS[0]} ;
         '''%(m8r,xrand,zrand)+
         '''
         %srm %s %s
@@ -843,7 +843,7 @@ def makeline(line,zmin,zmax,xmin,xmax,par):
          '''
          %scat axis=1 space=n %s %s >${TARGETS[0]};
          '''%(M8R,linex,linez) +
-         '''     
+         '''
          %srm %s %s
          '''%(M8R,linex,linez),
               stdin=0,
@@ -851,7 +851,7 @@ def makeline(line,zmin,zmax,xmin,xmax,par):
 
 # ------------------------------------------------------------
 def hline(cc,sx,ex,coord,par):
-    
+
     nx=(ex-sx)/par['dx']+1
     dx=par['dx']
 
@@ -862,14 +862,14 @@ def hline(cc,sx,ex,coord,par):
          '''
          cat axis=2 space=n
          ${SOURCES[0]} ${SOURCES[1]} | transp |
-	 put label1="" unit1="" label2="" unit2=""
+     put label1="" unit1="" label2="" unit2=""
          ''', stdin=0)
 
 def vline(cc,sz,ez,coord,par):
 
     nz=(ez-sz)/par['dz']+1
     dz=par['dz']
-    
+
     Temp(cc+'_',None,'math n1=%d d1=%g o1=%g output=0' % (nz,dz,sz))
     Temp(cc+'_x',cc+'_','math output="%g" ' % coord)
     Temp(cc+'_z',cc+'_','math output="x1" ')
@@ -877,11 +877,11 @@ def vline(cc,sz,ez,coord,par):
          '''
          cat axis=2 space=n
          ${SOURCES[0]} ${SOURCES[1]} | transp |
-	 put label1="" unit1="" label2="" unit2=""
+     put label1="" unit1="" label2="" unit2=""
          ''', stdin=0)
 
 def box(cc,sx,ex,sz,ez,par):
-   
+
     hline(cc+'h1',sx,ex,sz,par)
     hline(cc+'h2',sx,ex,ez,par)
 
@@ -933,7 +933,7 @@ def qqbox3d(par):
 def iwindow(par):
     win = ' ' + \
           '''
-          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g 
+          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g
           nqx=%(nqx)d oqx=%(oqx)g dqx=%(dqx)g
           ''' % par + ' '
 
@@ -954,11 +954,11 @@ def rayplot(hwt,j1ray,j2ray,j1wft,j2wft,custom,par):
 # acoustic modeling
 def awefd(odat,owfl,idat,velo,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([odat,owfl],[idat,velo,dens,sou,rec],
          '''
          awefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -970,15 +970,15 @@ def awefd(odat,owfl,idat,velo,dens,sou,rec,custom,par):
          ''' % par)
 
 # ------------------------------------------------------------
-# acoustic modeling that only generates data 
+# acoustic modeling that only generates data
 # ------------------------------------------------------------
 def awefd_data(odat,idat,velo,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([odat],[idat,velo,dens,sou,rec],
          '''
          awefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -986,20 +986,20 @@ def awefd_data(odat,idat,velo,dens,sou,rec,custom,par):
          sou=${SOURCES[3]}
          rec=${SOURCES[4]}'''%par+'''
          wfl=%stmp  '''%odat+ '''
-         %s >${TARGETS[0]}; 
+         %s >${TARGETS[0]};
          $RSFROOT/bin/sfrm %stmp
          ''' %(par['fdcustom'],odat),stdout=0)
 
 # ------------------------------------------------------------
-# acoustic modeling that only generates source wavefield 
+# acoustic modeling that only generates source wavefield
 # ------------------------------------------------------------
 def awefd_swfl(owfl,idat,velo,dens,sou,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([owfl],[idat,velo,dens,sou],
          '''
          awefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -1009,21 +1009,21 @@ def awefd_swfl(owfl,idat,velo,dens,sou,custom,par):
          wfl=${TARGETS[0]} '''%par+'''
          %s >%stmp ; $RSFROOT/bin/sfrm %stmp
          ''' %(par['fdcustom'],owfl,owfl),stdout=0)
-    
+
 # ------------------------------------------------------------
 # acoustic modeling that only generates receiver wavefield:
-# the input data is not reversed, all the 
-# secondary steps are taken in the rule, and all the 
+# the input data is not reversed, all the
+# secondary steps are taken in the rule, and all the
 # intermediate files are deleted
 # ------------------------------------------------------------
 def awefd_rwfl(owfl,idat,velo,dens,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([owfl],[idat,velo,dens,rec],
          '''
          $RSFROOT/bin/sfreverse opt=i which=2 |
          awefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -1040,11 +1040,11 @@ def awefd1(odat,owfl,idat,velo,dens,sou,rec,custom,par):
     awefd(odat,owfl,idat,velo,dens,sou,rec,custom+' expl=y ',par)
 
 # constant-density acoustic FD modeling
-def cdafd(odat,owfl,idat,velo,sou,rec,custom,par):    
+def cdafd(odat,owfl,idat,velo,sou,rec,custom,par):
     Flow([odat,owfl],[idat,velo,sou,rec],
          '''
          awefd2d cden=y
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -1055,11 +1055,11 @@ def cdafd(odat,owfl,idat,velo,sou,rec,custom,par):
 def cdafd1(odat,owfl,idat,velo,sou,rec,custom,par):
     cdafd(odat,owfl,idat,velo,sou,rec,custom+' expl=y ',par)
 
-def cdafd3d(odat,owfl,idat,velo,sou,rec,custom,par):    
+def cdafd3d(odat,owfl,idat,velo,sou,rec,custom,par):
     Flow([odat,owfl],[idat,velo,sou,rec],
          '''
          awefd3d cden=y
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          dabc=%(dabc)s nb=%(nb)d
          vel=${SOURCES[1]}
@@ -1067,16 +1067,16 @@ def cdafd3d(odat,owfl,idat,velo,sou,rec,custom,par):
          rec=${SOURCES[3]}
          wfl=${TARGETS[1]}
          '''%par+custom)
-    
+
 # ------------------------------------------------------------
 # Born modeling
 def lwefd(bdat,bwfl,sdat,swfl,idat,velo,dens,refl,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([bdat,bwfl,sdat,swfl],[idat,velo,dens,refl,sou,rec],
          '''
          lwefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          nb=%(nb)d
          vel=${SOURCES[1]}
@@ -1100,7 +1100,7 @@ def lwefd1(bdat,bwfl,sdat,swfl,idat,velo,dens,refl,sou,rec,custom,par):
 #         math output="ro*vp*vp"
 #         vp=${SOURCES[0]}
 #         ro=${SOURCES[1]}
-#         ''')    
+#         ''')
 #    Flow(cc+'44',[vs,ro],
 #         '''
 #         math output="ro*vs*vs"
@@ -1120,7 +1120,7 @@ def lwefd1(bdat,bwfl,sdat,swfl,idat,velo,dens,refl,sou,rec,custom,par):
 #         c44=${SOURCES[1]}
 #         delta=${SOURCES[2]}
 #         ''')
-#    
+#
 #    Flow(cc,[cc+'11',cc+'13',cc+'33',cc+'44'],
 #         'cat axis=3 space=n ${SOURCES[1:4]}')
 
@@ -1139,7 +1139,7 @@ def anifd2d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
     Flow([odat,owfl],[idat,velo,dens,sou,rec],
          '''
          ttifd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          nb=%(nb)d dabc=%(dabc)s
          vel=${SOURCES[1]}
@@ -1154,14 +1154,14 @@ def anifd2d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
 # elastic modeling
 def ewefd(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [odat,owfl],[idat,cccc,dens,sou,rec],
          '''
          ewefd2d
-         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d jdata=%(jdata)d
-	 nb=%(nb)d nbell=%(nbell)d
-	 ssou=%(ssou)s
+     nb=%(nb)d nbell=%(nbell)d
+     ssou=%(ssou)s
          ccc=${SOURCES[1]}
          den=${SOURCES[2]}
          sou=${SOURCES[3]}
@@ -1172,11 +1172,11 @@ def ewefd(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
 
 def ewefd2(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [odat,owfl],[idat,cccc,dens,sou,rec],
          '''
          ewefd2dtti
-         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d nb=%(nb)d nbell=%(nbell)d
          ccc=${SOURCES[1]}
          den=${SOURCES[2]}
@@ -1185,12 +1185,12 @@ def ewefd2(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
          wfl=${TARGETS[1]}
          %(fdcustom)s
          ''' % par)
-    
+
 # ------------------------------------------------------------
 # heat modeling
 def hdefd(dat,wfl,  wav,con,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [dat,wfl],[wav,con,sou,rec],
           '''
           hdefd
@@ -1210,7 +1210,7 @@ def zom(imag,data,velo,dens,rcoo,custom,par):
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
 
     obsolete("fdmod/zom","rtm/zofmig")
-    
+
     awepar = 'ompchunk=%(ompchunk)d ompnth=%(ompnth)d verb=y free=n snap=%(snap)s jsnap=%(jdata)d jdata=%(jdata)d dabc=%(dabc)s nb=%(nb)d'%par + ' ' + custom
 
     rwfl = imag+'wwfl'+myid(16)
@@ -1233,7 +1233,7 @@ def zom(imag,data,velo,dens,rcoo,custom,par):
          '''%(M8R,rwfl),
               stdin=0,
               stdout=0)
-    
+
 def cdzom(imag,data,velo,rcoo,custom,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
@@ -1265,7 +1265,7 @@ def cdzom(imag,data,velo,rcoo,custom,par):
          '''%(M8R,rdat,rwfl),
               stdin=0,
               stdout=0)
-    
+
 def cdzom3d(imag,data,velo,rcoo,custom,par):
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH',os.environ.get('DATAPATH'))
@@ -1297,7 +1297,7 @@ def cdzom3d(imag,data,velo,rcoo,custom,par):
          '''%(M8R,rdat,rwfl),
               stdin=0,
               stdout=0)
-    
+
 # ------------------------------------------------------------
 # wavefield-over-model plot
 def wom(wom,wfld,velo,vmean,par):
@@ -1312,8 +1312,8 @@ def wom(wom,wfld,velo,vmean,par):
     Flow(wom,[velo,wfld],
         '''
         %sscale < ${SOURCES[1]} axis=123 >%s datapath=%s/;
-        '''%(M8R,wtmp,DPT) 
-	+
+        '''%(M8R,wtmp,DPT)
+    +
         '''
         %sadd < ${SOURCES[0]} add=-%g |
         scale axis=123 |
@@ -1323,12 +1323,12 @@ def wom(wom,wfld,velo,vmean,par):
              (par['nt']-1)/par['jsnap']+1,
              par['ot'],
              par['dt']*par['jsnap'],
-             vtmp,DPT) 
-	+
+             vtmp,DPT)
+    +
         '''
         %sadd scale=1,%g <%s %s >${TARGETS[0]};
-        '''%(M8R,par['wweight'],vtmp,wtmp) 
-	+
+        '''%(M8R,par['wweight'],vtmp,wtmp)
+    +
         '''
         %srm %s %s
         '''%(M8R,wtmp,vtmp),
@@ -1348,7 +1348,7 @@ def wsom3d(wsom,wfld,velo,vmean,par):
     Flow(wsom,[velo,wfld],
         '''
         %sscale < ${SOURCES[1]} axis=123 >%s datapath=%s/;
-        '''%(M8R,wtmp,DPT) 
+        '''%(M8R,wtmp,DPT)
     +
         '''
         %sadd < ${SOURCES[0]} add=-%g |
@@ -1358,11 +1358,11 @@ def wsom3d(wsom,wfld,velo,vmean,par):
         '''%(M8R,vmean,
              par['ot'],
              par['dt'],
-             vtmp,DPT) 
+             vtmp,DPT)
     +
         '''
         %sadd scale=1,%g <%s %s >${TARGETS[0]};
-        '''%(M8R,par['wweight'],vtmp,wtmp) 
+        '''%(M8R,par['wweight'],vtmp,wtmp)
     +
         '''
         %srm %s %s
@@ -1408,8 +1408,8 @@ def wem(wom,wfld,velo,vmean,par):
              'math w=${SOURCES[1]} output="input+%g*w" | transp plane=34' % par['wweight'])
 
     Flow(wom,[wom+'-0-wom',wom+'-1-wom'],'cat axis=3 space=n ${SOURCES[1]}')
-    
-        
+
+
 # ------------------------------------------------------------
 # image-over-model plot
 def iom(iom,imag,velo,vmean,par):
@@ -1424,25 +1424,25 @@ def iom(iom,imag,velo,vmean,par):
     Flow(iom,[velo,imag],
         '''
         %sscale < ${SOURCES[1]} axis=123 >%s datapath=%s/;
-        '''%(M8R,itmp,DPT) 
-	+
+        '''%(M8R,itmp,DPT)
+    +
         '''
         %sadd < ${SOURCES[0]} add=-%g |
         scale axis=123
         >%s datapath=%s/;
         '''%(M8R,vmean,
-             vtmp,DPT) 
-	+
+             vtmp,DPT)
+    +
         '''
         %sadd scale=1,%g <%s %s >${TARGETS[0]};
-        '''%(M8R,par['iweight'],vtmp,itmp) 
-	+
+        '''%(M8R,par['iweight'],vtmp,itmp)
+    +
         '''
         %srm %s %s
         '''%(M8R,itmp,vtmp),
         stdin=0,
         stdout=0)
- 
+
 # ------------------------------------------------------------
 # wavefield snapshot plots
 def wframe(frame,movie,index,custom,par):
@@ -1452,7 +1452,7 @@ def wframe(frame,movie,index,custom,par):
     Plot  (frame,[movie+'_plt',movie+'_bar'],
            'window n3=1 f3=%d |'%index
            + cgrey(custom,par))
-    
+
 # ------------------------------------------------------------
 # elastic wavefield movie frames
 def eframe(frame,movie,index,custom,axis,par,xscale=0.75,yscale=0.75,shift=-8.25):
@@ -1474,7 +1474,7 @@ def eframe(frame,movie,index,custom,axis,par,xscale=0.75,yscale=0.75,shift=-8.25
 # ------------------------------------------------------------
 # elastic wavefield movie
 def emovie(movie,wfld,nframes,custom,axis,par,xscale=0.75,yscale=0.75,shift=-8.25):
-    
+
     for iframe in range(nframes):
         tag = "-%02d" % iframe
         eframe(movie+tag,wfld,iframe,custom,axis,par,xscale,yscale,shift)
@@ -1489,10 +1489,10 @@ def edata(plot,data,custom,par):
 
     Flow([plot+'_plt',plot+'_bar'],data,
          'scale axis=123 | byte bar=${TARGETS[1]} gainpanel=a pclip=100 %s' % custom)
-    
+
     for i in range(2):
-	ctag = "-%d"%i
-	
+        ctag = "-%d"%i
+
         Plot(  plot+ctag,[plot+'_plt',plot+'_bar'],
                'window n2=1 f2=%d bar=${SOURCES[1]} | transp |' % i
                + dgrey('screenratio=1.75 screenht=20 %s' % custom,par))
@@ -1507,60 +1507,60 @@ def edata(plot,data,custom,par):
 def eimage(plot,imag,custom,par):
 
     Flow([plot+'_plt',plot+'_bar'],imag,
-         'scale axis=123 | byte bar=${TARGETS[1]} gainpanel=a pclip=100 %s ' % custom)        
-    for i in range(4):        
+         'scale axis=123 | byte bar=${TARGETS[1]} gainpanel=a pclip=100 %s ' % custom)
+    for i in range(4):
         Plot  (plot+str(i+1),[plot+'_plt',plot+'_bar'],
                'window n3=1 f3=%d bar=${SOURCES[1]} |'% i
                + cgrey('%s'% custom,par))
         Result(plot+str(i+1),[plot+'_plt',plot+'_bar'],
                'window n3=1 f3=%d bar=${SOURCES[1]} |'% i
                + cgrey('%s'% custom,par))
-        
+
 # ------------------------------------------------------------
 # plot elastic wavelet
 def ewavelet(wavelet,custom,par):
-    
+
     for i in range(2):
         Plot(wavelet+'-'+str(i+1),wavelet,
              'window n2=1 f2=%d | transp | window |'%i +
              waveplot('%d %s'% (i,custom) ,par))
     pplot.p1x2(wavelet,wavelet+'-1',wavelet+'-2',0.5,0.5,-11.5)
 def ewavelet3d(wavelet,custom,par):
-    
+
     for i in range(3):
         Plot(wavelet+'-'+str(i+1),wavelet,
              'window n2=1 f2=%d | transp | window |'%i +
              waveplot('%d %s'% (i,custom) ,par))
     pplot.p1x3(wavelet,wavelet+'-1',wavelet+'-2',wavelet+'-3',0.35,0.35,-11)
-    
+
 # ------------------------------------------------------------
 # acoustic RTM
 def artm(imag,sdat,rdat,velo,dens,sacq,racq,iacq,custom,par):
 
     if('nbuf' not in par): par['nbuf']=100
-    
+
     swfl = imag+'_us'+myid(16) #   source wavefield
     rwfl = imag+'_ur'+myid(16) # receiver wavefield
     twfl = imag+'_ut'+myid(16) #     temp wavefield
     sout = imag+'_ds'+myid(16) #   source data (not the input sdat!)
     rout = imag+'_dr'+myid(16) # receiver data (not the input rdat!)
-    
+
     iwindow = ' ' + \
               '''
               nqz=%(nqz)d oqz=%(oqz)g
               nqx=%(nqx)d oqx=%(oqx)g
               jsnap=%(jdata)d jdata=%(jdata)d
               ''' % par + ' '
-    
+
     # source wavefield (z,x,t)
     awefd(sout,swfl,sdat,velo,dens,sacq,iacq,iwindow+custom,par)
-    
+
     # receiver wavefield (z,x,t)
     tdat = imag+'_tds'+myid(16)
     Flow(tdat,rdat,'reverse which=2 opt=i verb=y')
     awefd(rout,twfl,tdat,velo,dens,racq,iacq,iwindow+custom,par)
     Flow(rwfl,twfl,'reverse which=4 opt=i verb=y')
-    
+
     # conventional (cross-correlation zero-lag) imaging condition
     Flow(imag,[swfl,rwfl],
          'xcor2d uu=${SOURCES[1]} axis=3 verb=y nbuf=%(nbuf)d ompnth=%(ompnth)d' % par)
@@ -1570,23 +1570,23 @@ def artm(imag,sdat,rdat,velo,dens,sacq,racq,iacq,custom,par):
 def ertm(imag,sdat,rdat,cccc,dens,sacq,racq,iacq,custom,par):
 
     if('nbuf' not in par): par['nbuf']=100
-    
+
     swfl = imag+'_us'+myid(16) #   source wavefield
     rwfl = imag+'_ur'+myid(16) # receiver wavefield
     twfl = imag+'_ut'+myid(16) #     temp wavefield
     sout = imag+'_ds'+myid(16) #   source data (not the input sdat!)
     rout = imag+'_dr'+myid(16) # receiver data (not the input rdat!)
-    
+
     iwindow = ' ' + \
               '''
               nqz=%(nqz)d oqz=%(oqz)g
               nqx=%(nqx)d oqx=%(oqx)g
               jsnap=%(jdata)d jdata=%(jdata)d
               ''' % par + ' '
-    
+
     # source wavefield (z,x,t)
     ewefd2(sout,swfl,sdat,cccc,dens,sacq,iacq," ssou=y opot=n" + custom+iwindow,par)
-    
+
     # receiver wavefield (z,x,t)
     tdat = imag+'_tds'+myid(16)
     Flow(tdat,rdat,'reverse which=4 opt=i verb=y')
@@ -1604,18 +1604,18 @@ def ertm(imag,sdat,rdat,cccc,dens,sacq,racq,iacq,custom,par):
         for j in ('1','2'):
             Flow(imag+i+j,[swfl+i,rwfl+j],
                  'xcor uu=${SOURCES[1]} axis=3 verb=y nbuf=%(nbuf)d ompnth=%(ompnth)d' % par)
-            
+
     Flow(imag,[imag+'11',imag+'12',imag+'21',imag+'22'],
          'cat axis=3 space=n ${SOURCES[1:4]}')
 
 # ------------------------------------------------------------
 def awefd2d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([odat,owfl],[idat,velo,dens,sou,rec],
          '''
          awefd2d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d
          nb=%(nb)d dabc=%(dabc)s
          vel=${SOURCES[1]}
@@ -1625,14 +1625,14 @@ def awefd2d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
          wfl=${TARGETS[1]}
          %(fdcustom)s
          ''' % par)
-    
+
 def awefd3d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow([odat,owfl],[idat,velo,dens,sou,rec],
          '''
          awefd3d
-         ompchunk=%(ompchunk)d ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d jdata=%(jdata)d
          nb=%(nb)d dabc=%(dabc)s
          vel=${SOURCES[1]}
@@ -1645,11 +1645,11 @@ def awefd3d(odat,owfl,idat,velo,dens,sou,rec,custom,par):
 
 def ewefd2d(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [odat,owfl],[idat,cccc,dens,sou,rec],
          '''
          ewefd2d
-         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d nbell=%(nbell)d
          nb=%(nb)d  dabc=%(dabc)s
          ccc=${SOURCES[1]}
@@ -1662,11 +1662,11 @@ def ewefd2d(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
 
 def ewefd3d(odat,owfl,idat,cccc,dens,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [odat,owfl],[idat,cccc,dens,sou,rec],
          '''
          ewefd3d
-         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d 
+         ompchunk=%(ompchunk)d  ompnth=%(ompnth)d
          verb=y free=n snap=%(snap)s jsnap=%(jsnap)d nbell=%(nbell)d
          nb=%(nb)d  dabc=%(dabc)s
          ccc=${SOURCES[1]}
@@ -1706,7 +1706,7 @@ def gauss1z(gaus,zcen,zsig,par):
          n1=%(nz)d d1=%(dz)g o1=%(oz)g |
          scale axis=123
          ''' % par)
-         
+
 def gauss2d(gaus,xcen,zcen,xsig,zsig,par):
     Flow(gaus,None,
          '''
@@ -1715,7 +1715,7 @@ def gauss2d(gaus,xcen,zcen,xsig,zsig,par):
          '''
          n1=%(nz)d d1=%(dz)g o1=%(oz)g
          n2=%(nx)d d2=%(dx)g o2=%(ox)g |
-         scale axis=123 
+         scale axis=123
          ''' % par)
 
 def gauss3d(gaus,xcen,ycen,zcen,xsig,ysig,zsig,par):
@@ -1725,7 +1725,7 @@ def gauss3d(gaus,xcen,ycen,zcen,xsig,ysig,zsig,par):
          ''' % (zcen,zsig*zsig,xcen,xsig*xsig,ycen,ysig*ysig) +
          '''
          n1=%(nz)d d1=%(dz)g o1=%(oz)g
-         n2=%(nx)d d2=%(dx)g o2=%(ox)g 
+         n2=%(nx)d d2=%(dx)g o2=%(ox)g
          n3=%(ny)d d3=%(dy)g o3=%(oy)g |
          scale axis=123
          ''' % par)
@@ -1737,7 +1737,7 @@ def rbox2d(rbox,xlow,xhig,zlow,zhig,par):
     lx=int((xhig-par['ox'])/par['dx'])
     kz=int((zlow-par['oz'])/par['dz'])
     lz=int((zhig-par['oz'])/par['dz'])
-    
+
     Flow(rbox,None,
          '''
          spike nsp=1 mag=1
@@ -1752,13 +1752,13 @@ def rbox2d(rbox,xlow,xhig,zlow,zhig,par):
 
 def quiver(vect,custom,par):
 
-	Plot(vect+'o',vect,'window n1=1|' +
-     	cgraph('squeeze=n plotcol=0 plotfat=3 symbol=. '+custom,par))
-	
-	Plot(vect+'h',vect,
-	cgraph('squeeze=n plotcol=0 plotfat=1 '+custom,par))	
+    Plot(vect+'o',vect,'window n1=1|' +
+         cgraph('squeeze=n plotcol=0 plotfat=3 symbol=. '+custom,par))
 
-	Plot(vect,[vect+'h',vect+'o'],'Overlay')
+    Plot(vect+'h',vect,
+    cgraph('squeeze=n plotcol=0 plotfat=1 '+custom,par))
+
+    Plot(vect,[vect+'h',vect+'o'],'Overlay')
 
 # ------------------------------------------------------------
 def hic2d(hic,wfs,wfr,cc,custom,par):

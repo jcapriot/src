@@ -123,7 +123,7 @@ def run(main_func, cpar=[], nminarg=None, nmaxarg=None):
         show_man_and_out(q == None)
     try:
         status = main_func(par) # run the program
-    except m8rex.Error, e:
+    except m8rex.Error as e:
         msg(e.msg, True)
         status = unix_error
 
