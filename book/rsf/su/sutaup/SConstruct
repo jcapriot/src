@@ -12,7 +12,7 @@ ref = (
     (2.4,(1.18,2.1),(1.2,2.1))
     )
 
-refstr = ' '.join(map(lambda x: 'ref="%g:%s"' % (x[0],';'.join(map(lambda y: ','.join(map(str,y)),x[1:]))),ref))
+refstr = ' '.join(['ref="%g:%s"' % (x[0],';'.join([','.join(map(str,y)) for y in x[1:]])) for x in ref])
 
 Flow('data',None,
      '''

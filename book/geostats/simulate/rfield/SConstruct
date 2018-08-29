@@ -76,7 +76,7 @@ for i in range(3):
     plots[i] = results
     for j in range(real_par[i]['nr']):
         plots[i] = plots[i] + ['sim_%02d_real' % (j+1)]
-    plots[i] = map(lambda x: real_par[i]['name']+x,plots[i])
+    plots[i] = [real_par[i]['name']+x for x in plots[i]]
     
 #          
 # 1D plots

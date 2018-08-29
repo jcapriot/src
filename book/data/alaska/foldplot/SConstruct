@@ -23,8 +23,7 @@ su.Flow ('line', rawsegy,
 # InterpText.py creates a text file with one line for each tract in 
 # line.su that has the key geometry headers like ep, sx, sy, cdp, ...
 # this file had dummy values like -999 or -999999 for dummy traces
-su.Flow ('hdrfile1.txt',map(lambda x: os.path.join('../line31-81/',x),
-                         Split('InterpText.py spnElev.txt recnoSpn.txt hdrfile.txt')),
+su.Flow ('hdrfile1.txt',[os.path.join('../line31-81/',x) for x in Split('InterpText.py spnElev.txt recnoSpn.txt hdrfile.txt')],
       '${SOURCES}',stdin=0)
 
 # convert the asci file header1.txt to binary (sushw requires binary input)

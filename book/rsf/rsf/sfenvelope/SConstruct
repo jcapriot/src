@@ -56,7 +56,7 @@ Result('time','ntime time10 time100',
        ''')
 
 ref = [0.6,0.8,1.0]
-labels = ':'.join(map(lambda x: 'ref=%g' % x,ref))
+labels = ':'.join(['ref=%g' % x for x in ref])
 
 for r in range(3):
     time = 'time%d' % r

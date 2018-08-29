@@ -119,7 +119,7 @@ def progtest(target=None,source=None,env=None):
     return 0
 
 def www(target=None,source=None,env=None):
-    rsf.sftour.tour(map(str,source),'scons -Q www')
+    rsf.sftour.tour(list(map(str,source)),'scons -Q www')
     return 0
 
 env = Environment()
@@ -130,8 +130,7 @@ for prog in rsf.doc.progs.keys():
     projects = []
     for book in uses.keys():
         for chapter in uses[book].keys():
-            projects.extend(map(lambda x: os.path.join(book,chapter,x),
-                                uses[book][chapter]))
+            projects.extend([os.path.join(book,chapter,x) for x in uses[book][chapter]])
     env.Command(prog+'.test',None,
                 Action(progtest,varlist=['projects']),projects=projects)
     env.Alias('test',prog+'.test')

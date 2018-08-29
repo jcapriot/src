@@ -166,7 +166,7 @@ Result('propo','grey title="Propagator Matrix" color=j scalebar=y label1=Wavenum
 # Lowrank decomposition
 #######################
 
-targets = ','.join(map(lambda x: '\'${TARGETS[%d]}\'' % x, range(6)))
+targets = ','.join(['\'${TARGETS[%d]}\'' % x for x in range(6)])
 
 Flow('prod left2 right2','prop',
      'lrmatrix seed=2010 left=${TARGETS[1]} right=${TARGETS[2]}')

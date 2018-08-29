@@ -21,7 +21,7 @@ Flow('refs',None,
      transp 
      ''' % (nref,nref,
             ','.join(map(str,range(1,nref+1))),
-            ','.join(map(str,map(lambda x: x[1][1],ref)))))
+            ','.join(map(str,[x[1][1] for x in ref]))))
 
 # reflectivity
 

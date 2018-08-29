@@ -29,7 +29,7 @@ Flow('source',None,
      ricker1 frequency=15
      '''%(nt,dt))
 
-targets = ','.join(map(lambda x: '\'${TARGETS[%d]}\'' % x, range(5)))
+targets = ','.join(['\'${TARGETS[%d]}\'' % x for x in range(5)])
 
 Flow('fft','sub','fft1 | fft3 axis=2 pad=1')
 Flow('right left','sub fft',

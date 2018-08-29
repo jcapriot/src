@@ -17,7 +17,7 @@ Flow('syn',None,
      nxm=%d dxm=.05 fxm=0.0 er=0 ob=1 
      v00=1.0 dvdz=0 dvdx=0 smooth=1 ref="%s" |
      sushw key=d2 a=.05
-     ''' % (n1,n2,';'.join(map(lambda x: ','.join(map(str,x)),ref))))
+     ''' % (n1,n2,';'.join([','.join(map(str,x)) for x in ref])))
 Result('syn',
        'suximage label1="Time (s)" label2="Distance (km)" title="Synthetic Data" ')
 

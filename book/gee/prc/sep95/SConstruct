@@ -49,7 +49,7 @@ for filt in filters:
 
 for prec in [0,1]:
     Result(name[prec]+'all',
-           map(lambda filt: name[prec]+filt, filters),'OverUnderAniso')
+           [name[prec]+filt for filt in filters],'OverUnderAniso')
 
 ###############################################################################
 

@@ -44,13 +44,13 @@ Result('otens',imps,
        '''
        cat axis=2 ${SOURCES[1:%d]} |
        dots labels=%s dots=2 connect=0 gaineach=0 
-       ''' % (nt,':'.join(map(lambda x: 'tension=%g' % x,tension))))
+       ''' % (nt,':'.join(['tension=%g' % x for x in tension])))
 
 Result('int',ints+['inp'],
        '''
        cat axis=2 ${SOURCES[1:%d]} |
        dots labels=%s dots=2 connect=0 gaineach=0 
        ''' % (nt+1,
-              ':'.join(map(lambda x: 'tension=%g' % x,tension))+':given'))
+              ':'.join(['tension=%g' % x for x in tension])+':given'))
  
 End()

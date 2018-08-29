@@ -133,7 +133,7 @@ for msou in mindex:
         	''' % par)
         # . . Back to native format
         Flow('gputiming'+alltag,['timegpu'+alltag,'Dgpu'+alltag],'dd form=native')
-        Flow('gputiming'+mtag,map(lambda x: 'gputiming%s' %mtag +'-%02d.rsf' % x,rindex),
+        Flow('gputiming'+mtag,['gputiming%s' %mtag +'-%02d.rsf' % x for x in rindex],
     	     'cat ${SOURCES[1:%d]} axis=2 norm=y | window n1=1|put d1=1 o1=1 ' %par['ntest'])
 
     # . . CPU Timing
@@ -161,13 +161,13 @@ for msou in mindex:
         	''' % par)
     	# . . Back to native format
     	Flow('cputiming'+alltag,['timecpu'+alltag,'Dcpu'+alltag],'dd form=native')
-    	Flow('cputiming'+mtag,map(lambda x: 'cputiming%s' %mtag +'-%02d.rsf' % x,rindex),
+    	Flow('cputiming'+mtag,['cputiming%s' %mtag +'-%02d.rsf' % x for x in rindex],
     	     'cat ${SOURCES[1:%d]} axis=2 norm=y | window n1=1 |put d1=1 o1=1 ' %par['ntest'])
 
 par['nmod']=len(mindex)
 
-Flow('gputiming', map(lambda x: 'gputiming-'+'%04d.rsf' % x,mindex), 'cat ${SOURCES[1:%d]} axis=2 | put d2=240 o2=528 ' % par['nmod'])
-Flow('cputiming', map(lambda x: 'cputiming-'+'%04d.rsf' % x,mindex), 'cat ${SOURCES[1:%d]} axis=2 | put d2=240 o2=528 ' % par['nmod'])
+Flow('gputiming', ['gputiming-'+'%04d.rsf' % x for x in mindex], 'cat ${SOURCES[1:%d]} axis=2 | put d2=240 o2=528 ' % par['nmod'])
+Flow('cputiming', ['cputiming-'+'%04d.rsf' % x for x in mindex], 'cat ${SOURCES[1:%d]} axis=2 | put d2=240 o2=528 ' % par['nmod'])
 
 # . . Fake the modelling runtime results
 Flow('Runtime-ALL','gputiming cputiming','cat ${SOURCES[1]} axis=3')

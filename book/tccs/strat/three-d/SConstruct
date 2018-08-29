@@ -115,7 +115,7 @@ def plotpath(col,fat):
     wantaxis=n wanttitle=n screenht=2.8 screenwd=14.6
     ''' % (col,fat)
 
-pnames = map(lambda x,y: 'path-%d-%d' % (x,y),paths[0],paths[1])
+pnames = list(map(lambda x,y: 'path-%d-%d' % (x,y),paths[0],paths[1]))
 
 Flow('shift1','win','window f2=1')
 Flow('shift2','win','window f3=1')

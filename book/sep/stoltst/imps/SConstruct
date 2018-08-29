@@ -44,7 +44,7 @@ Flow('pshift','spike vel1',
 
 ntcut = ([0,200,400,513],[0,125,275,350,400,513])
 vref = ([2122,2124,1004],[1949,1678,1751,1377,627.9])
-ncut = map(len,ntcut)
+ncut = list(map(len,ntcut))
 
 def migrate(v):
     return '''

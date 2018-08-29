@@ -25,8 +25,7 @@ Paper('abstract',lclass='eage',
 
 #Paper('dummy')
 
-Depends2('install',map(lambda x: x+'.install',
-                       Split('api format install tour demo')))
+Depends2('install',[x+'.install' for x in Split('api format install tour demo')])
 
 #Paper('vienna',lclass='beamer',use='helvet,hyperref',
 #     include=r'''

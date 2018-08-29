@@ -130,7 +130,7 @@ for c in (CIPLIST):
             par[c+'y'],
             par['zC']))
 
-Flow('coo-3d', map(lambda x: 'coo-%s' % x,(CIPLIST)),
+Flow('coo-3d', ['coo-%s' % x for x in (CIPLIST)],
      'cat axis=2 space=n ${SOURCES[1:%d]}'%len(CIPLIST))
 
 # ------------------------------------------------------------
@@ -456,27 +456,27 @@ Flow('hic-3d-byt',
      'byte gainpanel=a pclip=99.9')
 
 Flow('fic-3d-byt',
-     map(lambda x: 'fic-%s' % x,(CIPLIST)),
+     ['fic-%s' % x for x in (CIPLIST)],
      'cat axis=5 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%len(CIPLIST))
 Flow('aic-3d-byt',
-     map(lambda x: 'aic-%s' % x,(CIPLIST)),
+     ['aic-%s' % x for x in (CIPLIST)],
      'cat axis=5 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%len(CIPLIST))
 
 Flow('pol-byt',
-     map(lambda x: 'pol-%s' % x,(CIPLIST)),
+     ['pol-%s' % x for x in (CIPLIST)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%len(CIPLIST))
 Flow('car-byt',
-     map(lambda x: 'car-%s' % x,(CIPLIST)),
+     ['car-%s' % x for x in (CIPLIST)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%len(CIPLIST))
 
 Flow('apo-byt',
-     map(lambda x: 'apo-%s' % x,(CIPLIST)),
+     ['apo-%s' % x for x in (CIPLIST)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=100'%len(CIPLIST))
 Flow('aca-byt',
-     map(lambda x: 'aca-%s' % x,(CIPLIST)),
+     ['aca-%s' % x for x in (CIPLIST)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%len(CIPLIST))
 Flow('jan-byt',
-     map(lambda x: 'jan-%s' % x,(CIPLIST)),
+     ['jan-%s' % x for x in (CIPLIST)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=100'%len(CIPLIST))
 # ------------------------------------------------------------
 for c in range(len(CIPLIST)):    

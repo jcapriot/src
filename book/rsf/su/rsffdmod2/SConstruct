@@ -15,7 +15,7 @@ for k in range(1,4):
     Flow(h+'.asc',None,
          '''
          echo %s n1=2 n2=%d data_format=ascii_float in=$TARGET
-         ''' % (' '.join(map(lambda x: ' '.join(map(str,x)), horizon[k-1])),
+         ''' % (' '.join([' '.join(map(str,x)) for x in horizon[k-1]]),
                 len(horizon[k-1])))
     Flow(h,[h+'.asc','h0'],'dd form=native | spline pattern=${SOURCES[1]}')
     horizons.append(h)

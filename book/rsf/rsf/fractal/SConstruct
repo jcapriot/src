@@ -45,7 +45,7 @@ for k in range(0,61,2):
     Flow('man'+str(k//2),None,'mandelbrot n1=1000 n2=1250 niter=%d' %k)
     Plot('man'+str(k//2),'dd type=float | grey allpos=y transp=n color=h screenht=10 screenwd=12.5 title=%d' %k)
 
-allman = map(lambda x: 'man%d.vpl' % x,range(31))
+allman = ['man%d.vpl' % x for x in range(31)]
 Plot('manit',allman,'Movie',view=1)
 
 # ------------------------------------------------------------
@@ -57,7 +57,7 @@ for p in range(1,1000002,5000):
          graph min1=-20 max1=20 min2=5 max2=50 
          screenht=10 screenwd=12.5 title=%d
          ''' %p)
-lorenzs = map(lambda x: 'lorenz%d.vpl' % x,range(200))
+lorenzs = ['lorenz%d.vpl' % x for x in range(200)]
 Plot('lorenzs',lorenzs,'Movie',view=1)
 Result('lorenzs','lorenz200','Overlay')
 

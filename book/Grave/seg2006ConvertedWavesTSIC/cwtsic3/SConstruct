@@ -88,21 +88,21 @@ deg  = (0,15,30,45,60)
 ndeg = len(deg)
 
 # ------------------------------------------------------------
-ppan = ','.join(map(lambda a: str(a),deg))
-psan = ','.join(map(lambda a: str(
+ppan = ','.join([str(a) for a in deg])
+psan = ','.join([str(
     atan(tan( ( asin(sin(a*pi/180)/par['vpvs']) + a*pi/180 )/2 ))/pi*180
-    ),deg))
+    ) for a in deg])
 
-tppan = ','.join(map(lambda a: str(
+tppan = ','.join([str(
     tan(a*pi/180)
-    ),deg))
-tpsan = ','.join(map(lambda a: str(
+    ) for a in deg])
+tpsan = ','.join([str(
     tan( ( asin(sin(a*pi/180)/par['vpvs']) + a*pi/180 )/2 )
-    ),deg))
+    ) for a in deg])
 
-dpth = ','.join(map(lambda a: str(
+dpth = ','.join([str(
     ( 300+1000*tan(a*pi/180) ) / 5
-    ),deg))
+    ) for a in deg])
 
 # ------------------------------------------------------------
 
@@ -114,7 +114,7 @@ Flow('dip',None,
       ndeg,
       ndeg,
       ','.join(map(str,range(1,1+ndeg))),
-      ','.join(map(lambda a: str(tan(a*pi/180)),deg))
+      ','.join([str(tan(a*pi/180)) for a in deg])
       )
      )
 Flow('ref','dip','math output="300+input*x1" ')

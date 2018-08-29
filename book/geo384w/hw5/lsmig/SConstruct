@@ -19,8 +19,7 @@ for i in range(nlays):
           echo %s in=$TARGET
           data_format=ascii_float n1=2 n2=%d
           ''' % \
-          (' '.join(map(lambda x: ' '.join(map(str,x)),
-                           layers[i])),len(layers[i])))
+          (' '.join([' '.join(map(str,x)) for x in layers[i]]),len(layers[i])))
 
 dim1 = 'o1=0 d1=0.05 n1=201'
 Flow('lay1','inp0.asc',

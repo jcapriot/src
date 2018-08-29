@@ -186,7 +186,7 @@ for k in range(klist):
     Plot('mm'+ktag,'window j2=71 |'+
          graphyx('plotfat=1 symbol=. plotcol=1',par))
 
-Plot('ss',map(lambda k: 'ss-%06d' % nlist[k],range(klist)),'Overlay')
+Plot('ss',['ss-%06d' % nlist[k] for k in range(klist)],'Overlay')
 
 # ------------------------------------------------------------
 par['xcip']=23.45
@@ -436,7 +436,7 @@ for k in range(klist):
 # ------------------------------------------------------------
 # CIC stack
 Flow('cstk',
-     map(lambda k: 'cwn-%06d' % nlist[k],range(klist)),
+     ['cwn-%06d' % nlist[k] for k in range(klist)],
      '''
      cat axis=4 space=n ${SOURCES[1:%d]} |
      transp plane=34 | transp plane=23 |
@@ -455,7 +455,7 @@ Result('ccut',['ccut','cczx'],'Overlay')
 # ------------------------------------------------------------
 # EIC stack
 Flow('estk',
-     map(lambda k: 'eic-%06d' % nlist[k],range(klist)),
+     ['eic-%06d' % nlist[k] for k in range(klist)],
      '''
      cat axis=5 space=n ${SOURCES[1:%d]} |
      transp plane=45 | transp plane=34 | transp plane=23 |
@@ -478,16 +478,16 @@ Result('cang',['cang','ovl'],'Overlay')
 
 # ------------------------------------------------------------
 Flow('cwn-byt',
-     map(lambda k:  'cwn-%06d' % nlist[k],range(klist)),
+     ['cwn-%06d' % nlist[k] for k in range(klist)],
      'cat axis=4 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.0'%klist)
 Flow('eic-byt',
-     map(lambda k:  'eic-%06d' % nlist[k],range(klist)),
+     ['eic-%06d' % nlist[k] for k in range(klist)],
      'cat axis=5 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%klist)
 Flow('pang-byt',
-     map(lambda k: 'pang-%06d' % nlist[k],range(klist)),
+     ['pang-%06d' % nlist[k] for k in range(klist)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=99.9'%klist)
 Flow('cang-byt',
-     map(lambda k: 'cang-%06d' % nlist[k],range(klist)),
+     ['cang-%06d' % nlist[k] for k in range(klist)],
      'cat axis=3 space=n ${SOURCES[1:%d]} | byte gainpanel=a pclip=100 '%klist)
 
 for k in range(klist):

@@ -95,7 +95,7 @@ for ix in shots:
     fdmod.point('ss'+tag,xsou,par['zsou'],par)
     Plot(       'ss'+tag,'window       |' + fdmod.ssplot('',par))
 
-allsou =  map(lambda x: 'ss-%04d-' % x,shots)
+allsou =  ['ss-%04d-' % x for x in shots]
 Plot('ss',allsou,'Overlay')
 Result('vp','vp ss ','Overlay')
 Result('rx','rx rr ss ','Overlay')
@@ -174,8 +174,8 @@ for ix in shots:
 
 # ------------------------------------------------------------
 # all shots CIG
-allppang =  map(lambda x: 'je-%04d-Eang11' % x,shots)
-allpsang =  map(lambda x: 'je-%04d-Eang12' % x,shots)
+allppang =  ['je-%04d-Eang11' % x for x in shots]
+allpsang =  ['je-%04d-Eang12' % x for x in shots]
 nshots=len(allppang)
 Flow('PPang',allppang,'add ${SOURCES[0:%d]} | smooth rect2=1'%nshots,stdin=0)
 Flow('PSang',allpsang,'add ${SOURCES[0:%d]} | smooth rect2=1'%nshots,stdin=0)
@@ -184,8 +184,8 @@ Result('PSang', adcig.agrey(' title=  grid=y ',par))
 
 
 # stack CIG, then do decomp
-allppcig =  map(lambda x: 'je-%04d-Ecig11' % x,shots)
-allpscig =  map(lambda x: 'je-%04d-Ecig12' % x,shots)
+allppcig =  ['je-%04d-Ecig11' % x for x in shots]
+allpscig =  ['je-%04d-Ecig12' % x for x in shots]
 
 Flow('PPcig',allppcig,
      '''
