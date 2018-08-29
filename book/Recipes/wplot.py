@@ -5,6 +5,7 @@ try:    from rsf.cluster import *
 except: from rsf.proj    import *
 import pplot
 import random
+from functools import reduce
 
 random.seed(1003)
 def add(x,y): return x+y

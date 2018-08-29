@@ -2,6 +2,7 @@ try:    from rsf.cluster import *
 except: from rsf.proj    import *
 import fdmod
 import random
+from functools import reduce
 
 random.seed(1005)
 def add(x,y): return x+y

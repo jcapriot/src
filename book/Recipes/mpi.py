@@ -6,6 +6,7 @@ try:
 except:
     from rsf.proj import *
 import subprocess
+from functools import reduce
 
 
 def processes(nodes=None,single=None):

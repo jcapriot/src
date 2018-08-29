@@ -102,7 +102,7 @@ def retrieve_emit(target=None, source=None, env=None):
         usedatapath = False
     server = env.get('server')
     if usedatapath and server != 'local':
-        for file in map(str,target):
+        for file in list(map(str,target)):
             localfile=env.path+os.path.basename(file)
             target.append(localfile)
     return target, source
