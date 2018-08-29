@@ -121,7 +121,7 @@ def latexscan(node,env,path):
         geomanuscript = 0
     else:
         geomanuscript = lclass == 'geophysics' and \
-            string.rfind(options,'manuscript') >= 0
+            options.rfind('manuscript') >= 0
     slides = lclass == 'beamer' or lclass == 'cwpslides'
 
     top = str(node)

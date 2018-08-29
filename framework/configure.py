@@ -230,9 +230,9 @@ def cc(context):
     return 0;
     }\n'''
 
-    if string.rfind(CC,'icc') >= 0:
+    if CC.rfind('icc') >= 0:
         intel(context)
-    elif string.rfind(CC,'gcc') >= 0:
+    elif CC.rfind('gcc') >= 0:
         gcc(context)
 
     context.Message("checking if %s works ... " % CC)
@@ -240,8 +240,8 @@ def cc(context):
     context.Result(res)
     if not res:
         need_pkg('libc')
-    if string.rfind(CC,'gcc') >= 0 and \
-           string.rfind(CC,'pgcc') < 0:
+    if CC.rfind('gcc') >= 0 and \
+           CC.rfind('pgcc') < 0:
         oldflag = context.env.get('CFLAGS')
         for flag in ('-x c -std=gnu99 -Wall -pedantic',
                      '-std=gnu99 -Wall -pedantic',
@@ -367,7 +367,7 @@ def c99(context):
 # MKL library
 def mkl(context):
     CC = context.env.get('CC')
-    if string.rfind(CC,'icc') < 0:
+    if CC.rfind('icc') < 0:
         return # only relevant for icc
     context.Message("checking for MKL ... ")
     text = '''
@@ -1713,10 +1713,10 @@ def omp(context):
     flags = context.env.get('CFLAGS','')
     ccflags =  context.env.get('CXXFLAGS','')
     lflags = context.env.get('LINKFLAGS','')
-    pgcc =  (string.rfind(CC,'pgcc') >= 0)
-    gcc = (string.rfind(CC,'gcc') >= 0)
-    icc = (string.rfind(CC,'icc') >= 0)
-    clang = (string.rfind(CC,'clang') >= 0)
+    pgcc =  (CC.rfind('pgcc') >= 0)
+    gcc = (CC.rfind('gcc') >= 0)
+    icc = (CC.rfind('icc') >= 0)
+    clang = (CC.rfind('clang') >= 0)
     if pgcc:
         CFLAGS = flags + ' -mp'
         CXXFLAGS = ccflags + ' -mp'
@@ -1772,9 +1772,9 @@ def omp(context):
 
     F90   = context.env.get('F90','gfortran')
     f90flags = context.env.get('F90FLAGS','')
-    pgf90 = (string.rfind(F90,'pgf90') >= 0)
-    gfortran = (string.rfind(F90,'gfortran') >= 0) or (string.rfind(F90,'gfc') >= 0)
-    ifort = (string.rfind(F90,'ifort') >= 0)
+    pgf90 = (F90.rfind('pgf90') >= 0)
+    gfortran = (F90.rfind('gfortran') >= 0) or (F90.rfind('gfc') >= 0)
+    ifort = (F90.rfind('ifort') >= 0)
     if pgf90:
         F90FLAGS = f90flags + ' -mp'
     elif gfortran:
@@ -1808,9 +1808,9 @@ def pthreads(context):
     flags = context.env.get('LINKFLAGS','')
     LIBS  = path_get(context,'LIBS')
     CC    = context.env.get('CC','gcc')
-    pgcc =  (string.rfind(CC,'pgcc') >= 0)
-    gcc = (string.rfind(CC,'gcc') >= 0)
-    icc = (string.rfind(CC,'icc') >= 0)
+    pgcc =  (CC.rfind('pgcc') >= 0)
+    gcc = (CC.rfind('gcc') >= 0)
+    icc = (CC.rfind('icc') >= 0)
     if icc or pgcc:
         LIBS.append('pthread')
     elif gcc and not plat['OS'] in ['darwin','cygwin','sunos']:
