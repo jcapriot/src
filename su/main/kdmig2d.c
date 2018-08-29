@@ -1,38 +1,38 @@
 /* 2-D Prestack Kirchhoff depth migration (SU version). */
 /*
-  Copyright � 2010, Colorado School of Mines,
+  Copyright © 2010, Colorado School of Mines,
   All rights reserved.
-  
-  
-  Redistribution and use in source and binary forms, with or 
-  without modification, are permitted provided that the following 
+
+
+  Redistribution and use in source and binary forms, with or
+  without modification, are permitted provided that the following
   conditions are met:
-  
-  *  Redistributions of source code must retain the above copyright 
+
+  *  Redistributions of source code must retain the above copyright
   notice, this list of conditions and the following disclaimer.
-  *  Redistributions in binary form must reproduce the above 
-  copyright notice, this list of conditions and the following 
-  disclaimer in the documentation and/or other materials provided 
+  *  Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following
+  disclaimer in the documentation and/or other materials provided
   with the distribution.
   *  Neither the name of the Colorado School of Mines nor the names of
-  its contributors may be used to endorse or promote products 
+  its contributors may be used to endorse or promote products
   derived from this software without specific prior written permission.
-  
+
   Warranty Disclaimer:
-  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS 
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
   COLORADO SCHOOL OF MINES OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
-  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
-  
+
+
   Export Restriction Disclaimer:
   We believe that CWP/SU: Seismic Un*x is a low technology product that does
   not appear on the Department of Commerce CCL list of restricted exports.
@@ -40,28 +40,28 @@
   an ECCN (export control classification number) of EAR99 and we believe
   it fits the qualifications of NRR (no restrictions required), and
   is thus not subject to export restrictions of any variety.
-  
+
   Approved Reference Format:
   In publications, please refer to SU as per the following example:
-  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x 
-  Release No. __: an open source software  package for seismic 
-  research and processing, 
+  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x
+  Release No. __: an open source software  package for seismic
+  research and processing,
   Center for Wave Phenomena, Colorado School of Mines.
-  
+
   Articles about SU in peer-reviewed journals:
   Saeki, T., (1999), A guide to Seismic Un*x (SU)(2)---examples of data processing (part 1),
                      data input and preparation of headers, Butsuri-Tansa (Geophysical Exploration), vol. 52, no. 5, 465-477.
   Stockwell, Jr. J. W. (1999), The CWP/SU: Seismic Un*x Package, Computers and Geosciences, May 1999.
   Stockwell, Jr. J. W. (1997), Free Software in Education: A case study of CWP/SU: Seismic Un*x, The Leading Edge, July 1997.
   Templeton, M. E., Gough, C.A., (1998), Web Seismic Un*x: Making seismic reflection processing more accessible, Computers and Geosciences.
-  
+
   Acknowledgements:
-  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado 
-  School of Mines, partially based on Stanford Exploration Project (SEP) 
+  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado
+  School of Mines, partially based on Stanford Exploration Project (SEP)
   software.
 */
 /*
- * Author:  Zhenyue Liu, 03/01/95,  Colorado School of Mines 
+ * Author:  Zhenyue Liu, 03/01/95,  Colorado School of Mines
  * Modifcations:
  *    Gary Billings, Talisman Energy, Sept 2005:  added absoff, limoff.
  */
@@ -77,9 +77,9 @@
     In the migration process, traveltimes are interpolated into shot/gephone
     positions and output grids.
  2. Input seismic traces can be any type of gathers (common shot, common offset,
-    common CDP, and so on). 
+    common CDP, and so on).
  3. Migrated traces are output in CDP gathers if velocity analysis
-    is required, with dimension nxo*noff*nzo. 
+    is required, with dimension nxo*noff*nzo.
  4. If the offset value of an input trace is not in the offset array
     of output, the nearest one in the array is chosen.
  5. Memory requirement for this program is about
@@ -326,18 +326,18 @@ int main (int argc, char **argv) {
         cs = sf_floatalloc3 (nzt, nxt, ns);
         cssum = sf_floatalloc2 (nzt, nxt);
     }
-    if (!npv) 
+    if (!npv)
         mig1 = sf_floatalloc3 (1, 1, noff);
     else
         mig1 = sf_floatalloc3 (nzo, nxo, noff);
 
-     memset ((void*)mig[0][0], 0, noff*nxo*nzo*sizeof(float)); 
+     memset ((void*)mig[0][0], 0, noff*nxo*nzo*sizeof(float));
      if (npv)
          memset ((void *)mig1[0][0], 0, noff*nxo*nzo*sizeof(float));
 
      if (verb)
          sf_warning (" input traveltime tables");
-                         
+
     /* compute traveltime residual */
     for (is = 0; is < ns; ++is) {
         sf_floatread (ttab[is][0], nxt*nzt, ttfp);
@@ -402,7 +402,7 @@ int main (int argc, char **argv) {
     data = sf_floatalloc (nt);
 
     do {
-        sf_floatread (data, nt, infp); 
+        sf_floatread (data, nt, infp);
         /* determine offset index */
 
         sx = fsi + iis*dsi;
@@ -416,7 +416,7 @@ int main (int argc, char **argv) {
         if (io < 0) io = 0;
         if (io >= noff) io = noff-1;
 
-        if (SF_MIN(sx,gx) >= fs && SF_MAX(sx,gx) <= es && 
+        if (SF_MIN(sx,gx) >= fs && SF_MAX(sx,gx) <= es &&
             SF_MAX(gx-sx,sx-gx) <= offmax) {
             /* migrate this trace */
 
@@ -530,7 +530,7 @@ void resit (int nx, float fx, float dx, int nz, int nr, float dr,
                 for(iz=0; iz<nz; ++iz)
                         t[ix][iz] -= sr0*tb[jr][iz]+sr*tb[jr+1][iz];
         }
-} 
+}
 
 /* lateral interpolation */
 
@@ -538,11 +538,11 @@ void resit (int nx, float fx, float dx, int nz, int nr, float dr,
 void sum2 (int nx, int nz, float a1, float a2, float **t1, float **t2, float **t) {
         int ix,iz;
 
-        for(ix=0; ix<nx; ++ix) 
+        for(ix=0; ix<nx; ++ix)
                 for(iz=0; iz<nz; ++iz)
                         t[ix][iz] = a1*t1[ix][iz]+a2*t2[ix][iz];
 }
- 
+
 /* compute  reference traveltime and slowness */
 void timeb (int nr, int nz, float dr, float dz, float fz, float a,
             float v0, float **t, float **p, float **cs0, float **ang) {
@@ -566,7 +566,7 @@ void timeb (int nr, int nz, float dr, float dz, float fz, float a,
                         for(iz=0,z=fz+zc;iz<nz;++iz,z+=dz){
                                 rou = sqrt(r*r+z*z);
                                 v = v0+a*(z-zc);
-                                if(ir==0){ 
+                                if(ir==0){
                                         t[ir][iz] = log(v/v0)*oa;
                                         p[ir][iz] = 0.0;
                                         ang[ir][iz] = 0.0;
@@ -597,14 +597,14 @@ void mig2d (float *trace, int nt, float ft, float dt,
             float **tsum, int nzt, float fzt, float dzt, int nxt, float fxt, float dxt,
             int npv, float **cssum, float **tvsum, float **mig1)
 /*****************************************************************************
-Migrate one trace 
+Migrate one trace
 ******************************************************************************
 Input:
-*trace                   one seismic trace 
+*trace                   one seismic trace
 nt                       number of time samples in seismic trace
 ft                       first time sample of seismic trace
 dt                       time sampleing interval in seismic trace
-sx,gx                    lateral coordinates of source and geophone 
+sx,gx                    lateral coordinates of source and geophone
 aperx                    lateral aperature in migration
 nx,fx,dx,nz,fz,dz        dimension parameters of migration region
 ls                       =1 for line source; =0 for point source
@@ -650,7 +650,7 @@ mig1                     additional migrated section for velocity analysis if np
         z0 = (fz-fzt)/dzt;
         rdz = dz/dzt;
         pmin = 1.0/(2.0*dxm*fmax);
-        
+
         filt(trace,nt,dt,fmax,ls,mtmax,trf);
 /*        for (int ii = 0; ii < nt; ii++)
             trf[ii] = trace[ii];*/
@@ -684,15 +684,15 @@ mig1                     additional migrated section for velocity analysis if np
                 zpt[ix] = fzt+(nzt-1)*dzt;
 
                 for(iz=izt0; iz<nzt; ++iz){
-                        angs = srs0*angb[jrs][iz]+srs*angb[jrs+1][iz]; 
-                        angg = srg0*angb[jrg][iz]+srg*angb[jrg+1][iz]; 
-                        cs0s = srs0*cs0b[jrs][iz]+srs*cs0b[jrs+1][iz]; 
-                        cs0g = srg0*cs0b[jrg][iz]+srg*cs0b[jrg+1][iz]; 
+                        angs = srs0*angb[jrs][iz]+srs*angb[jrs+1][iz];
+                        angg = srg0*angb[jrg][iz]+srg*angb[jrg+1][iz];
+                        cs0s = srs0*cs0b[jrs][iz]+srs*cs0b[jrs+1][iz];
+                        cs0g = srg0*cs0b[jrg][iz]+srg*cs0b[jrg+1][iz];
                         ampd = (cs0s+cs0g)*cos(0.5*(angs-angg));
                         if(ampd<0.0) ampd = -ampd;
                         ampt[ix][iz] = ampd;
 
-                        pd = srs0*pb[jrs][iz]+srs*pb[jrs+1][iz]+sigp 
+                        pd = srs0*pb[jrs][iz]+srs*pb[jrs+1][iz]+sigp
                              *(srg0*pb[jrg][iz]+srg*pb[jrg+1][iz]);
                         if(pd<0.0) pd = -pd;
                         temp = pd*dxm*odt;
@@ -700,13 +700,13 @@ mig1                     additional migrated section for velocity analysis if np
                         if(temp>mtmax) temp = mtmax;
                         ampti[ix][iz] = ampd/(temp*temp);
                         tmt[ix][iz] = temp;
-                        if(pd<pmin && zpt[ix]>fzt+(nzt-1.1)*dzt) 
+                        if(pd<pmin && zpt[ix]>fzt+(nzt-1.1)*dzt)
                                 zpt[ix] = fzt+iz*dzt;
 
                     if(npv){
-                        if(cssum[ix][iz]<1.0) 
-                             ampt1[ix][iz] = 0; 
-                        else 
+                        if(cssum[ix][iz]<1.0)
+                             ampt1[ix][iz] = 0;
+                        else
                              ampt1[ix][iz] = tvsum[ix][iz]/cssum[ix][iz];
                     }
                 }
@@ -716,7 +716,7 @@ mig1                     additional migrated section for velocity analysis if np
         if(nxf<0) nxf = 0;
         nxe = (xm+aperx-fx)/dx+0.5;
         if(nxe>=nx) nxe = nx-1;
-        
+
         /* interpolate amplitudes and filter length along lateral        */
         for(ix=nxf; ix<=nxe; ++ix){
                 x = fx+ix*dx;
@@ -757,7 +757,7 @@ mig1                     additional migrated section for velocity analysis if np
                     ampi[iz] = ax0*ampti[jx][iz]+ax*ampti[jx+1][iz];
                     tm[iz] = ax0*tmt[jx][iz]+ax*tmt[jx+1][iz];
 
-                    if(npv) 
+                    if(npv)
                             amp1[iz] = ax0*ampt1[jx][iz]+ax*ampt1[jx+1][iz];
 
                 }
@@ -781,12 +781,12 @@ mig1                     additional migrated section for velocity analysis if np
                             mt = (int)(0.5+sz0*tm[jz]+sz*tm[jz+1]);
                             res = at-jt;
                             res0 = 1.0-res;
-                             temp = (res0*(-trf[jt-mt]+2.0*trf[jt]-trf[jt+mt]) 
+                             temp = (res0*(-trf[jt-mt]+2.0*trf[jt]-trf[jt+mt])
                                 +res*(-trf[jt-mt+1]+2.0*trf[jt+1]
                                 -trf[jt+mt+1]))*ampd;
                             mig[ix][iz] += temp;
 
-                            if(npv) 
+                            if(npv)
                                 mig1[ix][iz]  += temp
                                         *(sz0*amp1[jz]+sz*amp1[jz+1]);
                         }
@@ -806,9 +806,9 @@ mig1                     additional migrated section for velocity analysis if np
                             ampd = sz0*amp[jz]+sz*amp[jz+1];
                             res = at-jt;
                             res0 = 1.0-res;
-                             temp = (res0*trace[jt]+res*trace[jt+1])*ampd; 
+                             temp = (res0*trace[jt]+res*trace[jt+1])*ampd;
                             mig[ix][iz] += temp;
-                            if(npv) 
+                            if(npv)
                                 mig1[ix][iz]  += temp
                                         *(sz0*amp1[jz]+sz*amp1[jz+1]);
                         }
@@ -833,7 +833,7 @@ mig1                     additional migrated section for velocity analysis if np
 
 void filt (float *trace, int nt, float dt, float fmax, int ls, int m, float *trf)
 /* Low-pass filter, integration and phase shift for input data
-   input: 
+   input:
     trace(nt)        single seismic trace
     fmax             high cut frequency
     ls               ls=1, line source; ls=0, point source
@@ -866,7 +866,7 @@ void filt (float *trace, int nt, float dt, float fmax, int ls, int m, float *trf
                 itaper = 0.5+ftaper/dw;
                 taper = sf_floatalloc(2*itaper+1);
                 for(iw=-itaper; iw<=itaper; ++iw){
-                        temp = (float)iw/(1.0+itaper); 
+                        temp = (float)iw/(1.0+itaper);
                         taper[iw+itaper] = (1-temp)*(1-temp)*(temp+2)/4;
                 }
 
@@ -889,18 +889,18 @@ void filt (float *trace, int nt, float dt, float fmax, int ls, int m, float *trf
           ct = (kiss_fft_cpx*) sf_complexalloc(nw);
 
           memcpy(rt, trace, nt*sizeof(float));
-          memset((void *) (rt + nt), (int) '\0', (nfft-nt)*sizeof(float)); 
+          memset((void *) (rt + nt), (int) '\0', (nfft-nt)*sizeof(float));
 /*          pfarc(1, nfft, rt, ct);*/
           kiss_fftr(forw,rt,ct);
 
         for(iw=nwf-itaper;iw<=nwf+itaper;++iw){
                 itemp = iw-(nwf-itaper);
-                ct[iw].r = taper[itemp]*ct[iw].r; 
-                ct[iw].i = taper[itemp]*ct[iw].i; 
+                ct[iw].r = taper[itemp]*ct[iw].r;
+                ct[iw].i = taper[itemp]*ct[iw].i;
         }
         for(iw=nwf+itaper+1;iw<nw;++iw){
-                ct[iw].r = 0.; 
-                ct[iw].i = 0.; 
+                ct[iw].r = 0.;
+                ct[iw].i = 0.;
         }
 
                  if(!ls){
@@ -915,10 +915,10 @@ void filt (float *trace, int nt, float dt, float fmax, int ls, int m, float *trf
                         ct[iw].i = ct[iw].i*amp[iw];
                         ct[iw].r = ct[iw].r*amp[iw];
                 }
-        }                  
+        }
 /*          pfacr(-1, nfft, ct, rt);*/
           kiss_fftri(invs,ct,rt);
-                
+
           /* Load traces back in */
         for (it=0; it<nt; ++it) trace[it] = rt[it];
 
@@ -935,4 +935,3 @@ void filt (float *trace, int nt, float dt, float fmax, int ls, int m, float *trf
         free (rt);
         free (ct);
 }
-

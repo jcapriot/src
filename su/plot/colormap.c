@@ -1,37 +1,37 @@
 /*
-  Copyright © 2007, Colorado School of Mines,
+  Copyright Â© 2007, Colorado School of Mines,
   All rights reserved.
-  
-  
-  Redistribution and use in source and binary forms, with or 
-  without modification, are permitted provided that the following 
+
+
+  Redistribution and use in source and binary forms, with or
+  without modification, are permitted provided that the following
   conditions are met:
-  
-  *  Redistributions of source code must retain the above copyright 
+
+  *  Redistributions of source code must retain the above copyright
   notice, this list of conditions and the following disclaimer.
-  *  Redistributions in binary form must reproduce the above 
-  copyright notice, this list of conditions and the following 
-  disclaimer in the documentation and/or other materials provided 
+  *  Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following
+  disclaimer in the documentation and/or other materials provided
   with the distribution.
   *  Neither the name of the Colorado School of Mines nor the names of
-  its contributors may be used to endorse or promote products 
+  its contributors may be used to endorse or promote products
   derived from this software without specific prior written permission.
-  
+
   Warranty Disclaimer:
-  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS 
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
   COLORADO SCHOOL OF MINES OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
-  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
-  
+
+
   Export Restriction Disclaimer:
   We believe that CWP/SU: Seismic Un*x is a low technology product that does
   not appear on the Department of Commerce CCL list of restricted exports.
@@ -39,23 +39,23 @@
   an ECCN (export control classification number) of EAR99 and we believe
   it fits the qualifications of NRR (no restrictions required), and
   is thus not subject to export restrictions of any variety.
-  
+
   Approved Reference Format:
   In publications, please refer to SU as per the following example:
-  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x 
-  Release No. __: an open source software  package for seismic 
-  research and processing, 
+  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x
+  Release No. __: an open source software  package for seismic
+  research and processing,
   Center for Wave Phenomena, Colorado School of Mines.
-  
+
   Articles about SU in peer-reviewed journals:
   Saeki, T., (1999), A guide to Seismic Un*x (SU)(2)---examples of data processing (part 1), data input and preparation of headers, Butsuri-Tansa (Geophysical Exploration), vol. 52, no. 5, 465-477.
   Stockwell, Jr. J. W. (1999), The CWP/SU: Seismic Un*x Package, Computers and Geosciences, May 1999.
   Stockwell, Jr. J. W. (1997), Free Software in Education: A case study of CWP/SU: Seismic Un*x, The Leading Edge, July 1997.
   Templeton, M. E., Gough, C.A., (1998), Web Seismic Un*x: Making seismic reflection processing more accessible, Computers and Geosciences.
-  
+
   Acknowledgements:
-  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado 
-  School of Mines, partially based on Stanford Exploration Project (SEP) 
+  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado
+  School of Mines, partially based on Stanford Exploration Project (SEP)
   software.
 */
 
@@ -94,7 +94,7 @@ unsigned long truecolor_pixel[256];
 
 static float c_rgb [][3][3]  =	{
     { RGB_BLACK,    RGB_GRAY,   RGB_WHITE  },
-    
+
     { RGB_RED,      RGB_LGRAY,  RGB_BLUE  },
     { RGB_RED,      RGB_LGRAY,  RGB_GREEN },
     { RGB_BROWN,    RGB_LGRAY,  RGB_BLUE  },
@@ -144,9 +144,9 @@ static float c_hsv [][3][3]  =	{
 static float rgbvalue (float n1, float n2, float hue);
 static void hsv2rgb (float h, float s, float v, float *r, float *g, float *b);
 
-Status xCreateRGBDefaultMap (Display *dpy             /* display */, 
+Status xCreateRGBDefaultMap (Display *dpy             /* display */,
 			     XStandardColormap *scmap /* the standard colormap structure */)
-/*< create XA_RGB_DEFAULT_MAP property of root window if it does not already exist 
+/*< create XA_RGB_DEFAULT_MAP property of root window if it does not already exist
 
 This function returns 0 if the XA_RGB_DEFAULT_MAP property does not exist
 and cannot be created.  At least 8 contiguous color cells must be free
@@ -168,22 +168,22 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
 #ifndef  __osf__
 
     /* grab the server */
-    XGrabServer(dpy); 
+    XGrabServer(dpy);
 
 #endif
 
     /* if XA_RGB_DEFAULT_MAP does not exist, then */
     if (!XGetStandardColormap(dpy,root,scmap,XA_RGB_DEFAULT_MAP)) {
-		
+
 	/* use default colormap */
 	cmap = DefaultColormapOfScreen(scr);
 
 	/* determine largest number of contiguous free color cells */
 	ncells = CellsOfScreen(scr);
-	while(ncells && 
+	while(ncells &&
 	      !XAllocColorCells(dpy,cmap,True,NULL,0,pixel,ncells))
 	    ncells--;
-		
+
 	/* determine beginning and ending pixel of contiguous cells */
 	for (i=1,bpixel=epixel=pixel1=pixel2=pixel[0]; i<ncells; i++) {
 	    if (pixel[i]==pixel[i-1]+1)
@@ -195,7 +195,7 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
 		epixel = pixel2;
 	    }
 	}
-		
+
 	/* number of pixels must be at least 8 */
 	npixels = epixel-bpixel+1;
 	if (npixels<8) {
@@ -204,12 +204,12 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
 #endif
 	    return 0;
 	}
-		
+
 	/* force number of contiguous cells to be an integer cubed */
 	for (i=2,imax=0; i*i*i<=npixels; i++,imax++);
 	npixels = (imax+1)*(imax+1)*(imax+1);
 	bpixel = epixel-npixels+1;
-		
+
 	/* free cells not in contiguous range */
 	for (i=0; i<ncells; i++)
 	    if (pixel[i]<bpixel || pixel[i]>epixel)
@@ -230,7 +230,7 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
 	    color.flags = DoRed|DoGreen|DoBlue;
 	    XStoreColor(dpy,cmap,&color);
 	}
-		
+
 	/* set standard colormap */
 	scmap->colormap = cmap;
 	scmap->red_max = imax;
@@ -263,14 +263,14 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
     Screen *scr=XDefaultScreenOfDisplay(dpy);
     Window root=XRootWindowOfScreen(scr);
     XStandardColormap scmap;
-	
+
     /* if XA_RGB_DEFAULT_MAP does not exist, create it */
     if (!XGetStandardColormap(dpy,root,&scmap,XA_RGB_DEFAULT_MAP))
 	if (!xCreateRGBDefaultMap(dpy,&scmap))
 	    return 0;
-	
+
     /* return first pixel in range of contiguous pixels */
-    return scmap.base_pixel; 
+    return scmap.base_pixel;
 }
 
 unsigned long xGetLastPixel (Display *dpy)
@@ -286,12 +286,12 @@ Author:  Dave Hale, Colorado School of Mines, 09/29/90
     Screen *scr=XDefaultScreenOfDisplay(dpy);
     Window root=XRootWindowOfScreen(scr);
     XStandardColormap scmap;
-	
+
     /* if XA_RGB_DEFAULT_MAP does not exist, create it */
     if (!XGetStandardColormap(dpy,root,&scmap,XA_RGB_DEFAULT_MAP))
 	if (!xCreateRGBDefaultMap(dpy,&scmap))
 	    return 0;
-	
+
     /* return last pixel in range of contiguous pixels */
     return scmap.base_pixel+
 	scmap.red_max*scmap.red_mult+
@@ -315,7 +315,7 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
  * There are many color models, we use 2:
  * the RGB - Model and the HSV - Model (often called HLS).
  * The RGB has the advantage of easy defining the values of the 3
- * basic colors : Red, Green and Blue, the HSV is more closed to 
+ * basic colors : Red, Green and Blue, the HSV is more closed to
  * human understanding of colors.
  *
  * The created colormap goes from color[0] over color[1] to color[2]
@@ -336,14 +336,14 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 
 
 */
-	
+
     static int	c_nr = -1;
     unsigned long	max_cmap, half, ih;
 
     sr=DefaultScreen(dpy);
     depth=(unsigned int)DefaultDepth(dpy,sr);
 
-    if( verbose) 
+    if( verbose)
 	sf_warning("in colormap, depth=%d",depth);
 
     /* determine window's current colormap */
@@ -372,27 +372,27 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
     /* cycle through the cmaps					*/
     while (c_nr < 0)
 	c_nr += max_cmap;
-		
+
     while (c_nr >= max_cmap)
 	c_nr -= max_cmap;
-		
+
     if (verbose)
 	sf_warning ("using cmap=\"rgb%i\"", c_nr);
 
 
     if(depth<=8){
-	
+
 	/* determine beginning and ending pixels in contiguous range	*/
 	bpixel = xGetFirstPixel(dpy);
 	epixel = xGetLastPixel(dpy);
 	if (epixel<=bpixel) return None;
-	
-	
+
+
 	/* create new colormap and allocate all cells read/write */
 	cmap = XCreateColormap(dpy,win,DefaultVisualOfScreen(scr),AllocNone);
 	ncells = CellsOfScreen(scr);
 	XAllocColorCells(dpy,cmap,True,NULL,0,pixel,ncells);
-	
+
 	/* copy color cells from window's colormap to new colormap */
 	for (i=0; i<ncells; ++i) {
 	    if (i<bpixel || i>epixel) {
@@ -402,11 +402,11 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 		XAllocColor(dpy,cmap,&color);
 	    }
 	}
-	
+
 	/* build scale in contiguous cells in new colormap */
 	npixels = epixel-bpixel+1;
 	half = npixels / 2;
-	
+
 
 	/* Build the 1st ramp						*/
 	for (ih = 0; ih < half; ++ih) {
@@ -417,11 +417,11 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 		(c_rgb[c_nr][1][1] - c_rgb[c_nr][0][1]) * ((float) ih)/((float) half);
 	    color.blue  = c_rgb[c_nr][0][2] +
 		(c_rgb[c_nr][1][2] - c_rgb[c_nr][0][2]) * ((float) ih)/((float) half);
-		
+
 	    color.red   *= 257.0;
 	    color.green *= 257.0;
 	    color.blue  *= 257.0;
-		
+
 	    color.flags = DoRed|DoGreen|DoBlue;
 	    XStoreColor(dpy,cmap,&color);
 	}
@@ -435,11 +435,11 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 		(c_rgb[c_nr][2][1] - c_rgb[c_nr][1][1]) * ((float) (ih-half))/((float) half);
 	    color.blue  = c_rgb[c_nr][1][2] +
 		(c_rgb[c_nr][2][2] - c_rgb[c_nr][1][2]) * ((float) (ih-half))/((float) half);
-		
+
 	    color.red   *= 257.0;
 	    color.green *= 257.0;
 	    color.blue  *= 257.0;
-		
+
 	    color.flags = DoRed|DoGreen|DoBlue;
 	    XStoreColor(dpy,cmap,&color);
 	}
@@ -458,11 +458,11 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 		(c_rgb[c_nr][1][1] - c_rgb[c_nr][0][1]) * ((float) ih)/((float) 128);
 	    color.blue  = c_rgb[c_nr][0][2] +
 		(c_rgb[c_nr][1][2] - c_rgb[c_nr][0][2]) * ((float) ih)/((float) 128);
-                
+
 	    color.red   *= 257.0;
 	    color.green *= 257.0;
 	    color.blue  *= 257.0;
-        
+
 	    XAllocColor(dpy,wcmap,&color);
 	    truecolor_pixel[ih]=(unsigned long)color.pixel;
         }
@@ -476,11 +476,11 @@ Colormap xCreateRGBColormap (Display *dpy, Window win,
 		(c_rgb[c_nr][2][1] - c_rgb[c_nr][1][1]) * ((float) (ih-128))/((float) 128);
 	    color.blue  = c_rgb[c_nr][1][2] +
 		(c_rgb[c_nr][2][2] - c_rgb[c_nr][1][2]) * ((float) (ih-128))/((float) 128);
-        
+
 	    color.red   *= 257.0;
 	    color.green *= 257.0;
 	    color.blue  *= 257.0;
- 
+
 	    XAllocColor(dpy,wcmap,&color);
 	    truecolor_pixel[ih]=(unsigned long)color.pixel;
         }
@@ -515,14 +515,14 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
 
     sr=DefaultScreen(dpy);
     depth=(unsigned int)DefaultDepth(dpy,sr);
-	
+
 
     /* determine window's current colormap */
     XGetWindowAttributes(dpy,win,&wa);
     wcmap = wa.colormap;
 
     max_cmap = sizeof (c_hsv) / sizeof (float[3][3]);
-	
+
     /* We got the specific number of the cmap from the string	*/
     if (0 == strcmp (str_cmap, "hsv_up"))
 	c_nr++;
@@ -543,27 +543,27 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
     /* cycle through the cmaps					*/
     while (c_nr < 0)
 	c_nr += max_cmap;
-		
+
     while (c_nr >= max_cmap)
 	c_nr -= max_cmap;
-		
+
     if (verbose)
 	sf_warning ("using cmap=\"hsv%i\"", c_nr);
 
 
     if(depth<=8){
-	
+
 	/* determine beginning and ending pixels in contiguous range	*/
 	bpixel = xGetFirstPixel(dpy);
 	epixel = xGetLastPixel(dpy);
 	if (epixel<=bpixel) return None;
-	
-	
+
+
 	/* create new colormap and allocate all cells read/write */
 	cmap = XCreateColormap(dpy,win,DefaultVisualOfScreen(scr),AllocNone);
 	ncells = CellsOfScreen(scr);
 	XAllocColorCells(dpy,cmap,True,NULL,0,pixel,ncells);
-	
+
 	/* copy color cells from window's colormap to new colormap */
 	for (i=0; i<ncells; ++i) {
 	    if (i<bpixel || i>epixel) {
@@ -573,28 +573,28 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
 		XAllocColor(dpy,cmap,&color);
 	    }
 	}
-	
+
 	/* build scale in contiguous cells in new colormap */
 	npixels = epixel-bpixel+1;
 	half = npixels / 2;
-	
-	
+
+
 	/* Build the 1st ramp						*/
 	for (ih = 0; ih < half; ++ih) {
 	    color.pixel = bpixel + ih;
-		
+
 	    h = c_hsv[c_nr][0][0] +
 		(c_hsv[c_nr][1][0] - c_hsv[c_nr][0][0]) * ((float) ih) /((float) half);
 	    s = c_hsv[c_nr][0][1] +
 		(c_hsv[c_nr][1][1] - c_hsv[c_nr][0][1]) * ((float) ih) / ((float) half);
 	    v = c_hsv[c_nr][0][2] +
 		(c_hsv[c_nr][1][2] - c_hsv[c_nr][0][2]) * ((float) ih) / ((float) half);
-		
+
 	    hsv2rgb (h, s, v, &r, &g, &b);
 	    color.red   = 65535.0 * r;
 	    color.green = 65535.0 * g;
 	    color.blue  = 65535.0 * b;
-		
+
 	    color.flags = DoRed|DoGreen|DoBlue;
 	    XStoreColor(dpy,cmap,&color);
 	}
@@ -602,23 +602,23 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
 	/* Build the 2nd ramp						*/
 	for (ih = half; ih < npixels; ++ih) {
 	    color.pixel = bpixel + ih;
-		
+
 	    h = c_hsv[c_nr][1][0] +
 		(c_hsv[c_nr][2][0] - c_hsv[c_nr][1][0]) * ((float) (ih-half))/((float) half);
 	    s = c_hsv[c_nr][1][1] +
 		(c_hsv[c_nr][2][1] - c_hsv[c_nr][1][1]) * ((float) (ih-half))/((float) half);
 	    v = c_hsv[c_nr][1][2] +
 		(c_hsv[c_nr][2][2] - c_hsv[c_nr][1][2]) * ((float) (ih-half))/((float) half);
-		
+
 	    hsv2rgb (h, s, v, &r, &g, &b);
 	    color.red   = 65535.0 * r;
 	    color.green = 65535.0 * g;
 	    color.blue  = 65535.0 * b;
-		
+
 	    color.flags = DoRed|DoGreen|DoBlue;
 	    XStoreColor(dpy,cmap,&color);
 	}
-		
+
 	/* return colormap */
 	return cmap;
 
@@ -626,13 +626,13 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
 
         /* Build the 1st ramp                                           */
         for (ih = 0; ih < 128; ++ih) {
-	    h = c_hsv[c_nr][0][0] + 
+	    h = c_hsv[c_nr][0][0] +
 		(c_hsv[c_nr][1][0] - c_hsv[c_nr][0][0]) * ((float) ih) /((float) 128);
 	    s = c_hsv[c_nr][0][1] +
 		(c_hsv[c_nr][1][1] - c_hsv[c_nr][0][1]) * ((float) ih) / ((float) 128);
 	    v = c_hsv[c_nr][0][2] +
 		(c_hsv[c_nr][1][2] - c_hsv[c_nr][0][2]) * ((float) ih) / ((float) 128);
-        
+
 	    hsv2rgb (h, s, v, &r, &g, &b);
 	    color.red   = 65535.0 * r;
 	    color.green = 65535.0 * g;
@@ -649,7 +649,7 @@ Colormap xCreateHSVColormap (Display *dpy, Window win,
 		(c_hsv[c_nr][2][1] - c_hsv[c_nr][1][1]) * ((float) (ih-128))/((float) 128);
 	    v = c_hsv[c_nr][1][2] +
 		(c_hsv[c_nr][2][2] - c_hsv[c_nr][1][2]) * ((float) (ih-128))/((float) 128);
-                
+
 	    hsv2rgb (h, s, v, &r, &g, &b);
 	    color.red   = 65535.0 * r;
 	    color.green = 65535.0 * g;
@@ -676,7 +676,7 @@ static float rgbvalue (float n1, float n2, float hue)
 	hue -= 360.0;
     while (hue < 0.0)
 	hue += 360.0;
-	
+
     if (hue < 60.0)
 	return n1 + (n2 - n1) * hue / 60.0;
     else if (hue<180.0)
@@ -698,7 +698,7 @@ static void hsv2rgb (float h, float s, float v, float *r, float *g, float *b)
 {
     float m1,m2;
     /* float rgbvalue (float,float,float);*/
-	
+
     if (v <= 0.5)
 	m2 = v * (1.0 + s);
     else
@@ -719,7 +719,7 @@ static void hsv2rgb (float h, float s, float v, float *r, float *g, float *b)
 	    *b = 1.0;
     }
 }
-	
+
 /* test program - compile with "cc -DTEST colormap.c $INCS $LIBS ..." */
 #ifdef TEST
 #include <stdio.h>
@@ -740,30 +740,30 @@ main()
     int scr,i;
     unsigned long black,white,pmin,pmax;
     char *data;
-	
+
     /* connect to X server */
     dpy = XOpenDisplay(NULL);
-    if ((dpy=XOpenDisplay(NULL))==NULL) 
+    if ((dpy=XOpenDisplay(NULL))==NULL)
 	sf_error("Cannot open display!");
 
     scr = DefaultScreen(dpy);
     root = RootWindow(dpy,scr);
     black = BlackPixel(dpy,scr);
     white = WhitePixel(dpy,scr);
-	
+
     /* create and map window */
     win = XCreateSimpleWindow(dpy,root,X,Y,WIDTH,HEIGHT,4,black,white);
     cmap = xCreateRGBColormap(dpy,win, "rgb0", 1);
     XSetWindowColormap(dpy,win,cmap);
     XMapWindow(dpy,win);
-	
+
     /* determine range of contiguous pixels from standard colormap */
-    if (!xCreateRGBDefaultMap(dpy,&scmap)) 
+    if (!xCreateRGBDefaultMap(dpy,&scmap))
 	sf_error("Cannot create standard colormap!");
 
     pmin = xGetFirstPixel(dpy);
     pmax = xGetLastPixel(dpy);
-	
+
     /* create image */
     data = sf_charalloc(WIDTH*HEIGHT);
     for (i=0; i<WIDTH*HEIGHT; ++i)
@@ -774,7 +774,7 @@ main()
     gc = XCreateGC(dpy,win,0,NULL);
     XAllocNamedColor(dpy,cmap,"red",&color,&junk);
     XSetForeground(dpy,gc,color.pixel);
-	
+
     /* set event mask */
     XSelectInput(dpy,win,ExposureMask);
 

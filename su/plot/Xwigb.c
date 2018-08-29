@@ -1,22 +1,22 @@
 /* X WIGgle-trace plot of f(x1,x2) via Bitmap.
 
-X Functionality:							
- Button 1	Zoom with rubberband box				
- Button 2	Show mouse (x1,x2) coordinates while pressed		
- q or Q key	Quit							
- s key		Save current mouse (x1,x2) location to file		
- p or P key	Plot current window with pswigb (only from disk files)	
- a or page up keys		enhance clipping by 10%			
- c or page down keys		reduce clipping by 10%			
- up,down,left,right keys	move zoom window by half width/height	
- i or +(keypad) 		zoom in by factor 2 			
- o or -(keypad) 		zoom out by factor 2 			
-    l 				lock the zoom while moving the coursor	
-    u 				unlock the zoom 			
- 1,2,...,9	Zoom/Move factor of the window size			
-									
- Notes:								
-	Reaching the window limits while moving within changes the zoom	
+X Functionality:
+ Button 1	Zoom with rubberband box
+ Button 2	Show mouse (x1,x2) coordinates while pressed
+ q or Q key	Quit
+ s key		Save current mouse (x1,x2) location to file
+ p or P key	Plot current window with pswigb (only from disk files)
+ a or page up keys		enhance clipping by 10%
+ c or page down keys		reduce clipping by 10%
+ up,down,left,right keys	move zoom window by half width/height
+ i or +(keypad) 		zoom in by factor 2
+ o or -(keypad) 		zoom out by factor 2
+    l 				lock the zoom while moving the coursor
+    u 				unlock the zoom
+ 1,2,...,9	Zoom/Move factor of the window size
+
+ Notes:
+	Reaching the window limits while moving within changes the zoom
 	factor in this direction. The use of zoom locking(l) disables it
 */
 
@@ -25,7 +25,7 @@ X Functionality:
 /*
  * AUTHOR:  Dave Hale, Colorado School of Mines, 08/09/90
  *
- * Endian stuff by: 
+ * Endian stuff by:
  *    Morten Wendell Pedersen, Aarhus University (visiting CSM, June 1995)
  *  & John Stockwell, Colorado School of Mines, 5 June 1995
  *
@@ -39,48 +39,48 @@ X Functionality:
  * Curve plotting notes:
  * MODIFIED:  P. Michaels, Boise State Univeristy  29 December 2000
  *            Added solid/grey color scheme for peaks/troughs
- * 
+ *
  * G.Klein, IFG Kiel University, 2002-09-29, added cursor scrolling and
  *            interactive change of zoom and clipping.
- *          IFM-GEOMAR Kiel, 2004-03-12, added zoom locking 
- *          IFM-GEOMAR Kiel, 2004-03-25, interactive plotting fixed 
+ *          IFM-GEOMAR Kiel, 2004-03-12, added zoom locking
+ *          IFM-GEOMAR Kiel, 2004-03-25, interactive plotting fixed
  *
  * Modified by Sergey Fomel for including with Madagascar.
  */
 /*
-  Copyright � 2007, Colorado School of Mines,
+  Copyright © 2007, Colorado School of Mines,
   All rights reserved.
-  
-  
-  Redistribution and use in source and binary forms, with or 
-  without modification, are permitted provided that the following 
+
+
+  Redistribution and use in source and binary forms, with or
+  without modification, are permitted provided that the following
   conditions are met:
-  
-  *  Redistributions of source code must retain the above copyright 
+
+  *  Redistributions of source code must retain the above copyright
   notice, this list of conditions and the following disclaimer.
-  *  Redistributions in binary form must reproduce the above 
-  copyright notice, this list of conditions and the following 
-  disclaimer in the documentation and/or other materials provided 
+  *  Redistributions in binary form must reproduce the above
+  copyright notice, this list of conditions and the following
+  disclaimer in the documentation and/or other materials provided
   with the distribution.
   *  Neither the name of the Colorado School of Mines nor the names of
-  its contributors may be used to endorse or promote products 
+  its contributors may be used to endorse or promote products
   derived from this software without specific prior written permission.
-  
+
   Warranty Disclaimer:
-  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS 
-  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+  THIS SOFTWARE IS PROVIDED BY THE COLORADO SCHOOL OF MINES AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
   COLORADO SCHOOL OF MINES OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
-  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING 
-  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+  STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+  IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
-  
-  
+
+
   Export Restriction Disclaimer:
   We believe that CWP/SU: Seismic Un*x is a low technology product that does
   not appear on the Department of Commerce CCL list of restricted exports.
@@ -88,23 +88,23 @@ X Functionality:
   an ECCN (export control classification number) of EAR99 and we believe
   it fits the qualifications of NRR (no restrictions required), and
   is thus not subject to export restrictions of any variety.
-  
+
   Approved Reference Format:
   In publications, please refer to SU as per the following example:
-  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x 
-  Release No. __: an open source software  package for seismic 
-  research and processing, 
+  Cohen, J. K. and Stockwell, Jr. J. W., (200_), CWP/SU: Seismic Un*x
+  Release No. __: an open source software  package for seismic
+  research and processing,
   Center for Wave Phenomena, Colorado School of Mines.
-  
+
   Articles about SU in peer-reviewed journals:
   Saeki, T., (1999), A guide to Seismic Un*x (SU)(2)---examples of data processing (part 1), data input and preparation of headers, Butsuri-Tansa (Geophysical Exploration), vol. 52, no. 5, 465-477.
   Stockwell, Jr. J. W. (1999), The CWP/SU: Seismic Un*x Package, Computers and Geosciences, May 1999.
   Stockwell, Jr. J. W. (1997), Free Software in Education: A case study of CWP/SU: Seismic Un*x, The Leading Edge, July 1997.
   Templeton, M. E., Gough, C.A., (1998), Web Seismic Un*x: Making seismic reflection processing more accessible, Computers and Geosciences.
-  
+
   Acknowledgements:
-  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado 
-  School of Mines, partially based on Stanford Exploration Project (SEP) 
+  SU stands for CWP/SU:Seismic Un*x, a processing line developed at Colorado
+  School of Mines, partially based on Stanford Exploration Project (SEP)
   software.
 */
 
@@ -126,7 +126,7 @@ X Functionality:
 #include "rfwtvaint.h"
 
 /* functions defined and used internally */
-static void zoomBox (int x, int y, int w, int h, 
+static void zoomBox (int x, int y, int w, int h,
 	int xb, int yb, int wb, int hb,
 	float x1, float x2,
 	float y1, float y2,
@@ -182,31 +182,31 @@ int main (int argc, char *argv[])
     GC gci;
     int scr;
     unsigned long black,white;
-    
+
     int lock=0;		/* lock/unlock zoom while scrolling */
     float mve;		/* distance for scrolling */
-    float mvefac=8.;	/* window factor for scrolldistance 
-			 * 2=half window size; 
+    float mvefac=8.;	/* window factor for scrolldistance
+			 * 2=half window size;
 			 * 8=one eighths of the window size */
     char  *msg="";		/* message on screen */
-    
+
     sf_file in=NULL;
 
     /* initialize getpar */
     sf_init(argc,argv);
     in = sf_input("in");
-    
+
     /* get parameters describing 1st dimension sampling */
     if (!sf_histint(in,"n1",&n1)) sf_error("No n1= in input\n");
     if (!sf_histfloat(in,"d1",&d1)) d1 = 1.0;
     if (!sf_histfloat(in,"o1",&f1)) f1 = 0.0;
-    
+
     x1min = (d1>0.0)?f1:f1+(n1-1)*d1;
     x1max = (d1<0.0)?f1:f1+(n1-1)*d1;
-    
+
     /* get parameters describing 2nd dimension sampling */
     if (!sf_histint(in,"n2",&n2)) sf_error("No n2= in input\n");
-    
+
     x2 = sf_floatalloc(n2);
     if (!sf_getfloats("x2",x2,n2)) {
 	/* array of sampled values in 2nd dimension */
@@ -215,36 +215,36 @@ int main (int argc, char *argv[])
 	for (i2=0; i2<n2; i2++)
 	    x2[i2] = f2+i2*d2;
     }
-    
+
     for (i2=1,x2min=x2max=x2[0]; i2<n2; i2++) {
 	x2min = SF_MIN(x2min,x2[i2]);
 	x2max = SF_MAX(x2max,x2[i2]);
     }
-    
+
     if (NULL == (mpicks = sf_getstring("mpicks"))) mpicks = "/dev/tty";
     /* file to save mouse picks in */
     if (NULL == (mpicksfp = fopen(mpicks, "w"))) sf_error("Error opening %s:",mpicks);
-    
+
     /* read binary data to be plotted */
     nz = n1*n2;
     z = sf_floatalloc(nz);
     sf_floatread(z,nz,in);
-    
+
     /* if necessary, subtract bias */
     if (!sf_getfloat("bias",&bias)) bias=0.0;
     /* data value corresponding to location along axis 2 */
-    
+
     if (bias!=0.0)
 	for (iz=0; iz<nz; iz++)
 	    z[iz] -= bias;
-    
+
     /* if necessary, determine clip from percentile */
     if (!sf_getfloat("clip",&clip)) {
 	/* data values < bias+clip and > bias-clip are clipped */
-	
+
 	if (!sf_getfloat("perc",&perc)) perc=100.0;
 	/* percentile for determining clip */
-	
+
 	temp = sf_floatalloc(nz);
 	for (iz=0; iz<nz; iz++)
 	    temp[iz] = fabsf(z[iz]);
@@ -254,7 +254,7 @@ int main (int argc, char *argv[])
 	clip = sf_quantile(iz,nz,temp);
 	free(temp);
     }
-    
+
     if (!sf_getbool("verbose",&verbose)) verbose = true;
     /* y for info printed on stderr (n for no info) */
     if (verbose) sf_warning("clip=%g\n",clip);
@@ -262,20 +262,20 @@ int main (int argc, char *argv[])
     if (!sf_getint("wt",&wt)) wt = 1;
     /* =0 for no wiggle-trace; =1 for wiggle-trace */
     if (!sf_getint("va",&va)) va = 1;
-    /* =0 for no variable-area; 
+    /* =0 for no variable-area;
        =1 for variable-area fill;
        =2 for variable area, solid/grey fill */
 
     /* set wt=va for va with solid/grey coloring  */
-    if (va>=2) {  wt=va; va=1; } 
+    if (va>=2) {  wt=va; va=1; }
 
     if (!sf_getfloat("xcur",&xcur)) xcur = 1.0;
     /* wiggle excursion in traces corresponding to clip */
 
     if (!sf_getint("wigclip",&wigclip)) wigclip = 0;
-    /* If 0, the plot box is expanded to accommodate	
-       the larger wiggles created by xcur>1. If this 
-       flag is non-zero, the extra-large wiggles are	
+    /* If 0, the plot box is expanded to accommodate
+       the larger wiggles created by xcur>1. If this
+       flag is non-zero, the extra-large wiggles are
        are clipped at the boundary of the plot box. */
 
     if (!sf_getint("xbox",&xbox)) xbox = 50;
@@ -310,7 +310,7 @@ int main (int argc, char *argv[])
     }
     if (NULL == (label1 = sf_getstring("label1")) &&
 	NULL == (label1 = sf_histstring(in,"label1"))) label1="";
-    
+
     if (!sf_getfloat("x2beg",&x2beg)) x2beg = x2min;
     /* value at which axis 2 begins */
     if (!sf_getfloat("x2end",&x2end)) x2end = x2max;
@@ -337,10 +337,10 @@ int main (int argc, char *argv[])
 
     if (NULL == (labelfont = sf_getstring("labelfont"))) labelfont="Erg14";
     /* font name for axes labels */
-    if (!sf_getfloat("labelsize",&labelsize)) labelsize = 18.0; 
+    if (!sf_getfloat("labelsize",&labelsize)) labelsize = 18.0;
     if (NULL == (title = sf_getstring("title"))) title="";
     if (NULL == (titlefont = sf_getstring("titlefont"))) titlefont="Rom22";
-    if (!sf_getfloat("titlesize",&titlesize)) titlesize = 24.0; 
+    if (!sf_getfloat("titlesize",&titlesize)) titlesize = 24.0;
 
     if (NULL == (styles = sf_getstring("style"))) styles="seismic";
     if (0 == strcmp("seismic",styles)) {
@@ -378,14 +378,14 @@ int main (int argc, char *argv[])
 	else
 	    endian=1;
     }
- 
+
     if (!sf_getbool("interp",&interp)) interp = false;
     /* if y, use interpolation */
- 
+
     /* create window */
     win = xNewWindow(dpy,xbox,ybox,wbox,hbox,
 		     (int) black,(int) white,windowtitle);
-		
+
     /* make GC for image */
     gci = XCreateGC(dpy,win,0,NULL);
 
@@ -403,18 +403,18 @@ int main (int argc, char *argv[])
 		ButtonReleaseMask |
 		Button1MotionMask |
 		Button2MotionMask);
-	
+
 	/* map window */
 	XMapWindow(dpy,win);
-	
+
 	/* clear the window */
 	XClearWindow(dpy,win);
-					
+
 	/* determine good size for axes box */
 	xSizeAxesBox(dpy,win,
 		labelfont,titlefont,style,
 		&x,&y,&width,&height);
-	
+
 	/* note that image is out of date */
 	imageOutOfDate = 1;
 
@@ -428,24 +428,24 @@ int main (int argc, char *argv[])
 			 event.xconfigure.height!=winheight)) {
 			winwidth = event.xconfigure.width;
 			winheight = event.xconfigure.height;
-							
+
 			/* determine good size for axes box */
 			xSizeAxesBox(dpy,win,
 				labelfont,titlefont,style,
 				&x,&y,&width,&height);
-			
+
 			/* clear the window */
 			XClearWindow(dpy,win);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
 
 		/* else if window exposed */
 		} else if (event.type==Expose) {
-			
+
 			/* clear all expose events from queue */
 			while (XCheckTypedEvent(dpy,Expose,&event));
-			
+
 			/* if necessary, make new image */
 			if (imageOutOfDate) {
 				if (image!=NULL) {
@@ -460,7 +460,7 @@ int main (int argc, char *argv[])
 					wigclip,style);
 				imageOutOfDate = 0;
 			}
-	
+
 			/* draw image (before axes so grid lines visible) */
 			XPutImage(dpy,win,gci,image,0,0,x,y,
 				image->width,image->height);
@@ -486,59 +486,59 @@ int main (int argc, char *argv[])
 				    x1begb,x1endb,x2begb,x2endb,
 				    p2beg, p2end);
 		    } else if (keysym==XK_l ) {
-			/* set lock */		  
+			/* set lock */
 			lock = 1 ;
 			if (verbose) sf_warning("zoom lock set  %d\n",lock);
 
 		    } else if (keysym==XK_u ) {
-			/* unset lock */		  
+			/* unset lock */
 			lock = 0 ;
 			if (verbose) sf_warning("zoom lock released %d\n",lock);
 
-		    } else if (keysym==XK_Shift_L ) { 
-			/* if (verbose) 
+		    } else if (keysym==XK_Shift_L ) {
+			/* if (verbose)
 			   fprintf(stderr,"Shift Left pressed \n");*/
-		    } else if (keysym==XK_KP_1 || keysym==XK_1 ) { 
+		    } else if (keysym==XK_KP_1 || keysym==XK_1 ) {
 			mvefac=1.;
 			sf_warning("Zoom/Move factor = 1");
-		    } else if (keysym==XK_KP_2 || keysym==XK_2 ) { 
+		    } else if (keysym==XK_KP_2 || keysym==XK_2 ) {
 			mvefac=2.;
 			sf_warning("Zoom/Move factor = 2");
-		    } else if (keysym==XK_KP_3 || keysym==XK_3 ) { 
+		    } else if (keysym==XK_KP_3 || keysym==XK_3 ) {
 			mvefac=3.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 3");
-		    } else if (keysym==XK_KP_4 || keysym==XK_4 ) { 
+		    } else if (keysym==XK_KP_4 || keysym==XK_4 ) {
 			mvefac=4.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 4");
-		    } else if (keysym==XK_KP_5 || keysym==XK_5 ) { 
+		    } else if (keysym==XK_KP_5 || keysym==XK_5 ) {
 			mvefac=5.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 5");
-		    } else if (keysym==XK_KP_6 || keysym==XK_6 ) { 
+		    } else if (keysym==XK_KP_6 || keysym==XK_6 ) {
 			mvefac=6.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 6");
-		    } else if (keysym==XK_KP_7 || keysym==XK_7 ) { 
+		    } else if (keysym==XK_KP_7 || keysym==XK_7 ) {
 			mvefac=7.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 7");
-		    } else if (keysym==XK_KP_8 || keysym==XK_8 ) { 
+		    } else if (keysym==XK_KP_8 || keysym==XK_8 ) {
 			mvefac=8.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 8");
-		    } else if (keysym==XK_KP_9 || keysym==XK_9 ) { 
+		    } else if (keysym==XK_KP_9 || keysym==XK_9 ) {
 			mvefac=9.;
-			if (verbose) 
+			if (verbose)
 			    sf_warning("Zoom/Move factor = 9");
 		    } else if (keysym==XK_Left || keysym==XK_KP_Left ) {
-			
+
 			/* move zoom box to left by half window width */
 			mve = (x2endb - x2begb)/mvefac ;
 			x2begb = x2begb - mve ;
 			x2endb = x2endb - mve ;
-			msg="move "; 
+			msg="move ";
 			/* check for bounds of full window */
 			if (x2begb < x2beg) {
 			    if ( lock ) { x2begb = x2begb + mve ;
@@ -547,20 +547,20 @@ int main (int argc, char *argv[])
 				mve=0;
 			    } else { x2begb = x2beg ;}
 			}
-			
+
 			if (verbose) sf_warning("%s %g",msg,mve);
-			
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-			
+
 		    } else if (keysym==XK_Right || keysym==XK_KP_Right ) {
 			/* move zoom box to right by half window width*/
 			mve = (x2endb - x2begb)/mvefac ;
 			x2begb = x2begb + mve ;
 			x2endb = x2endb + mve ;
-			msg="move "; 
+			msg="move ";
 			/* check for bounds of full window */
 			if (x2endb > x2end) {
 			    if ( lock ) { x2begb = x2begb - mve ;
@@ -570,18 +570,18 @@ int main (int argc, char *argv[])
 			    } else { x2endb = x2end ;}
 			}
 			if (verbose) sf_warning("%s %g",msg,mve);
-			
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-			
+
 		    } else if (keysym==XK_Down || keysym==XK_KP_Down  ) {
 			/* move zoom box down by half window height */
 			mve = (x1endb - x1begb)/mvefac ;
 			x1begb = x1begb + mve ;
 			x1endb = x1endb + mve ;
-			msg="move "; 
+			msg="move ";
 			/* check for bounds of full window */
 			if (x1endb > x1end) {
 			    if ( lock ) {  x1begb = x1begb - mve ;
@@ -591,18 +591,18 @@ int main (int argc, char *argv[])
 			    } else { x1endb = x1end ;}
 			}
 			if (verbose) sf_warning("%s %g",msg,mve);
-			
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-			
+
 		    } else if (keysym==XK_Up || keysym==XK_KP_Up ) {
 			/* move zoom box down by half window height */
 			mve = (x1endb - x1begb)/mvefac ;
 			x1begb = x1begb - mve ;
 			x1endb = x1endb - mve ;
-			msg="move "; 
+			msg="move ";
 			/* check for bounds of full window */
 			if (x1begb < x1beg) {
 			    if ( lock ) { x1begb = x1begb + mve ;
@@ -612,13 +612,13 @@ int main (int argc, char *argv[])
 			    } else { x1begb = x1beg ;}
 			}
 			if (verbose) sf_warning("%s %g",msg,mve);
-				
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-								
+
 		    } else if (keysym==XK_o || keysym==XK_KP_Subtract ) {
 			/* zoom out .... vertical*/
 			mve = (x1endb - x1begb)/mvefac ;
@@ -634,13 +634,13 @@ int main (int argc, char *argv[])
 			/* check bounds of original image */
 			if (x2begb < x2beg) x2begb = x2beg ;
 			if (x2endb > x2end) x2endb = x2end ;
-			
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-			
+
 		    } else if (keysym==XK_i || keysym==XK_KP_Add ) {
 			/* zoom in .... vertical*/
 			mve = (x1endb - x1begb)/(2.*mvefac) ;
@@ -650,31 +650,31 @@ int main (int argc, char *argv[])
 			mve = (x2endb - x2begb)/(2.*mvefac) ;
 			x2begb = x2begb + mve ;
 			x2endb = x2endb - mve ;
-			
+
 			/* clear area and force an expose event */
 			XClearArea(dpy,win,0,0,0,0,True);
-			
+
 			/* note that image is out of date */
 			imageOutOfDate = 1;
-			
+
 		    } else if (keysym==XK_c || keysym==XK_Page_Down) {
-		  	
+
 			/* Change clip for image */
 			clip += clip/10. ;
 			/* if (verbose) warn("clip=%g\n",clip);*/
 			if (verbose) fprintf(stderr,"clip=%g\n",clip);
 			/* note that image is out of date */
-			imageOutOfDate = 1;				
-			
+			imageOutOfDate = 1;
+
 		    } else if (keysym==XK_a || keysym==XK_Page_Up) {
-			
+
 			/* Change clip for image */
 			clip -= clip/10. ;
 			/* if (verbose) warn("clip=%g\n",clip);*/
 			if (verbose) fprintf(stderr,"clip=%g\n",clip);
 			/* note that image is out of date */
-			imageOutOfDate = 1;				
-			
+			imageOutOfDate = 1;
+
 		    } else if (keysym==XK_q || keysym==XK_Q) {
 			/* This is the exit from the event loop */
 			break;
@@ -684,23 +684,23 @@ int main (int argc, char *argv[])
 		} else if (event.type==ButtonPress) {
 		    /* if 1st button: zoom */
 		    if (event.xbutton.button==Button1) {
-			
+
 			/* track pointer and get new box */
 			xRubberBox(dpy,win,event,&xb,&yb,&wb,&hb);
-			
+
 			/* if new box has tiny width or height */
 			if (wb<4 || hb<4) {
-			    
+
 			    /* reset box to initial values */
 			    x1begb = x1beg;
 			    x1endb = x1end;
 			    x2begb = x2beg;
 			    x2endb = x2end;
-			    
+
 			    /* else, if new box has non-zero width */
 				/* if new box has zero width or height */
 				} else {
-			
+
 					/* calculate new box parameters */
 					zoomBox(x,y,width,height,
 						xb,yb,wb,hb,
@@ -713,10 +713,10 @@ int main (int argc, char *argv[])
 
 				/* clear area and force an expose event */
 				XClearArea(dpy,win,0,0,0,0,True);
-			
+
 				/* note that image is out of date */
 				imageOutOfDate = 1;
-			
+
 			/* else if 2nd button down: display mouse coords */
 			} else if (event.xbutton.button==Button2) {
 
@@ -731,7 +731,7 @@ int main (int argc, char *argv[])
 
 		/* else if pointer has moved */
 		} else if (event.type==MotionNotify) {
-			
+
 			/* if button2 down, show mouse location */
 			if (showloc)
 				xMouseLoc(dpy,win,event,style,True,
@@ -750,12 +750,12 @@ int main (int argc, char *argv[])
 	XCloseDisplay(dpy);
 
 	free(z);
-    
+
 	exit(0);
 }
-			
+
 /* update parameters associated with zoom box */
-static void zoomBox (int x, int y, int w, int h, 
+static void zoomBox (int x, int y, int w, int h,
 	int xb, int yb, int wb, int hb,
 	float x1, float x2,
 	float y1, float y2,
@@ -767,9 +767,9 @@ static void zoomBox (int x, int y, int w, int h,
 	if (wb==0 || hb==0) {
 		*x1b = x1; *x2b = x2;
 		*y1b = y1; *y2b = y2;
-		return;		
-	} 
-	
+		return;
+	}
+
 	/* clip box */
 	if (xb<x) {
 		wb -= x-xb;
@@ -780,8 +780,8 @@ static void zoomBox (int x, int y, int w, int h,
 		yb = y;
 	}
 	if (xb+wb>x+w) wb = x-xb+w;
-	if (yb+hb>y+h) hb = y-yb+h;	
-	
+	if (yb+hb>y+h) hb = y-yb+h;
+
 	/* determine box limits */
         if (style == SEISMIC) {
                 *x1b = x1+(xb-x)*(x2-x1)/w;
@@ -821,7 +821,7 @@ static XImage *newBitmapCWP (Display *dpy, int width, int height,
 	} else if (BitmapPad(dpy) < 16) {
 		bitmap_pad = 8;
 	}
-	
+
 
 	/* determine bitmap dimensions and allocate space for bitmap */
 	width1 =  (style==SEISMIC) ? width : height;
@@ -900,9 +900,9 @@ static XImage *newBitmapCWP (Display *dpy, int width, int height,
 				b2f,b2l,b1fz,b1lz,
 				wt,nbpr,bits,endian);
 		}
-		
+
 	}
-	
+
 	/* return axis 2 pads */
 	*p2begp = p2beg;  *p2endp = p2end;
 
@@ -926,7 +926,7 @@ static XImage *newBitmapCWP (Display *dpy, int width, int height,
 	}
 
 	return image;
-}	
+}
 
 void xMouseLoc(Display *dpy, Window win, XEvent event, int style, Bool show,
 	int x, int y, int width, int height,
