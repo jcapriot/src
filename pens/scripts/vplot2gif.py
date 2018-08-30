@@ -48,8 +48,11 @@ def convert(infile,outfile,args=''):
         frames = 1
 
     if frames > 1:
-        import commands
-        which_gifsicle = commands.getoutput('which gifsicle')
+        try:
+            from subprocess import getoutput
+        except ImportError:
+            from commands import getoutput
+        which_gifsicle = getoutput('which gifsicle')
         if which_gifsicle[:18] == 'which: no gifsicle':
             sys.stderr.write('Missing program: gifsicle\n')
             sys.exit(1)

@@ -2,17 +2,17 @@
 'Explore project results'
 
 ##   Copyright (C) 2010 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -23,9 +23,14 @@ try:
 except:
     sys.stderr.write('Please install wx!\n\n')
     sys.exit(1)
-    
+
 from signal import *
-import os, commands
+import os
+
+try:
+    from subprocess import getoutput
+except ImportError:
+    from commands import getoutput
 
 class TestFrame(wx.Frame):
     def __init__(self):
@@ -49,9 +54,9 @@ class TestFrame(wx.Frame):
 
         sizer.Add(panel,0,wx.ALL|wx.EXPAND,5)
 
-        self.results = commands.getoutput("scons -s results").split()
+        self.results = getoutput("scons -s results").split()
         c = self.results[-1:][0]
-        if (c < 'A' or c > 'z'): 
+        if (c < 'A' or c > 'z'):
             self.results.pop() # remove scons junk
 
         self.flip = {}
@@ -77,32 +82,32 @@ class TestFrame(wx.Frame):
 
         panel.SetSizer(rsizer)
         rsizer.Fit(self)
-        
+
         sizer.Add(panel,0,wx.ALL|wx.EXPAND,15)
- 
+
         self.SetSizer(sizer)
         sizer.Fit(self)
 
-    def set_flip(self, event):        
+    def set_flip(self, event):
         sender = event.GetEventObject()
         fig = sender.GetLabel()
         self.flip[fig] = sender.GetValue()
- 
+
     def set_buttons(self,panel):
         bsizer = wx.BoxSizer(wx.HORIZONTAL)
 
         bcycl = wx.Button(panel,-1,'Cycle')
-        bcycl.SetBackgroundColour('light yellow') 
+        bcycl.SetBackgroundColour('light yellow')
         self.Bind(wx.EVT_BUTTON,self.showall,bcycl)
         bsizer.Add(bcycl,0,wx.ALL,5)
 
         bflip = wx.Button(panel,-1,'Flip')
-        bflip.SetBackgroundColour('light green') 
+        bflip.SetBackgroundColour('light green')
         self.Bind(wx.EVT_BUTTON,self.flipit,bflip)
         bsizer.Add(bflip,0,wx.ALL,5)
 
         bquit = wx.Button(panel,-1,'Quit')
-        bquit.SetBackgroundColour('pink') 
+        bquit.SetBackgroundColour('pink')
         self.Bind(wx.EVT_BUTTON,self.quit,bquit)
         bsizer.Add(bquit,0,wx.ALL,5)
 
@@ -163,11 +168,11 @@ class TestFrame(wx.Frame):
             title = ','.join(titles)
         except:
             title = None
-        
+
         plot.close()
-        os.unlink(txt) 
+        os.unlink(txt)
         return title
-  
+
 if __name__=='__main__':
     app = wx.App()
     frame = TestFrame()

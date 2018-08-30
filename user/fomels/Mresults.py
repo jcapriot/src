@@ -2,17 +2,17 @@
 'Explore project results'
 
 ##   Copyright (C) 2010 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -23,9 +23,14 @@ try:
 except:
     sys.stderr.write('Please install Tkinter!\n\n')
     sys.exit(1)
-    
+
 from signal import *
-import time, os, commands
+import time, os
+
+try:
+    from subprocess import getoutput
+except ImportError:
+    from commands import getoutput
 
 pid = 0
 
@@ -79,9 +84,9 @@ fbut.pack(side=RIGHT)
 cycle = Button(frame,text="Cycle",background="yellow",command=showall)
 cycle.pack(side=RIGHT)
 
-results = commands.getoutput("scons -s results").split()
+results = getoutput("scons -s results").split()
 c = results[-1:][0]
-if (c < 'A' or c > 'z'): 
+if (c < 'A' or c > 'z'):
     results.pop() # remove scons junk
 length = max(list(map(len,results)))
 

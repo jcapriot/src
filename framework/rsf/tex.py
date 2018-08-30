@@ -16,7 +16,7 @@ from __future__ import print_function
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 import os, re, glob,  types, pwd, shutil
-import cStringIO, token, tokenize, cgi, sys, keyword
+import token, tokenize, cgi, sys, keyword
 
 import rsf.conf, rsf.path, rsf.latex2wiki
 import rsf.doc
@@ -25,7 +25,14 @@ import rsf.prog
 import SCons
 
 if sys.version_info[0]>2:
+    from io import StringIO
     basestring = str
+else:
+    from cStringIO import StringIO
+    import io
+    open = io.open
+
+encoding = 'utf-8'
 
 # The following adds all SCons SConscript API to the globals of this module.
 version = list(map(int,SCons.__version__.split('.')[:3]))
@@ -126,11 +133,12 @@ def latexscan(node,env,path):
         geomanuscript = lclass == 'geophysics' and \
             options.rfind('manuscript') >= 0
     slides = lclass == 'beamer' or lclass == 'cwpslides'
-
     top = str(node)
     if top[-4:] != '.ltx':
         return []
     contents = node.get_contents()
+    if not isinstance(contents,basestring):
+        contents = contents.decode('utf-8')
     inputs = list(filter(os.path.isfile,
                     [x+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)]))
     inputs.append(top[:-4]+'.tex')
@@ -139,7 +147,7 @@ def latexscan(node,env,path):
     plots = []
     for file in inputs:
         try:
-            inp = open(file,'r')
+            inp = open(file,'r', encoding=encoding)
         except:
             return []
         comment = 0
@@ -225,7 +233,7 @@ LaTeXS = Scanner(name='LaTeX',function=latexscan,skeys=['.ltx'])
 
 def latify(target=None,source=None,env=None):
     "Add header and footer to make a valid LaTeX file"
-    tex = open(str(source[0]),'r')
+    tex = open(str(source[0]),'r', encoding=encoding)
     ltx = open(str(target[0]),'w')
     lclass = env.get('lclass','geophysics')
     if lclass == 'segabs':
@@ -283,6 +291,8 @@ def latex_emit(target=None, source=None, env=None):
     target.append(stem+'.aux')
     target.append(stem+'.log')
     contents = source[0].get_contents()
+    if not isinstance(contents, basestring):
+        contents = contents.decode('utf-8')
     if isbib.search(contents):
         target.append(stem+'.bbl')
         target.append(stem+'.blg')
@@ -315,7 +325,7 @@ def latex2dvi(target=None,source=None,env=None):
     if os.system(run):
         return 1
     # Check if bibtex is needed
-    aux = open(stem + '.aux',"r")
+    aux = open(stem + '.aux',"r", encoding=encoding)
     for line in aux.readlines():
         if re.search("bibdata",line):
             if not bibtex:
@@ -341,7 +351,7 @@ def latex2dvi(target=None,source=None,env=None):
     # Check if rerun is needed
     for i in range(3): # repeat 3 times at most
         done = 1
-        log = open(stem + '.log',"r")
+        log = open(stem + '.log',"r", encoding=encoding)
         for line in log.readlines():
             if rerun.search(line):
                 done = 0
@@ -412,10 +422,10 @@ def copyfigs(target=None,source=None,env=None):
 def latex2mediawiki(target=None,source=None,env=None):
     "Convert LaTeX to MediaWiki"
     texfile = str(source[0])
-    tex = open(texfile,"r")
+    tex = open(texfile,"r", encoding=encoding)
     bblfile = re.sub('\.[^\.]+$','.bbl',texfile)
     try:
-        bbl = open(bblfile,"r")
+        bbl = open(bblfile,"r", encoding=encoding)
         rsf.latex2wiki.parse_bbl(bbl)
         bbl.close()
     except:
@@ -449,7 +459,7 @@ def pstexpen(target=None,source=None,env=None):
             return 1
     else:
         try:
-            import vpconvert
+            from . import vpconvert
             options = 'color=n fat=1 fatmult=1.5 invras=y'
             name = os.path.splitext(os.path.basename(eps))[0]
             if 'ALL' in colorfigs or name in colorfigs:
@@ -461,7 +471,8 @@ def pstexpen(target=None,source=None,env=None):
             if ploption:
                 options += ploption
             vpconvert.convert(vpl,eps,'eps',None,options)
-        except:
+        except Exception as err:
+            print(err)
             sys.stderr.write('vpconvert failed\n')
             return 1
     return 0
@@ -521,7 +532,7 @@ def colorize(target=None,source=None,env=None):
      py = str(source[0])
      html = str(target[0])
 
-     src = open(py,'r').read()
+     src = open(py,'r', encoding=encoding).read()
      raw = src.expandtabs().strip()
 
      out = open(html,'w')
@@ -577,7 +588,7 @@ def colorize(target=None,source=None,env=None):
 
      # parse the source and write it
      _pos = 0
-     text = cStringIO.StringIO(raw)
+     text = StringIO(raw)
      out.write('<pre><font face="Lucida,Courier New">')
 
      def call(toktype, toktext, srowcol, erowcol, line):
@@ -726,7 +737,7 @@ def dummy(target=None,source=None,env=None):
 
 def pylab(target=None,source=None,env=None):
     global epstopdf
-    pycomm = open(str(source[0]),'r').read()
+    pycomm = open(str(source[0]),'r', encoding=encoding).read()
     exec(pycomm)
     os.system('%s junk_py.eps -o=%s' % (epstopdf,target[0]))
     os.unlink('junk_py.eps')

@@ -1,5 +1,5 @@
 # Copyright (C) 2004 University of Texas at Austin
-#  
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -25,10 +25,11 @@ def Flow(sources,flow,bindir,rsfflow=1,
     'Output a command line'
     lines = str(flow).split('&&')
     steps = []
+    sources = list(sources)
     for line in lines:
         substeps = []
         sublines = line.split('|')
-        for subline in sublines:           
+        for subline in sublines:
             pars = subline.split()
             # command is assumed to be always first in line
             command = pars.pop(0)
@@ -37,21 +38,21 @@ def Flow(sources,flow,bindir,rsfflow=1,
                 if command[:len(prefix)]==prefix:
                     rsfprog = command
                 else:
-                    rsfprog = prefix + command            
+                    rsfprog = prefix + command
                 if rsfprog in rsf.doc.progs:
                     if checkpar:
                         for par in pars:
                             if rsf.doc.progs[rsfprog].check(par):
-                                sys.stderr.write('Failed on "%s"\n' % 
+                                sys.stderr.write('Failed on "%s"\n' %
                                                  subline)
                                 sys.exit(1)
-                    command = os.path.join(bindir,rsfprog+progsuffix) 
+                    command = os.path.join(bindir,rsfprog+progsuffix)
                     sources.append(command)
                     if rsfprog not in coms:
                         coms.append(rsfprog)
-                elif     rsfprog == prefix + 'mpi' or \
+                elif rsfprog == prefix + 'mpi' or \
                          rsfprog == prefix + 'omp':
-                    command = os.path.join(bindir,rsfprog+progsuffix) 
+                    command = os.path.join(bindir,rsfprog+progsuffix)
                     sources.append(command)
                 elif command[:len(bindir)]==bindir:
                     sources.append(command)
@@ -60,7 +61,7 @@ def Flow(sources,flow,bindir,rsfflow=1,
                 if re.match(r'[^/]+\.exe$',command): # local program
                     command = os.path.join('.',command)
                 elif command in os.listdir(bindir):
-                    command = os.path.join(bindir,command) 
+                    command = os.path.join(bindir,command)
             pars.insert(0,command)
             # special rule for metaprograms
             if rsfprog and rsfprog[len(prefix):] in \
@@ -79,9 +80,9 @@ def Flow(sources,flow,bindir,rsfflow=1,
                     if command2[:len(prefix)]==prefix:
                         rsfprog2 = command2
                     else:
-                        rsfprog2 = prefix + command2            
+                        rsfprog2 = prefix + command2
                     if rsfprog2 in rsf.doc.progs:
-                        command2 = os.path.join(bindir,rsfprog2+progsuffix) 
+                        command2 = os.path.join(bindir,rsfprog2+progsuffix)
                         sources.append(command2)
                         if rsfprog2 not in coms:
                             coms.append(rsfprog2)
@@ -89,7 +90,7 @@ def Flow(sources,flow,bindir,rsfflow=1,
                         pars.insert(n,mpirun)
                         n += 1
                 if re.match(r'[^/]+\.exe$',command2): # local program
-                    command2 = os.path.join('.',command2)                 
+                    command2 = os.path.join('.',command2)
                 pars.insert(n,command2)
             # special rule for MPI programs
             if rsfprog and rsfprog.startswith(prefix+'mpi') and mpirun:
@@ -127,5 +128,5 @@ def Flow(sources,flow,bindir,rsfflow=1,
             command += ' batchfile="%s" ' % batch
         if wall:
             command += ' wall="%s" ' % wall
-        
+
     return command

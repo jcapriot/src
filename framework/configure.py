@@ -16,11 +16,10 @@
 import sys, os, glob,  re
 
 try: # The subprocess module was introduced in Python 2.4
-    import subprocess
+    from subprocess import getstatusoutput
     have_subprocess=True
-    commands = subprocess
 except: # Python < 2.4
-    import commands
+    from commands import getstatusoutput
     have_subprocess=False
 
 if sys.version_info[0]>2:
@@ -259,7 +258,7 @@ def cc(context):
         if not res:
             context.env['CFLAGS'] = oldflag
         # large file support
-        (status,lfs) = commands.getstatusoutput('getconf LFS_CFLAGS')
+        (status,lfs) = getstatusoutput('getconf LFS_CFLAGS')
         if not status and lfs:
             oldflag = context.env.get('CFLAGS')
             context.Message("checking if gcc accepts '%s' ... " % lfs)
