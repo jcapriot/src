@@ -128,7 +128,7 @@ Flow('HTI13','VTIc-3d','window n4=1 f4=7')
 Flow('HTI23','VTIc-3d','window n4=1 f4=8')
 Flow('HTIc-3d','HTI33 HTI22 HTI11 HTI66 HTI55 HTI44 HTI23 HTI13 HTI12','cat axis=4 ${SOURCES[1:9]} ')
 
-sindex=range(0,9,1)
+sindex=list(range(0,9,1))
 Flow('null',None,'spike n1=16 n2=16 nsp=1 mag=0')
 
 # . . Make different stiffness tensors

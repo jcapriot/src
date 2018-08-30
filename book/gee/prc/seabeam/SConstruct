@@ -24,7 +24,7 @@ Flow('flt0','lag',
      a0=%s lag=$SOURCE''' % (' '.join(flt),len(flt),a0))
 Flow('flt','flt0','dd form=native')
 
-lag = range(1,13) + range(85,113) + range(185,203)
+lag = list(range(1,13)) + list(range(85,113)) + list(range(185,203))
 
 Flow('alag0',None,
      'echo %s n1=%d n=100,100 data_format=ascii_int in=$TARGET' %

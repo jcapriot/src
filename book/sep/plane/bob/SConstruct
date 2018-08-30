@@ -8,7 +8,7 @@ Flow('bob.asc','lag',
      stdin=0)
 Flow('bob','bob.asc','dd form=native')
 
-lag = [1,2] + range(98,103) + range(198,203)
+lag = [1,2] + list(range(98,103)) + list(range(198,203))
 ns = len(lag)
 
 Flow('slag.asc',None,

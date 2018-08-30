@@ -141,8 +141,8 @@ par['migdsx']=1
 par['migdsy']=1
 par['nmig']=par['mignsx']*par['mignsy']
 
-xshot=range(par['migosx'],par['migosx']+par['mignsx']*par['migdsx'],par['migdsx'])
-yshot=range(par['migosy'],par['migosy']+par['mignsy']*par['migdsy'],par['migdsy'])
+xshot=list(range(par['migosx'],par['migosx']+par['mignsx']*par['migdsx'],par['migdsx']))
+yshot=list(range(par['migosy'],par['migosy']+par['mignsy']*par['migdsy'],par['migdsy']))
 
 nlist=[];
 xlist=[];

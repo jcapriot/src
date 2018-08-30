@@ -92,9 +92,9 @@ par['begmod']=432
 par['endmod']=3792
 par['dmod']=240
 
-mindex=range(par['begmod'],par['endmod'],par['dmod'])
+mindex=list(range(par['begmod'],par['endmod'],par['dmod']))
 par['ntest']=1
-rindex=range(0,par['ntest'],1)
+rindex=list(range(0,par['ntest'],1))
 
 par['SDIR']=os.path.join(RSFROOT,'bin')
 

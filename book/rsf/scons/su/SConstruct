@@ -71,7 +71,7 @@ if not os.path.isfile('stkvel.p1'): # interactive processing
     n1=501
     d1=0.004
     pick = []
-    cdps = range(1500,4000,500)
+    cdps = list(range(1500,4000,500))
     for cdp in cdps:
         panel = 'panel%d' % cdp
         picks = 'picks%d' % cdp

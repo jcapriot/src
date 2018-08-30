@@ -17,7 +17,7 @@ freq = 20
 
 spk0= 1 + int(1./(freq*dt))
 dspk= int(.5/ dt)
-spk = range(spk0,spk0+3*dspk,dspk)
+spk = list(range(spk0,spk0+3*dspk,dspk))
 
 par = {'nx' : nx, 'x0' : x0, 'dx' : dx,
 	   'nz' : nz, 'z0' : z0, 'dz' : dz,

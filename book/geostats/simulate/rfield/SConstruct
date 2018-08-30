@@ -70,7 +70,7 @@ for i in range(3):
 
 results = ['dist','covar','pspec_real','aspec_real']
            
-plots = range(3)
+plots = list(range(3))
 
 for i in range(3):
     plots[i] = results

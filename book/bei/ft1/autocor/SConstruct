@@ -33,11 +33,11 @@ signals = Split('cos sinc widebox narrowbox twin doublebox')
 labels = 'cos:sinc:w box:n box:twin:2 box'
 
 combs = [
-    range(1,1+n1//2,4),
-    range(1,1+n1//4,4),
-    range(1,1+n1//2,8),
-    range(1,1+n1//4,8),
-    range(1,1+n1,32)
+    list(range(1,1+n1//2,4)),
+    list(range(1,1+n1//4,4)),
+    list(range(1,1+n1//2,8)),
+    list(range(1,1+n1//4,8)),
+    list(range(1,1+n1,32))
     ]
 for case in range(len(combs)):
     comb = combs[case]
@@ -79,7 +79,7 @@ Result('autocor','sig auto','SideBySideAniso',vppen='yscale=0.85')
 Result('spectra','auto spec','SideBySideAniso',vppen='yscale=0.85')
 
 nsig = len(signals)
-rand = range(nsig)
+rand = list(range(nsig))
 
 shuffle(rand)
 Flow('head1.asc',None,

@@ -32,19 +32,19 @@ import spatial_stats
 # Set up 1D, 2D, and 3D example random field parameter dictionaries
 #
 
-val_real_par = range(3)             # value realization parameters
+val_real_par = list(range(3))             # value realization parameters
 
 val_real_par[0] = {'name':'val1D_', 'nr':1, 'seed':1}
 val_real_par[1] = {'name':'val2D_', 'nr':1, 'seed':1}
 val_real_par[2] = {'name':'val3D_', 'nr':1, 'seed':1}
 
-ind_real_par = range(3)             # indicator realization parameters
+ind_real_par = list(range(3))             # indicator realization parameters
 
 ind_real_par[0] = {'name':'ind1D_', 'nr':1, 'seed':2}
 ind_real_par[1] = {'name':'ind2D_', 'nr':1, 'seed':2}
 ind_real_par[2] = {'name':'ind3D_', 'nr':1, 'seed':2}
 
-grid_par = range(3)                 # grid parameters
+grid_par = list(range(3))                 # grid parameters
 
 grid_par[0] = {'nx': 512, 'ny':   1, 'nz':   1,
                'dx':   1, 'dy':   1, 'dz':   1}
@@ -135,7 +135,7 @@ for i in range(3):
 # Plot results
 #
  
-plots = range(3)
+plots = list(range(3))
 
 for i in range(3): 
     plots[i] = [par[i]['ind'],

@@ -82,11 +82,11 @@ par['begmod']=152 #32
 par['endmod']=par['nx']
 par['dmod']=24
 
-mindex=range(par['begmod'],par['endmod'],par['dmod'])
+mindex=list(range(par['begmod'],par['endmod'],par['dmod']))
 
 mpirun = WhereIs('mpirun')
 par['ntest']=10
-rindex=range(0,par['ntest'],1)
+rindex=list(range(0,par['ntest'],1))
 
 #for msou in mindex:
 #    mtag="-%03d" % msou
