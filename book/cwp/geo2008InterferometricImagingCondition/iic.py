@@ -10,7 +10,7 @@ def param():
         'nx':1201,  'ox':0, 'dx':1.0,    'lx':'Position', 'ux':'m', 'nhz':3,
         'nz':801,   'oz':0, 'dz':1.0,    'lz':'Depth',    'uz':'m', 'nhx':3,
         'kt':100,  # wavelet delay
-        'nb':200, 
+        'nb':200,
         'jsnap':250,
         'nexp':2,
         'tpad':200,
@@ -33,7 +33,7 @@ def param():
 def target(nxwin,nzwin,qq,par):
     if('zt' not in par): par['zt'] = par['oz']+0.85*par['nz']*par['dz']
     if('xt' not in par): par['xt'] = par['ox']+0.50*par['nx']*par['dx']
-    
+
     par['nqx'] = nxwin *     par['lo']/par['dx']
     par['oqx'] = par['xt'] - par['nqx']/2 * par['dx']
     par['dqx'] =                            par['dx']
@@ -58,15 +58,15 @@ def target(nxwin,nzwin,qq,par):
     Plot(qq,'window j2=53 |' + fdmod.qqplot('',par))
 
 # ------------------------------------------------------------
-def receivers(rr,par):    
+def receivers(rr,par):
     fdmod.horizontal(rr,par['oz']+par['lo'],par)
     Plot(rr,'window |' + fdmod.rrplot('',par))
 
 # ------------------------------------------------------------
 def points(sp,sa,wp,xm,qq,par):
-    
+
     # ------------------------------------------------------------
-    ls = 2*par['lo']    
+    ls = 2*par['lo']
 
     par['zs' ] = par['oz'] + par['lo']
     par['zs0'] = par['zt']+ls
@@ -81,11 +81,11 @@ def points(sp,sa,wp,xm,qq,par):
     par['jzs0'] = par['zs0'] / par['dz']
     par['jzs1'] = par['zs1'] / par['dz']
     par['jzs2'] = par['zs2'] / par['dz']
-    
+
     par['jxs0'] = par['xs0'] / par['dx']
     par['jxs1'] = par['xs1'] / par['dx']
     par['jxs2'] = par['xs2'] / par['dx']
-    
+
     # ------------------------------------------------------------
     # source positions
     fdmod.point('ss0',par['xs0'],par['zs0'],par)
@@ -94,7 +94,7 @@ def points(sp,sa,wp,xm,qq,par):
     Flow(sp,'ss0 ss1 ss2','cat axis=2 space=n ${SOURCES[1:3]} | window n1=2')
     Plot(sp,'window |' + fdmod.ssplot('plotcol=2',par))
 
-    fdmod.point(sa,par['xs'],par['zs'],par)    
+    fdmod.point(sa,par['xs'],par['zs'],par)
     Plot(sa,'window |' + fdmod.ssplot('',par))
 
     # ------------------------------------------------------------
@@ -119,7 +119,7 @@ def points(sp,sa,wp,xm,qq,par):
 def point(sp,sa,wp,xm,qq,par):
 
     # ------------------------------------------------------------
-    ls = 2*par['lo']    
+    ls = 2*par['lo']
 
     par['zs' ] = par['oz'] + par['lo']
     par['zs0'] = par['zt']
@@ -129,13 +129,13 @@ def point(sp,sa,wp,xm,qq,par):
 
     par['jzs0'] = (par['zs0']-par['oz']) / par['dz']
     par['jxs0'] = (par['xs0']-par['ox']) / par['dx']
-    
+
     # ------------------------------------------------------------
     # source positions
     fdmod.point(sp,par['xs0'],par['zs0'],par)
     Plot(sp,'window |' + fdmod.ssplot('',par))
 
-    fdmod.point(sa,par['xs'],par['zs'],par)    
+    fdmod.point(sa,par['xs'],par['zs'],par)
     Plot(sa,'window |' + fdmod.ssplot('',par))
 
     # ------------------------------------------------------------
@@ -169,7 +169,7 @@ def segments(sp,sa,wp,xm,qq,par):
 
     par['jzs0'] = 0.85*par['nz']
     par['jxs0'] = 0.50*par['nx']
-    
+
     n = 200
     m = 26
     par['nspk'] = n*m
@@ -178,7 +178,7 @@ def segments(sp,sa,wp,xm,qq,par):
     par['allz'] = ''
     par['allr'] = ''
     par['alli'] = ''
-    
+
     ind = 0
     for j in range(m):
         for i in range(n):
@@ -202,7 +202,7 @@ def segments(sp,sa,wp,xm,qq,par):
          ${SOURCES[0:2]} | transp
          ''', stdin=0)
     Plot(sp,'window |' + fdmod.ssplot('',par))
-    
+
     fdmod.point(sa,par['xs'],par['zs'],par)
     Plot(sa,'window |' + fdmod.ssplot('',par))
 
@@ -229,10 +229,10 @@ def reflectivity(refl,sp,sa,wp,xm,qq,par):
 
     par['zs' ] = par['lo']
     par['zs0'] = par['zt']
-    
+
     par['xs' ] = par['ox']+0.50*par['nx']*par['dx']
     par['xs0'] = par['xt']
-    
+
     par['jzs0'] = 0.85*par['nz']
     par['jxs0'] = 0.50*par['nx']
 
@@ -253,7 +253,7 @@ def reflectivity(refl,sp,sa,wp,xm,qq,par):
     for x in ('x1','x2'):
         if(x=='x1'): o=sp+'_z'
         if(x=='x2'): o=sp+'_x'
-        
+
         Flow(o,[refl,refl+'_mask'],
              '''
              math output=%s |
@@ -283,7 +283,7 @@ def reflectivity(refl,sp,sa,wp,xm,qq,par):
          '''
          spray axis=2 n=%(nt)d o=%(ot)g d=%(dt)g
          ''' % par)
-    
+
     fdmod.wavelet(wp+'_',par['fo'],par)
     Flow(wp,[wp+'_',sp+'_mask'],
          '''
@@ -313,17 +313,17 @@ def random(seed,gg,mask,ff,aa,ru,rv,par):
 
     # random field
     part['ff']=ff # ???
-    part['aa']=aa # angle    
+    part['aa']=aa # angle
     part['ru']=ru # characteristic length
     part['rv']=rv # characteristic length
     gfield.execute(gg+'_',seed,part)
     Flow(gg,[gg+'_',mask],'add mode=p ${SOURCES[1]}')
-    Result(gg,fdmod.cgrey('color=F',par))    
-    
+    Result(gg,fdmod.cgrey('color=F',par))
+
 # ------------------------------------------------------------
 def model(vo,vv,rm,gg,gm,par):
     if('vbias' not in par): par['vbias']=0
-    
+
     Flow(gg+'-nu', gg,'math output="input*%g"' % gm)
 
     # random velocity
@@ -332,12 +332,12 @@ def model(vo,vv,rm,gg,gm,par):
          math v=${SOURCES[0]} n=${SOURCES[1]}
          output="v/sqrt(1+n)"
          ''' % par)
-    
+
     Plot(vo,fdmod.cgrey('allpos=y bias=1.45',par))
     Plot(vv,fdmod.cgrey('allpos=y bias=1.45',par))
     Result(vo,vo,'Overlay')
     Result(vv,vv,'Overlay')
-    
+
     # density
     Flow(rm,vo,'math output=1')
     Plot(rm,fdmod.cgrey('allpos=y pclip=100',par))
@@ -362,7 +362,7 @@ def ttimes(vel,sou,par):
          '''
          smooth rect1=20 rect2=20 |
          eikonal zshot=%g yshot=%g
-         ''' %(par['zs0'],par['xs0']) )    
+         ''' %(par['zs0'],par['xs0']) )
     Plot(vel+'-fme',fdmod.ccont('plotcol=2 dc=0.1',par))
     Result(vel+'-fme',[vel,vel+'-fme',sou],'Overlay')
 
@@ -392,7 +392,7 @@ def pmodel(dat,wfl,wav,vel,den,sou,rec,ico,par):
 
     Result(wav,'window n1=1 n2=400 |' + fdmod.waveplot('',par))
     Result('p'+vel,[vel,ico,rec,sou],'Overlay')
-    
+
     fdmod.awefd(dat,wfl,
                 wav,vel,den,sou,rec,'',par)
 
@@ -411,7 +411,7 @@ def movie(wfl,vel,par):
     for i in range(0,par['nt']/par['jsnap'],1):
         fdmod.wframe(wfl+'-'+str(i),wfl+'m',i,'pclip=99',par)
         Result(wfl+'-'+str(i),'Overlay')
-        
+
 # ------------------------------------------------------------
 # active array modeling
 def amodel(dat,wfl,wav,vel,den,ref,sou,rec,ico,par):
@@ -437,7 +437,7 @@ def amodel(dat,wfl,wav,vel,den,ref,sou,rec,ico,par):
 #         'wdf verb=y nh1=15 nh2=15 nh3=0')
 #    Result(dou, 'window j2=5 | transp |' +
 #           fdmod.dgrey('pclip=99.9 screenratio=1.5 min1=%(mintplot)g labelsz=4'%par, par))
-    
+
 # ------------------------------------------------------------
 # passive array imaging
 def pimage(cic,iic,
@@ -452,7 +452,7 @@ def pimage(cic,iic,
               nqx=%(nqx)d oqx=%(oqx)g
               jsnap=%(jdata)d jdata=%(jdata)d
               ''' % par + ' '
-    
+
     # backpropagate
     fdmod.awefd(dat+'-'+vel+'-bck',
                 dat+'-'+vel+'-wfl',
@@ -470,7 +470,7 @@ def pimage(cic,iic,
          ''' % (2*par['tcut']+1,
                 par['nt']-par['kt']-par['tcut'],
                 -par['tcut']*par['dt']))
-         
+
     # compute WDF
     Flow(dat+'-'+vel+'-wig',dat+'-'+vel+'-cut',
          'wdf verb=y nh1=%(nhz)d nh2=%(nhx)d nh3=%(nht)d' % par)
@@ -507,7 +507,7 @@ def aimage(cic,iic,
                 dat+'-'+vel+'-sou',
                 wav,
                 vel,den,sou,rec,iwindow,par)
-    
+
     # ------------------------------------------------------------
     # receiver wavefield
     Flow(dat+'-rev',dat,'reverse which=2 opt=i verb=y' % par)
@@ -527,7 +527,7 @@ def aimage(cic,iic,
     Flow(dat+'-'+vel+'-wig',
          dat+'-'+vel+'-rec',
          'wdf verb=y nh1=%(nhz)d nh2=%(nhx)d nh3=%(nht)d' % par)
-    
+
     # ------------------------------------------------------------
     # imaging condition
     Flow(cic,[dat+'-'+vel+'-sou',dat+'-'+vel+'-rec'],
@@ -539,7 +539,7 @@ def aimage(cic,iic,
     # WDF on image
     Flow(cic+'-wdf',cic,
          'scale axis=123 | wdf verb=y nh1=%(nhz)d nh2=%(nhx)d' % par)
-    
+
     for img in ([cic,iic,cic+'-wdf']):
         Plot(img,fdmod.cgrey('pclip=100',par))
         Result( img,[img,rec,sou],'Overlay')
@@ -577,7 +577,7 @@ def magnitude(gg,
               dat,wfl,wav,sou,rec,ico,
               cic,iic,
               par):
-    
+
     for k in range(0,3):
         ktag = "-m%01d" % k
         gmk = gm * (k+1)
@@ -603,7 +603,7 @@ def dimension(gg,mask,ff,aa,ru,rv,
 
         ruk = ru * (k+1)
         rvk = rv * (k+1)
-        
+
         # generate random velocity model
         random(gg+ktag,mask,ff,aa,ruk,rvk,par)
         model(vo,vv+ktag,rm+ktag,gg+ktag,gm,par)
@@ -624,11 +624,11 @@ def sampling(vo,rm,
 
         Flow(rec+ktag,rec,'window j2=%d' % (knum))
         Plot(rec+ktag,'window |' + fdmod.rrplot('',par))
-        
+
         Flow(dat+ktag,dat,'window j1=%d' % (knum))
         Result(dat+ktag, 'window j2=5 | transp |' +
                fdmod.dgrey('pclip=99 screenratio=1.5 min1=%(mintplot)g'%par, par))
-        
+
         pimage(cic+ktag,iic+ktag,dat+ktag,vo,rm,rec+ktag,ico,par)
 
 # ------------------------------------------------------------
@@ -647,30 +647,30 @@ def wdfic(cii,
           uxx,uyy,
           wxx,wyy,
           dat,vel,den,rec,ico,par):
-    
+
     # ------------------------------------------------------------
     par['jrec']=5
     par['nrec']=320
     par['orec']=0
     par['jrec']=10
     par['nrec']=160
-    
-    receivers = range(par['orec'],par['orec']+par['nrec']*par['jrec'],par['jrec'])
+
+    receivers = list(range(par['orec'],par['orec']+par['nrec']*par['jrec'],par['jrec']))
     # ------------------------------------------------------------
 
     for k in receivers:
         ktag = "-%04d" % k
-        
+
         # source coordinates
         Flow(rec+ktag,rec,'window n2=1 f2=%g' % k )
         Plot(rec+ktag,    'window |' + fdmod.rrplot('',par))
-        
+
         # velocity (overlay)
         Plot(vel+ktag,[vel,rec+ktag,ico],'Overlay')
     allvxx = [vel+'-%04d' % x for x in receivers]
     Plot('allvxx',allvxx,'Movie')
 
-    # ------------------------------------------------------------ 
+    # ------------------------------------------------------------
     iwindow = ' ' + \
               '''
               nqz=%(nqz)d oqz=%(oqz)g
@@ -707,13 +707,13 @@ def wdfic(cii,
     # image each trace separately
     for k in receivers:
         ktag = "-%04d" % k
-        
+
         # data trace
         Flow(dat+ktag,
              dat,'window squeeze=n n1=1 f1=%g' % k )
         Flow(dat+ktag+'-rev',
              dat+ktag,'reverse which=2 opt=i verb=y | pad end2=%(tpad)d' % par)
-        
+
         fdmod.awefd(dat+ktag+'-bck',
                     dat+ktag+'-wfl',
                     dat+ktag+'-rev',
@@ -736,7 +736,7 @@ def wdfic(cii,
         Flow(uxx+ktag,
              uyy+ktag,
              'put n1=%d n2=1' % (par['nqz']*par['nqx']) )
-        
+
     # collect traces at the image point for all receiver locations
     # wavefield
     # z*x-xs-t
@@ -771,11 +771,11 @@ def wdfic(cii,
         # xs-t
         Flow(k,
              k+'-all',
-             'window n1=1 f1=%d | transp' % (par['nqz']*par['nqx']/2) )        
-        
+             'window n1=1 f1=%d | transp' % (par['nqz']*par['nqx']/2) )
+
         Result(k,
                '''
-               put o2=%g d2=%g | 
+               put o2=%g d2=%g |
                grey title="" pclip=98 labelsz=6 labelfat=2
                label1=%s unit1=%s
                label2=%s unit2=%s
@@ -792,13 +792,13 @@ def wdfic(cii,
          wxx+'-cub',
          'window n3=1 f3=%d' % par['tcut'])
     Plot(cii,fdmod.cgrey('pclip=100',par))
-    Result(cii,[cii,'rr'],'Overlay')        
+    Result(cii,[cii,'rr'],'Overlay')
     Result('win'+cii,
            cii,
            fdmod.cgrey('min1=%g max1=%g min2=%g max2=%g screenratio=%g wantaxis=y' %
                        (par['wzmin'],par['wzmax'],par['wxmin'],par['wxmax'],par['wratio']),par))
-    
-    
+
+
 # ------------------------------------------------------------
 def igrey(custom,par):
     return '''
@@ -820,4 +820,3 @@ def igrey(custom,par):
 #    labelsz=6 labelfat=2 wantaxis=y framelabel=n
 #    %s
 #    ''' % (par['nqz'],par['nqx'],par['nqz']/2,par['nqx']/2,par['tcut'],par['labelattr']+custom)
-

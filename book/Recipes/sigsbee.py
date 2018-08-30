@@ -11,9 +11,9 @@ def param():
         nz=1201,  oz=0,      dz=0.025,  lz='z', uz='km',
         nt=1500,  ot=0,      dt=0.008,  lt='t', ut='s'
         )
-    
+
     par['ft2km']=0.3048
-    
+
     par['ox']=par['ox']*par['ft2km']
     par['dx']=par['dx']*par['ft2km']
     par['oy']=par['oy']*par['ft2km']
@@ -43,7 +43,7 @@ def param():
 
     # CIG position
     par['xCIG']=9.15
-    
+
     return par
 
 # ------------------------------------------------------------
@@ -58,8 +58,8 @@ def modpar(par):
     par['jdata']=1
     par['wweight']=50
     par['wclip']=0.5
- 
-# ------------------------------------------------------------   
+
+# ------------------------------------------------------------
 def wempar(par):
     # expand model at the bottom
     par['nz']=par['nz']+par['nzpad']
@@ -69,7 +69,7 @@ def wempar(par):
     par['nrmax']=5
     par['dtmax']=0.00005
     par['tmx']=16
-    
+
     par['fw']=36
     par['jw']=1
     par['dw']=1/(par['nt']*par['dt'])
@@ -99,7 +99,7 @@ def fwipar(par):
     par['nqz']=par['nz']/2
     par['oqz']=par['oz']
     par['dqz']=par['dz']*2
-    
+
     par['nqx']=par['nx']/2
     par['oqx']=par['ox']
     par['dqx']=par['dx']*2
@@ -108,7 +108,7 @@ def fwipar(par):
 def rtmpar(par):
     # expand model at the bottom
     par['nz']=par['nz']+par['nzpad']
-    
+
     par['frq']=10
     par['kt']=120
     par['nt']=12001
@@ -121,15 +121,15 @@ def rtmpar(par):
     par['nximg']=1024
     par['jximg']=3
     par['fximg']=65
-    
+
     par['nqz']=par['nz']-par['nzdtm']
     par['oqz']=par['oz']+par['nzdtm']*par['dz']
     par['dqz']=par['dz']
-    
+
     par['nqx']=par['nximg']
     par['oqx']=par['ox']+par['fximg']*par['dx']
     par['dqx']=par['dx']*par['jximg']
-    
+
 def migpar(par):
     wempar(par)
 
@@ -138,7 +138,7 @@ def eicpar(par):
     par['nhx']=40
     par['nhy']=0
     par['nhz']=20
-    
+
     par['nht']=60
     par['dht']=0.008
 
@@ -153,7 +153,7 @@ def eicpar(par):
                  2*par['nhx']+1,-par['nhx']*par['dx']*par['jximg'],par['dx']*par['jximg'],
                  par['nz'],       par['oz'],                       par['dz'],
                  2*par['nht']+1,-par['nht']*par['dht'],            par['dht'],
-                 par)    
+                 par)
     adcig.eparam(2,
                  2*par['nhx']+1,-par['nhx']*par['dx']*par['jximg'], par['dx']*par['jximg'],
                  2*par['nhz']+1,-par['nhz']*par['dz'], par['dz'],
@@ -181,7 +181,7 @@ def shotsTWO(par):
     par['fS']=50
     par['jS']=400
     par['nS']=2
-    sindex = range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS'])
+    sindex = list(range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS']))
     par['nodes']=min(par['nodes'],len(sindex))
     return sindex
 
@@ -189,21 +189,21 @@ def shotsWIN(par):
     par['fS']=50
     par['jS']=10
     par['nS']=16
-    sindex = range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS'])
+    sindex = list(range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS']))
     return sindex
 
 def shotsJMP(par):
     par['fS']=0
     par['jS']=4
     par['nS']=120
-    sindex = range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS'])
+    sindex = list(range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS']))
     return sindex
 
 def shotsALL(par):
     par['fS']=0
     par['jS']=1
     par['nS']=480
-    sindex = range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS'])
+    sindex = list(range(par['fS'],par['fS']+par['nS']*par['jS'],par['jS']))
     return sindex
 
 # ------------------------------------------------------------
@@ -214,7 +214,7 @@ def getdata(data,par,local=0):
     else:
         datafile = 'sigsbee2a_nfs.sgy'
         Fetch(datafile,'sigsbee')
-    
+
     Flow([data,data+'-t','./'+data+'-h','./'+data+'-b'],
          None,
          '''
@@ -243,7 +243,7 @@ def getmigvel(velo,par,local=0):
          hfile=${TARGETS[2]}
          bfile=${TARGETS[3]}
          '''%migvelfile,stdin=0)
-    
+
     Flow(velo,
          velo+'-raw',
          '''
@@ -281,7 +281,7 @@ def getstrvel(velo,par,local=0):
          '''
          scale rscale=0.001 |
          scale rscale=%g |
-         put 
+         put
          o1=%g d1=%g label1=%s unit1=%s
          o2=%g d2=%g label2=%s unit2=%s
          ''' % (par['ft2km'],
@@ -313,7 +313,7 @@ def getreflect(ref,par,local=0):
          '''
          scale rscale=0.001 |
          scale rscale=%g |
-         put 
+         put
          o1=%g d1=%g label1=%s unit1=%s
          o2=%g d2=%g label2=%s unit2=%s
          ''' % (par['ft2km'],
@@ -329,27 +329,27 @@ def replace(vpad,velo,par):
     par['nreplace']=21
     Flow(velo+'_pad',velo,
          '''
-         window n1=1 f1=%d | 
+         window n1=1 f1=%d |
          spray axis=1 n=%d |
          smooth rect2=250 repeat=5
          ''' % (par['nz']-par['nreplace'],par['nreplace']+par['nzpad']) )
-    
+
     Flow(velo+'_sed',velo,'window n1=%d' % (par['nz']-par['nreplace']) )
-    
+
     Flow(vpad,[velo+'_sed',velo+'_pad'],'cat axis=1 ${SOURCES[1]}')
 
 # ------------------------------------------------------------
-# extend bottom salt 
+# extend bottom salt
 def extend(vpad,velo,par):
 
     # padding in z
     par['nreplace']=21
     Flow(velo+'_cut',velo,
          '''
-         window n1=1 f1=%d | 
+         window n1=1 f1=%d |
          spray axis=1 n=%d
          ''' % (par['nz']-1,par['nzpad']) )
-    
+
     Flow(vpad,[velo,velo+'_cut'],'cat axis=1 ${SOURCES[1]}')
 
 # ------------------------------------------------------------
@@ -370,7 +370,7 @@ def getrefl(refl,par):
     Flow(refl,
          refl+'-raw',
          '''
-         put 
+         put
          o1=%g d1=%g label1=%s unit1=%s
          o2=%g d2=%g label2=%s unit2=%s
          ''' % (
@@ -404,7 +404,7 @@ def makeshots(shot,data,par):
          ''' % ( 0.000*par['ft2km'],0.075*par['ft2km'],par['ux'],
                  10.95*par['ft2km'],0.150*par['ft2km'],par['ux']
                  ))
-        
+
 # ------------------------------------------------------------
 def makecmps(cmps,data,par):
 
@@ -415,7 +415,7 @@ def makecmps(cmps,data,par):
          'math o=${SOURCES[0]} s=${SOURCES[1]} output=s+o/2-10925')
     Flow(cmps+'-hh',[cmps+'-oo'     ],
          'math o=${SOURCES[0]}                 output=o/2')
-    
+
     Flow(cmps+'-mi',cmps+'-mm','math output=input/37.5')
     Flow(cmps+'-hi',cmps+'-hh','math output=input/37.5')
     Flow(cmps+'-mh',[cmps+'-hi',cmps+'-mi'],
@@ -450,17 +450,17 @@ def symmetrizecmps(symc,cmps,par):
 # ------------------------------------------------------------
 def remap(iout,iinp,imap):
     Flow(iinp+'-transp',iinp,'transp')
-    Flow(imap+'-transp',imap,'transp')    
+    Flow(imap+'-transp',imap,'transp')
     Flow(iout+'-temp',[iinp+'-transp',imap+'-transp'],
          'remap1 pattern=${SOURCES[1]} | transp')
     Flow(iout,[iout+'-temp',imap],
          'remap1 pattern=${SOURCES[1]}')
-    
+
 # ------------------------------------------------------------
 def makemask(velo,smask,wmask,lmask,par):
     # salt mask
     Flow(  smask,velo,'mask min=4.499 | dd type=float')
-    
+
     # water mask
     Flow(  wmask,velo,'mask max=1.5 | dd type=float')
 
@@ -481,7 +481,7 @@ def makevlow(vlow,velo,smask,wmask,lmask,coef):
          ''' % coef)
 
 # high velocity (in sediments only)
-def makevhig(vhig,velo,smask,wmask,lmask,coef):    
+def makevhig(vhig,velo,smask,wmask,lmask,coef):
     Flow(vhig,[velo,smask,wmask,lmask],
          '''
          math
@@ -494,7 +494,7 @@ def makevhig(vhig,velo,smask,wmask,lmask,coef):
          clip clip=10 |
          add add=11.5
          ''' % coef)
-    
+
 # ------------------------------------------------------------
 # density by Gardner's relation
 def makedensity(velo,dens,smask,wmask,lmask,par):
@@ -508,4 +508,3 @@ def makedensity(velo,dens,smask,wmask,lmask,par):
          l=${SOURCES[3]}
          output="0.23*((v*l)*3280.0)^0.25+1.0*w+1.23*s"
          ''')
-    
