@@ -25,43 +25,43 @@ verbatim_mode = 0
 math_mode = 0
 in_math = 0
 
-el = "\n"
-item = ""
+el = b"\n"
+item = b""
 refs = {}
 gref = []
 fullref = None
-insert = ""
+insert = b""
 
-lang = "text"
-code = ""
-coderef = ""
-repos = "https://github.com/ahay/src/blob/master/"
+lang = b"text"
+code = b""
+coderef = b""
+repos = b"https://github.com/ahay/src/blob/master/"
 
 def dummy(s):
     pass
 
 def items(s):
     global item, el
-    item = item + '*'
-    el = " "
+    item = item + b'*'
+    el = b" "
 
 def enums(s):
     global item, el
-    item = item + '#'
-    el = " "
+    item = item + b'#'
+    el = b" "
 
 def in_list():
     global item
     if item:
-        return "\n%s:" % item
+        return b"\n%s:" % item
     else:
-        return ""
+        return b""
 
 def end_list(s):
     global item, el
     item = item[:-1] # remove last char
     if not item:
-        el = "\n"
+        el = b"\n"
 
 def start_doc(s):
     global bdoc;
@@ -75,19 +75,19 @@ def decide_math():
     global math_mode, verbatim_mode
     if verbatim_mode:
         math_mode = 0
-        return "&#36;"
+        return b"&#36;"
     elif math_mode:
-        return "<math>"
+        return b"<math>"
     else:
-        return "</math>"
+        return b"</math>"
 
 def line_math():
     global math_mode, verbatim_mode, in_math
     if verbatim_mode:
-        return r"&#36;\1&#36;"
+        return r"&#36;\1&#36;".encode()
     else:
         in_math = 1
-        return r"<math>\1</math>"
+        return r"<math>\1</math>".encode()
 
 def start_verbatim(s):
     global verbatim_mode
@@ -107,7 +107,7 @@ def cite(s):
     fullref = s.group(1)
     keys = s.group(2)
     gref = []
-    for key in keys.split(','):
+    for key in keys.split(b','):
         lref = refs.get(key)
         if lref:
             gref.append(lref)
@@ -115,28 +115,28 @@ def cite(s):
 def refer():
     global gref, fullref
     list = []
-    name = ''
+    name = b''
     for lref in gref:
         if fullref:
-            list.append('%s<ref>%s</ref>' % lref)
+            list.append(b'%s<ref>%s</ref>' % lref)
         else:
-            (name,year) = lref[0].split(', ')
-            list.append('%s<ref>%s</ref>' % (year,lref[1]))
-    lrefs = '(%s)' % ';'.join(list)
+            (name,year) = lref[0].split(b', ')
+            list.append(b'%s<ref>%s</ref>' % (year,lref[1]))
+    lrefs = b'(%s)' % b';'.join(list)
     if fullref:
         return lrefs
     else:
-        return '%s %s' % (name,lrefs)
+        return b'%s %s' % (name,lrefs)
 
 def input_file(s):
     global insert
     name = s.group(1)
     try:
-        inp = open(name+'.wiki','r')
-        insert = ''.join(inp.readlines())
-        inp.clos()
+        inp = open(name+'.wiki','rb')
+        insert = b''.join(inp.readlines())
+        inp.close()
     except:
-        inp = '[name]'
+        inp = b'[name]'
 
 def insert_file():
     global insert
@@ -145,39 +145,39 @@ def insert_file():
 def blank():
     global verbatim_mode, math_mode
     if verbatim_mode or math_mode:
-        return r"\1"
+        return r"\1".encode()
     else:
-        return ""
+        return b""
 
 def brace():
     global verbatim_mode, math_mode
     if verbatim_mode or math_mode:
-        return r"\1"
+        return r"\1".encode()
     else:
-        return r"\2"
+        return r"\2".encode()
 
 def lstset(s):
     global lang
     lang = s.group(1)
-    if lang == "c++":
-        lang = "cpp"
+    if lang == b"c++":
+        lang = b"cpp"
 
 def putcode():
     global lang, code
-    return "<syntaxhighlight lang=\"%s\">\n%s</syntaxhighlight>\n" % (lang,code)
+    return b"<syntaxhighlight lang=\"%s\">\n%s</syntaxhighlight>\n" % (lang,code)
 
 def getcode(s):
     global code
     options = s.group(1)
-    name = s.group(2).replace('\\RSF',os.environ.get('RSFSRC'))
+    name = s.group(2).replace(b'\\RSF',os.environ.get('RSFSRC'))
     line = {'first':1,'last':9999}
     for mark in list(line.keys()):
         if options:
-            match = re.search('%sline=(\d+)' % mark,options)
+            match = re.search(b'%sline=(\d+)' % mark,options)
             if match:
                 line[mark] = int(match.group(1))
-    fd = open(name,"r")
-    code = ''
+    fd = open(name,"rb")
+    code = b''
     num = 1
     for each in fd.readlines():
         if num > line['last']:
@@ -189,13 +189,13 @@ def getcode(s):
 
 def getmode(s):
     global code, coderef, lang
-    lang = 'c'
-    coderef = os.path.join(s.group(4),s.group(1))+'.'+lang
-    name = os.path.join(os.environ.get('RSFSRC'),coderef)
+    lang = b'c'
+    coderef = os.path.join(s.group(4),s.group(1))+b'.'+lang
+    name = os.path.join(os.environ.get('RSFSRC'),coderef.decode())
     first = int(s.group(2))
     last = int(s.group(3))
-    fd = open(name,"r")
-    code = ''
+    fd = open(name,"rb")
+    code = b''
     num = 1
     for each in fd.readlines():
         if num > last:
@@ -209,12 +209,12 @@ braces = r"\{((?:[^\}\{]*)(?:[^\{\}]*\{[^\}]*\}[^\{\}]*)*)\}"
 # matches the contents of {} allowing a single level of nesting
 
 tr_list2 = [
-    (r"(``|'')", (lambda : '"'), dummy),
+    (r"(``|'')", (lambda : b'"'), dummy),
     (r"\\input{(\w+)}",insert_file,input_file),
     (r"^(\s+)", blank, dummy),
-    (r"\\footnote"+braces,(lambda : r"<ref>\1</ref>"),dummy),
+    (r"\\footnote"+braces,(lambda : r"<ref>\1</ref>".encode()),dummy),
     (r"\\bibliography{[^}]+}",
-     (lambda : r"==References==\n<references/>"),
+     (lambda : r"==References==\n<references/>".encode()),
      dummy),
     (r"\\bibliographystyle{[^}]+}",None,dummy),
     (r"\\begin\{abstract}", None, dummy),
@@ -225,76 +225,76 @@ tr_list2 = [
     (r"\\begin\{document}", None, start_doc),
     (r"\\inputdir{(\w+)}",None,dummy),
     (r"\\(?:side)?plot{([^}]+)}{[^}]*}{(.*)}",
-     (lambda : r"[[Image:\1.png|frame|center|\2]]"),dummy),
-    (r"\\label{(.*?)}", (lambda :r" (\1)"), dummy),
-    (r"\\ref{(.*?)}", (lambda :r"(\1)"), dummy),
-    (r"\\emph{(.*?)}", (lambda :r"''\1'' "), dummy),
-    (r"\\textit{(.*?)}", (lambda :r"''\1'' "), dummy),
-    (r"\\texttt{(.*?)}", (lambda : r"<tt>\1</tt>"), dummy),
-    (r"\\text{(.*?)}", (lambda : r"=\1= "), dummy),
-    (r"\\textbf{(.*?)}", (lambda : r"'''\1''' "), dummy),
-    (r"\\verb(.)(.+)\1", (lambda : r'<font color="#cd4b19">\2</font>'), dummy),
-    (r"\\begin{verbatim}", (lambda : "<pre>"), start_verbatim),
-    (r"\\end{verbatim}", (lambda : "</pre>"), end_verbatim),
-    (r"\\begin{comment}", (lambda : "<!-- "), dummy),
-    (r"\\end{comment}", (lambda : " -->"), dummy),
-    (r"\\begin{itemize}", (lambda : "\n"), items),
+     (lambda : r"[[Image:\1.png|frame|center|\2]]".encode()),dummy),
+    (r"\\label{(.*?)}", (lambda :r" (\1)".encode()), dummy),
+    (r"\\ref{(.*?)}", (lambda :r"(\1)".encode()), dummy),
+    (r"\\emph{(.*?)}", (lambda :r"''\1'' ".encode()), dummy),
+    (r"\\textit{(.*?)}", (lambda :r"''\1'' ".encode()), dummy),
+    (r"\\texttt{(.*?)}", (lambda : r"<tt>\1</tt>".encode()), dummy),
+    (r"\\text{(.*?)}", (lambda : r"=\1= ".encode()), dummy),
+    (r"\\textbf{(.*?)}", (lambda : r"'''\1''' ".encode()), dummy),
+    (r"\\verb(.)(.+)\1", (lambda : r'<font color="#cd4b19">\2</font>'.encode()), dummy),
+    (r"\\begin{verbatim}", (lambda : b"<pre>"), start_verbatim),
+    (r"\\end{verbatim}", (lambda : b"</pre>"), end_verbatim),
+    (r"\\begin{comment}", (lambda : b"<!-- "), dummy),
+    (r"\\end{comment}", (lambda : b" -->"), dummy),
+    (r"\\begin{itemize}", (lambda : b"\n"), items),
     (r"\\end{itemize}", in_list, end_list),
-    (r"\\begin{enumerate}", (lambda : "\n"), enums),
+    (r"\\begin{enumerate}", (lambda : b"\n"), enums),
     (r"\\end{enumerate}", in_list, end_list),
-    (r"\\item (.*?)", (lambda :   r"\n" + item + r"\1"), dummy),
+    (r"\\item (.*?)", (lambda :   r"\n".encode() + item + r"\1".encode()), dummy),
     (r"\\lstset{[^\}]*language=([\w\+]+)[^\}]*}",None,lstset),
     (r"\\lstinputlisting(?:\[([^\]]*)\])?{([^\}]+)}", putcode, getcode),
     (r"\\moddex{([^\}]+)}{(?:[^\}]+)}{([^\}]+)}{([^\}]+)}{([^\}]+)}",
      putcode,getmode),
-    (r"\\begin{equation[*]*}", (lambda :"<center><math>"), toggle_math),
-    (r"\\end{equation[*]*}", (lambda :"</math></center>"), toggle_math),
-    (r"\\\[", (lambda :"<center><math>"), toggle_math),
-    (r"\\dfrac", (lambda :r"\\frac"), dummy),
-    (r"\\\]", (lambda :"</math></center>"), toggle_math),
-    (r"\\begin{eqnarray[*]?}", (lambda :r"<center><math>\\begin{matrix}"), toggle_math),
-    (r"\\begin{array[*]?}", (lambda :r"\\begin{matrix}"), toggle_math),
-    (r"\\end{eqnarray[*]?}", (lambda :r"\\end{matrix}</math></center>"), toggle_math),
-    (r"\\end{array[*]?}", (lambda :r"\\end{matrix}"), toggle_math),
+    (r"\\begin{equation[*]*}", (lambda :b"<center><math>"), toggle_math),
+    (r"\\end{equation[*]*}", (lambda :b"</math></center>"), toggle_math),
+    (r"\\\[", (lambda :"b<center><math>"), toggle_math),
+    (r"\\dfrac", (lambda :r"\\frac".encode()), dummy),
+    (r"\\\]", (lambda :b"</math></center>"), toggle_math),
+    (r"\\begin{eqnarray[*]?}", (lambda :r"<center><math>\\begin{matrix}".encode()), toggle_math),
+    (r"\\begin{array[*]?}", (lambda :r"\\begin{matrix}".encode()), toggle_math),
+    (r"\\end{eqnarray[*]?}", (lambda :r"\\end{matrix}</math></center>".encode()), toggle_math),
+    (r"\\end{array[*]?}", (lambda :r"\\end{matrix}".encode()), toggle_math),
     #    (r"(\\begin{.*?})", decide_math_replace, dummy),
     #    (r"(\\end{.*?})",decide_math_replace, dummy),
     (r"\\cite(\[\])?\{([^\}]+)\}",refer,cite),
-    (r"~\\ref{([^}]*)}",(lambda : r" ---\1---"),dummy),
-    (r"\\subsubsection{(.*?)}", (lambda : r"====\1===="), dummy),
-    (r"\\subsection{(.*?)}", (lambda : r"===\1==="), dummy),
-    (r"\\section{(.*?)}", (lambda : r"==\1=="), dummy),
-    (r"\\_", (lambda :"_"), dummy),
+    (r"~\\ref{([^}]*)}",(lambda : r" ---\1---".encode()),dummy),
+    (r"\\subsubsection{(.*?)}", (lambda : r"====\1====".encode()), dummy),
+    (r"\\subsection{(.*?)}", (lambda : r"===\1===".encode()), dummy),
+    (r"\\section{(.*?)}", (lambda : r"==\1==".encode()), dummy),
+    (r"\\_", (lambda :b"_"), dummy),
     #    (r"\\title{(.*)}", (lambda :r"= \1 ="),dummy),
     #        (r"\\author{(.*)}", (lambda :r"\1"),dummy),
-    (r"\\date{(.*)}", (lambda :r"\1"),dummy),
-    (r"\\begin{quote}",(lambda : r"<blockquote>"),dummy),
-    (r"\\end{quote}",(lambda : r"</blockquote>"),dummy),
+    (r"\\date{(.*)}", (lambda :r"\1".encode()),dummy),
+    (r"\\begin{quote}",(lambda : r"<blockquote>".encode()),dummy),
+    (r"\\end{quote}",(lambda : r"</blockquote>".encode()),dummy),
     (r"\\thispagestyle{.*?}", None, dummy),
     (r"\n$", decide_el, dummy),
     #    (r"[^\\]?\{", None, dummy),
     #    (r"[^\\]?\}", None, dummy),
-    (r"\\\$",(lambda : r"&#36;"),dummy),
-    (r"\\\'[\{]?a[\}]?",(lambda : r"&#225;"),dummy),
+    (r"\\\$",(lambda : r"&#36;".encode()),dummy),
+    (r"\\\'[\{]?a[\}]?",(lambda : r"&#225;".encode()),dummy),
     #    (r"\$(.*?)\$",(lambda :r"<math>\1</math>"),dummy),
     (r"%.*$",None, dummy),
-    (r"\\r{(.*?)}", (lambda : r"\\mathrm{\1}"), dummy),
-    (r"\\d ", (lambda : r"\\,\mathrm{d} "), dummy),
-    (r"\\i ", (lambda : r"\\mathrm{i} "), dummy),
-    (r"\\i\\", (lambda : r"\\mathrm{i}\\"), dummy),
-    (r"\\e\^", (lambda : r"\\mathrm{e}^"), dummy),
-    (r"\\begin{align[*]?}", (lambda :r"<center><math>\\begin{matrix}"), toggle_math),
-    (r"\\end{align[*]?}", (lambda :r"\\end{matrix}</math></center>"), toggle_math),
+    (r"\\r{(.*?)}", (lambda : r"\\mathrm{\1}".encode()), dummy),
+    (r"\\d ", (lambda : r"\\,\mathrm{d} ".encode()), dummy),
+    (r"\\i ", (lambda : r"\\mathrm{i} ".encode()), dummy),
+    (r"\\i\\", (lambda : r"\\mathrm{i}\\".encode()), dummy),
+    (r"\\e\^", (lambda : r"\\mathrm{e}^".encode()), dummy),
+    (r"\\begin{align[*]?}", (lambda :r"<center><math>\\begin{matrix}".encode()), toggle_math),
+    (r"\\end{align[*]?}", (lambda :r"\\end{matrix}</math></center>".encode()), toggle_math),
     (r"\\begin{aligned[*]?}", None, dummy),
     (r"\\end{aligned[*]?}", None, dummy),
     (r"\\begin{subequations[*]?}", None, dummy),
     (r"\\end{subequations[*]?}", None, dummy),
-    (r"\\href{([^\}]*)}{([^\}]*)}",(lambda : r"[\1 \2]"), dummy),
-    (r"\\url{([^\}]*)}",(lambda : r"\1"), dummy),
+    (r"\\href{([^\}]*)}{([^\}]*)}",(lambda : r"[\1 \2]".encode()), dummy),
+    (r"\\url{([^\}]*)}",(lambda : r"\1".encode()), dummy),
     (r"\\pdfbookmark\[[^\]]*\]{[^\}]*}{[^\}]*}", None, dummy),
     # the most important thing
-    (r"\\LaTeX",(lambda : "L<sup>A</sup>TEX"), dummy),
-    (r"\\\\", (lambda : "\n"), dummy),
-    (r"\\ ",(lambda: " "), dummy),
+    (r"\\LaTeX",(lambda : b"L<sup>A</sup>TEX"), dummy),
+    (r"\\\\", (lambda : b"\n"), dummy),
+    (r"\\ ",(lambda: b" "), dummy),
     (r"\$([^\$]+)\$",line_math,toggle_math),
     (r"\$",decide_math,toggle_math),
     # unknown command
@@ -306,30 +306,30 @@ tr_list2 = [
     ]
 
 # precompile regular expressions
-reg = [(re.compile(x[0]),x[1],x[2]) for x in tr_list2]
+reg = [(re.compile(x[0].encode()),x[1],x[2]) for x in tr_list2]
 
-bibitem = re.compile(r'\\bibitem\[([^\]]+)\]{([^}]+)}\s*\n(.+)$',re.DOTALL)
-it_in = re.compile(r'{\\it in}')
-bf = re.compile(r'{\\bf (\w+)}')
-blank = re.compile(r'\n')
-tilde = re.compile(r'[~]')
+bibitem = re.compile(r'\\bibitem\[([^\]]+)\]{([^}]+)}\s*\n(.+)$'.encode(),re.DOTALL)
+it_in = re.compile(r'{\\it in}'.encode())
+bf = re.compile(r'{\\bf (\w+)}'.encode())
+blank = re.compile(r'\n'.encode())
+tilde = re.compile(r'[~]'.encode())
 
 def parse_bbl(bbl):
     "Parse a bbl file extracting a reference dictionary"
     global refs
-    for par in ''.join(bbl.readlines()).split('\n\n'):
+    for par in b''.join(bbl.readlines()).split(b'\n\n'):
         ref = bibitem.match(par)
         if ref:
             short = ref.group(1)
-            short = tilde.sub(' ',short)
+            short = tilde.sub(b' ',short)
 
             key = ref.group(2)
 
             llong = ref.group(3)
-            llong = it_in.sub("''in''",llong)
-            llong = bf.sub("'''\\1'''",llong)
-            llong = tilde.sub(' ',llong)
-            llong = blank.sub('',llong)
+            llong = it_in.sub(b"''in''",llong)
+            llong = bf.sub(b"'''\\1'''",llong)
+            llong = tilde.sub(b' ',llong)
+            llong = blank.sub(b'',llong)
 
             refs[key] = (short,llong)
 
@@ -337,7 +337,12 @@ def convert(in_stream,out_stream):
     "Convert LaTeX to MediaWiki"
     global reg, math_mode, in_math
     for i in in_stream.readlines():
-        mystr = i
+        recode = False
+        try:
+            mystr = i.encode()
+            recode = True
+        except:
+            mystr = i
 
         for r in reg:
             s = r[0].search(mystr)
@@ -346,13 +351,16 @@ def convert(in_stream,out_stream):
             if r[1]:
                 mysub = r[1]()
             else:
-                mysub = ""
+                mysub = b""
             mystr = r[0].sub(mysub, mystr)
             if in_math:
                 in_math = 0
                 break
 
-    if bdoc:
+        if recode:
+            mystr = mystr.decode()
+
+        if bdoc:
             out_stream.write(mystr)
 
 if __name__ == "__main__":
@@ -360,10 +368,10 @@ if __name__ == "__main__":
 
     for bblfile in glob.glob('*.bbl'):
         try:
-            bbl = open(bblfile,'r')
+            bbl = open(bblfile,'rb')
             parse_bbl(bbl)
             bbl.close()
-        except:
+        except FileNotFoundError as err:
             pass
 
     convert(sys.stdin,sys.stdout)

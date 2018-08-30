@@ -32,8 +32,6 @@ else:
     import io
     open = io.open
 
-encoding = 'utf-8'
-
 # The following adds all SCons SConscript API to the globals of this module.
 version = list(map(int,SCons.__version__.split('.')[:3]))
 if version[0] >= 1 or version[1] >= 97 or (version[1] == 96 and version[2] >= 90):
@@ -85,34 +83,34 @@ vpsuffix  = '.vpl'
 pssuffix  = '.eps'
 itype = os.environ.get('IMAGE_TYPE','png')
 
-rerun = re.compile(r'\bRerun')
+rerun = re.compile(r'\bRerun'.encode())
 
 #############################################################################
 # REGULAR EXPRESSIONS
 #############################################################################
 
-begcom = re.compile(r'^[^%]*\\begin\{comment\}')
-endcom = re.compile(r'^[^%]*\\end\{comment\}')
+begcom = re.compile(r'^[^%]*\\begin\{comment\}'.encode())
+endcom = re.compile(r'^[^%]*\\end\{comment\}'.encode())
 isplot = re.compile(r'^[^%]*\\(?:side|full)?plot\*?\s*(?:\[[\!htbp]+\])?' \
-                    '\{([^\}]+)')
+                    '\{([^\}]+)'.encode())
 ismplot = re.compile(r'^[^%]*\\multiplot\*?\s*(?:\[[\!htbp]+\])?' \
-                     '\{[^\}]+\}\s*\{([^\}]+)')
+                     '\{[^\}]+\}\s*\{([^\}]+)'.encode())
 issmplot = re.compile(r'^[^%]*\\sidemultiplot\*?\s*(?:\[[\!htbp]+\])?' \
-                     '\{[^\}]+\}\s*\{([^\}]+)')
-isfig  = re.compile(r'^[^%]*\\includegraphics\s*(\[[^\]]*\])?\{([^\}]+)')
-isanim = re.compile(r'^[^%]*\\animategraphics\s*(\[[^\]]*\])?\{([0-9]+)\}\{([^\}]+)')
-isbib = re.compile(r'\\bibliography\s*\{([^\}]+)')
-linput = re.compile(r'[^%]\\(?:lst)?input(?:listing\[[^\]]+\])?\s*\{([^\}]+)')
-chdir = re.compile(r'[^%]*\\inputdir\s*\{([^\}]+)')
-subdir = re.compile(r'\\setfigdir{([^\}]+)')
-beamer = re.compile(r'\\documentclass[^\{]*\{beamer\}')
-hastoc =  re.compile(r'\\tableofcontents')
-figure = re.compile(r'\\contentsline \{figure\}\{\\numberline \{([^\}]+)')
-subfigure = re.compile(r'\\contentsline \{subfigure\}\{\\numberline \{\(([\w])')
-logfigure = re.compile(r'\s*\<use ([^\>]+)')
-suffix = re.compile('\.[^\.]+$')
-cwpslides = re.compile(r'\\documentclass[^\{]*\{cwpslides\}')
-makeind = re.compile(r'\\index')
+                     '\{[^\}]+\}\s*\{([^\}]+)'.encode())
+isfig  = re.compile(r'^[^%]*\\includegraphics\s*(\[[^\]]*\])?\{([^\}]+)'.encode())
+isanim = re.compile(r'^[^%]*\\animategraphics\s*(\[[^\]]*\])?\{([0-9]+)\}\{([^\}]+)'.encode())
+isbib = re.compile(r'\\bibliography\s*\{([^\}]+)'.encode())
+linput = re.compile(r'[^%]\\(?:lst)?input(?:listing\[[^\]]+\])?\s*\{([^\}]+)'.encode())
+chdir = re.compile(r'[^%]*\\inputdir\s*\{([^\}]+)'.encode())
+subdir = re.compile(r'\\setfigdir{([^\}]+)'.encode())
+beamer = re.compile(r'\\documentclass[^\{]*\{beamer\}'.encode())
+hastoc =  re.compile(r'\\tableofcontents'.encode())
+figure = re.compile(r'\\contentsline \{figure\}\{\\numberline \{([^\}]+)'.encode())
+subfigure = re.compile(r'\\contentsline \{subfigure\}\{\\numberline \{\(([\w])'.encode())
+logfigure = re.compile(r'\s*\<use ([^\>]+)'.encode())
+suffix = re.compile(r'\.[^\.]+$'.encode())
+cwpslides = re.compile(r'\\documentclass[^\{]*\{cwpslides\}'.encode())
+makeind = re.compile(r'\\index'.encode())
 
 #############################################################################
 # CUSTOM SCANNERS
@@ -137,17 +135,17 @@ def latexscan(node,env,path):
     if top[-4:] != '.ltx':
         return []
     contents = node.get_contents()
-    if not isinstance(contents,basestring):
-        contents = contents.decode('utf-8')
+
     inputs = list(filter(os.path.isfile,
-                    [x+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)]))
+                    [x.decode()+('.tex','')[os.path.isfile(x)] for x in linput.findall(contents)]))
+
     inputs.append(top[:-4]+'.tex')
     resdir = env.get('resdir','Fig')
     inputdir = env.get('inputdir','.')
     plots = []
     for file in inputs:
         try:
-            inp = open(file,'r', encoding=encoding)
+            inp = open(file,'rb')
         except:
             return []
         comment = 0
@@ -162,48 +160,48 @@ def latexscan(node,env,path):
 
             dir  = chdir.search(line)
             if dir:
-                inputdir = dir.group(1)
+                inputdir = dir.group(1).decode()
             dir = subdir.search(line)
             if dir:
-                resdir = dir.group(1)
+                resdir = dir.group(1).decode()
             resdir2 = os.path.join(inputdir,resdir)
 
             check = isplot.search(line)
             if check:
-                 plot = check.group(1)
+                 plot = check.group(1).decode()
                  plot = plot.replace('\_','_')
                  plots.append(os.path.join(resdir2,plot + ressuffix))
-                 if re.search('angle=90',line):
+                 if re.search(b'angle=90',line):
                       plotoption[plot+pssuffix] = '-flip r90'
 
             check = ismplot.search(line)
             if check:
-                 mplot = check.group(1)
+                 mplot = check.group(1).decode()
                  mplot = mplot.replace('\_','_')
                  for plot in mplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
-                     if re.search('angle=90',line):
+                     if re.search(b'angle=90',line):
                          plotoption[plot+pssuffix] = '-flip r90'
 
             check = issmplot.search(line)
             if check:
-                 smplot = check.group(1)
+                 smplot = check.group(1).decode()
                  smplot = smplot.replace('\_','_')
                  for plot in smplot.split(','):
                      plots.append(os.path.join(resdir2,plot + ressuffix))
-                     if re.search('angle=90',line):
+                     if re.search(b'angle=90',line):
                          plotoption[plot+pssuffix] = '-flip r90'
 
             check = isfig.search(line)
             if check:
-                 plot = check.group(2)
+                 plot = check.group(2).decode()
                  if plot[-len(ressuffix):] != ressuffix:
                      plot = plot + ressuffix
                  plots.append(plot)
 
             check = isanim.search(line)
             if check:
-                 plot = check.group(3)
+                 plot = check.group(3).decode()
                  # Only make VPL->PDF target if the file name does
                  # not end with '_', otherwise, assume that \animategraphics
                  # is going to assemble the animation from individual files
@@ -218,7 +216,8 @@ def latexscan(node,env,path):
         inp.close()
     bibs = []
     for bib in isbib.findall(contents):
-        for file in bib.split(','):
+        for file in bib.split(b','):
+            file = file.decode()
             file = file+'.bib'
             if os.path.isfile(file):
                 bibs.append(file)
@@ -233,8 +232,8 @@ LaTeXS = Scanner(name='LaTeX',function=latexscan,skeys=['.ltx'])
 
 def latify(target=None,source=None,env=None):
     "Add header and footer to make a valid LaTeX file"
-    tex = open(str(source[0]),'r', encoding=encoding)
-    ltx = open(str(target[0]),'w')
+    tex = open(str(source[0]),'rb')
+    ltx = open(str(target[0]),'wb')
     lclass = env.get('lclass','geophysics')
     if lclass == 'segabs':
         size = '11pt'
@@ -244,8 +243,8 @@ def latify(target=None,source=None,env=None):
     if not options:
         options = size
 
-    ltx.write('%% This file is automatically generated. Do not edit!\n')
-    ltx.write('\\documentclass[%s]{%s}\n\n' % (options,lclass))
+    ltx.write(b'%% This file is automatically generated. Do not edit!\n')
+    ltx.write(b'\\documentclass[%s]{%s}\n\n' % (options.encode(),lclass.encode()))
     use = env.get('use')
     resdir = env.get('resdir','Fig')
     include = env.get('include')
@@ -262,21 +261,21 @@ def latify(target=None,source=None,env=None):
          for package in use:
               options = re.match(r'(\[[^\]]*\])\s*(\S+)',package)
               if options:
-                   ltx.write('\\usepackage%s{%s}\n' % options.groups())
+                   ltx.write(b'\\usepackage%s{%s}\n' % options.groups().encode())
               else:
-                   ltx.write('\\usepackage{%s}\n' % package)
-         ltx.write('\n')
+                   ltx.write(b'\\usepackage{%s}\n' % package.encode())
+         ltx.write(b'\n')
     if include:
-        ltx.write(include+'\n\n')
+        ltx.write(include.encode()+b'\n\n')
     if lclass in ('segabs','georeport'):
-        ltx.write('\\setfigdir{%s}\n\n' % resdir)
+        ltx.write(b'\\setfigdir{%s}\n\n' % resdir.encode())
     if lclass == 'geophysics':
         if notendfloat:
-            ltx.write('\\setfigdir{%s}\n\n' % resdir)
-    ltx.write('\\begin{document}\n')
+            ltx.write(b'\\setfigdir{%s}\n\n' % resdir.encode())
+    ltx.write(b'\\begin{document}\n')
     for line in tex.readlines():
         ltx.write(line)
-    ltx.write('\\end{document}\n')
+    ltx.write(b'\\end{document}\n')
     ltx.close()
     return 0
 
@@ -286,13 +285,11 @@ def sage_emit(target=None, source=None, env=None):
     return target, source
 
 def latex_emit(target=None, source=None, env=None):
-    tex = str(source[0])
-    stem = suffix.sub('',tex)
+    tex = str(source[0]).encode()
+    stem = suffix.sub(b'',tex).decode()
     target.append(stem+'.aux')
     target.append(stem+'.log')
     contents = source[0].get_contents()
-    if not isinstance(contents, basestring):
-        contents = contents.decode('utf-8')
     if isbib.search(contents):
         target.append(stem+'.bbl')
         target.append(stem+'.blg')
@@ -315,7 +312,7 @@ def latex2dvi(target=None,source=None,env=None):
     "Convert LaTeX to DVI/PDF"
     tex = str(source[0])
     dvi = str(target[0])
-    stem = suffix.sub('',dvi)
+    stem = suffix.sub(b'',dvi.encode()).decode()
     if not latex:
         print('\n\tLaTeX is missing. ' \
             'Please install a TeX package (teTeX or TeX Live)\n')
@@ -325,9 +322,9 @@ def latex2dvi(target=None,source=None,env=None):
     if os.system(run):
         return 1
     # Check if bibtex is needed
-    aux = open(stem + '.aux',"r", encoding=encoding)
+    aux = open(stem + '.aux',"rb")
     for line in aux.readlines():
-        if re.search("bibdata",line):
+        if re.search(b"bibdata",line):
             if not bibtex:
                 print('\n\tBibTeX is missing.')
                 return 1
@@ -335,7 +332,7 @@ def latex2dvi(target=None,source=None,env=None):
             os.system(run)
             os.system(run)
             break
-        elif re.search("beamer@",line):
+        elif re.search(b"beamer@",line):
             os.system(run)
             os.system(run)
             break
@@ -351,7 +348,7 @@ def latex2dvi(target=None,source=None,env=None):
     # Check if rerun is needed
     for i in range(3): # repeat 3 times at most
         done = 1
-        log = open(stem + '.log',"r", encoding=encoding)
+        log = open(stem + '.log',"rb")
         for line in log.readlines():
             if rerun.search(line):
                 done = 0
@@ -368,29 +365,29 @@ def listoffigs(target=None,source=None,env=None):
     "Copy figures"
     global loffigs
 
-    pdf = str(source[0])
-    stem = suffix.sub('',pdf)
+    pdf = str(source[0]).encode()
+    stem = suffix.sub(b'',pdf).decode()
 
     try:
-        lof = open(stem+'.lof')
-        log = open(stem+'.log')
-    except:
+        lof = open(stem+'.lof','rb')
+        log = open(stem+'.log','rb')
+    except Exception as err:
         return target, source
 
     figs = []
     for line in lof.readlines():
         fig = figure.match(line)
         if fig:
-            figs.append(fig.group(1))
+            figs.append(fig.group(1).decode())
         else:
             subfig = subfigure.match(line)
             if subfig:
                 last = figs.pop()
                 if re.search('[a-z]$',last):
                     figs.append(last)
-                    figs.append(last[:-1]+subfig.group(1))
+                    figs.append((last[:-1]+subfig.group(1).decode()))
                 else:
-                    figs.append(last+subfig.group(1))
+                    figs.append((last+subfig.group(1).decode()))
     lof.close()
 
     for line in log.readlines():
@@ -398,7 +395,7 @@ def listoffigs(target=None,source=None,env=None):
         if fil and figs:
             fig = figs.pop(0)
             for ext in ('eps','pdf'):
-                src = suffix.sub('.'+ext,fil.group(1))
+                src = suffix.sub(b'.'+ext.encode(),fil.group(1))
                 dst = '%s-Fig%s.%s' % (stem,fig,ext)
 
                 loffigs[dst]=src
@@ -422,15 +419,15 @@ def copyfigs(target=None,source=None,env=None):
 def latex2mediawiki(target=None,source=None,env=None):
     "Convert LaTeX to MediaWiki"
     texfile = str(source[0])
-    tex = open(texfile,"r", encoding=encoding)
+    tex = open(texfile,"rb")
     bblfile = re.sub('\.[^\.]+$','.bbl',texfile)
     try:
-        bbl = open(bblfile,"r", encoding=encoding)
+        bbl = open(bblfile,"rb")
         rsf.latex2wiki.parse_bbl(bbl)
         bbl.close()
-    except:
+    except FileNotFoundError as ex:
         pass
-    wiki = open(str(target[0]),"w")
+    wiki = open(str(target[0]),"wb")
     rsf.latex2wiki.convert(tex,wiki)
     wiki.close()
     tex.close()
@@ -532,7 +529,7 @@ def colorize(target=None,source=None,env=None):
      py = str(source[0])
      html = str(target[0])
 
-     src = open(py,'r', encoding=encoding).read()
+     src = open(py,'r').read()
      raw = src.expandtabs().strip()
 
      out = open(html,'w')
@@ -737,7 +734,7 @@ def dummy(target=None,source=None,env=None):
 
 def pylab(target=None,source=None,env=None):
     global epstopdf
-    pycomm = open(str(source[0]),'r', encoding=encoding).read()
+    pycomm = open(str(source[0]),'r').read()
     exec(pycomm)
     os.system('%s junk_py.eps -o=%s' % (epstopdf,target[0]))
     os.unlink('junk_py.eps')

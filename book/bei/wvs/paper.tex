@@ -19,12 +19,12 @@ consider, chapter by chapter.  The simplest waves to understand are simple
 plane waves and spherical waves propagating through a constant-velocity medium.
 In seismology however, the earth's velocity is almost never well approximated
 by a constant.
-A good first approximation is to assume that the earth's 
+A good first approximation is to assume that the earth's
 velocity increases with depth.
-In this situation, the simple planar and circular wavefronts 
+In this situation, the simple planar and circular wavefronts
 are modified by the effects of $v(z)$.
-In this chapter we study the basic equations describing plane-like 
-and spherical-like waves propagating 
+In this chapter we study the basic equations describing plane-like
+and spherical-like waves propagating
 in media where the velocity $v(z)$ is a function only of depth.
 This is a reasonable starting point,
 even though it neglects the even more complicated distortions that occur
@@ -37,13 +37,13 @@ from a point source bounce back from a planar reflector.
 \par
 Echo soundings give us a picture of the earth.
 A zero-offest section, for example,
-is a planar display of traces where the horizontal axis runs along 
+is a planar display of traces where the horizontal axis runs along
 the earth's surface
 and the vertical axis, running down, seems to measure depth,
 but actually measures the two-way echo delay time.
 Thus, in practice the vertical axis is almost never depth $z$;
 it is the
-{\em 
+{\em
 vertical travel time
 }
 $ \tau $.
@@ -52,7 +52,7 @@ the time and the depth are related
 by a simple scale factor, the speed of sound.  This is analogous to the
 way that astronomers measure distances in light-years, always referencing
 the speed of light.
-The meaning of the scale factor in seismic imaging 
+The meaning of the scale factor in seismic imaging
 is that the  $(x, \tau$)-plane
 has a vertical exaggeration compared to the  $(x,z)$-plane.
 In reconnaissance work,
@@ -65,7 +65,7 @@ the vertical exaggeration factor in use is likely to be about unity
 \todo{
 [JON, THIS IS PROBABLY TRUE BUT IT IS NOT CONVINCING
 UNLESS WE SPECIFY THE
-DISPLAY SCALES THAT ARE TYPICALLY USED: KM/INCH, SEC/IN.  SEE MY 
+DISPLAY SCALES THAT ARE TYPICALLY USED: KM/INCH, SEC/IN.  SEE MY
 RELATED COMMENTS BELOW THE NEXT PARAGRAPH]  [IF WE WISH TO
 RETAIN THIS ``EXAGGERATION'' MATERIAL, WHICH I AM INCLINED TO DO, THEN
 WE REALLY NEED A FIGURE THAT GRAPHICALLY ILLUSTRATES THE PHENOMENON WITH
@@ -107,7 +107,7 @@ For velocity-stratified media,
 the time-to-depth conversion formula is
 \begin{equation}
 \tau (z) \ \ =\ \  \int_0^z \  {2\ dz \over v (z) }
-\ \ \ \ \ \ \ \ \  {\rm or} \ \ \ \ \ \ \ \ 
+\ \ \ \ \ \ \ \ \  {\rm or} \ \ \ \ \ \ \ \
 { d \tau   \over dz }\ \ =\ \  {2 \over v }
 \label{eqn:3.2}
 \end{equation}
@@ -166,7 +166,7 @@ whereas the nearly horizontally-going waves
 never get deep into the earth because,
 as we will see,
 they are deflected back upward by the velocity gradient.
-Thus horizontal waves spread out in essentially two dimensions, 
+Thus horizontal waves spread out in essentially two dimensions,
 so that energy conservation suggests
 that their amplitudes should dominate the amplitudes of reflections
 on raw data.
@@ -243,7 +243,7 @@ It is not an average of the layer above and the layer below.
 % The discussion below is based on a JLB fantasy figure.
 %  I doubt this discussion belongs here.  Meanwhile, I commented it out. -Jon
 %Rays are not directly observable; they are theoretical.
-%To better understand what is happening, think of 
+%To better understand what is happening, think of
 %the wavefronts for the \bx{head wave} in Figure~\FIG{horzrays}.
 %A ray along an interface is perpendicular
 %to a vertical wavefront (horizontal ray) in the lower medium
@@ -263,7 +263,7 @@ This wave dies out rapidly with offset
 (because it interferes with a wave of opposite polarity
 reflected from the water surface).
 At near offset slightly later than $\tau=0$ is the water bottom reflection.
-At wide offset, the water bottom reflection is quickly followed 
+At wide offset, the water bottom reflection is quickly followed
 by multiple reflections from the bottom.
 Critical angle reflection is defined as where the \bx{head wave}
 comes tangent to the reflected wave.
@@ -376,9 +376,9 @@ about designing mutes.
 Some mute programs use a data dependent weighting function
 (such as automatic gain control).
 Subroutine \texttt{mutter()} \vpageref{lst:mutter},
-however, operates on a simpler idea: 
+however, operates on a simpler idea:
 the user supplies trajectories defining the mute zone.
-\moddex{mutter}{mute}{44}{71}{system/seismic}
+\moddex{mutter}{mute}{44}{71}{system/generic}
 
 \par
 Figure~\ref{fig:mutter} shows an example of use
@@ -393,7 +393,7 @@ shown in Figure~\ref{fig:wglmo}.
 
 Above we considered waves going vertically
 and waves going horizontally.
-Now let us consider waves propagating at the intermediate angles.  
+Now let us consider waves propagating at the intermediate angles.
 For the sake of definiteness, I have chosen
 to consider only downgoing waves in this section.
 We will later use the concepts developed
@@ -449,7 +449,7 @@ of arbitrary shape is  $ f(t - t_0 ) $.
 Using (\ref{eqn:txz}) to define the time shift $ t_0 $ gives an expression for
 a wavefield that is some waveform moving on a \bx{ray}.
 \begin{equation}
-\hbox{moving wavefield} \ \ =\ \ 
+\hbox{moving wavefield} \ \ =\ \
 f\left( \ t\ -\  {x \over v}\ \sin\,\theta \ -\ {z\over v}\ \cos\,\theta\right)
 \label{eqn:mvwv}
 \end{equation}
@@ -527,11 +527,11 @@ These two equations define two (inverse) speeds.
 The first is a horizontal speed,
 measured along the earth's surface,
 called the
-{\em 
+{\em
 horizontal \bx{phase velocity}.
 }
 The second is a vertical speed, measurable in a borehole, called the
-{\em 
+{\em
 vertical phase velocity.
 }
 Notice that both these speeds
@@ -545,7 +545,7 @@ whereas projection of
 onto coordinate axes gives speeds smaller than $v$.
 The inverse of the phase velocities is called the
 {\em  \bx{stepout}}
-or the 
+or the
 {\em  \bx{slowness}.}
 \par
 \bx{Snell's law} relates the angle of a wave
@@ -578,7 +578,7 @@ to eliminate  $\theta$  from equations (\ref{eqn:5iei4a}) and (\ref{eqn:5iei4b})
 {\partial t_0  \over \partial x} \ \ \ &=&\ \ \ {\sin\,\theta  \over v }\eq p
 \label{eqn:5iei5a}
 \\
-{\partial t_0  \over \partial z}\ \ \ &=&\ \ \ 
+{\partial t_0  \over \partial z}\ \ \ &=&\ \ \
 {\cos\,\theta  \over v }\eq \sqrt{
  {1 \over v (z)^2}\ -\ p^2  }
 \label{eqn:5iei5b}
@@ -609,17 +609,17 @@ The above differential equations will often reoccur in later analysis,
 so they are very important.
 Interestingly, these differential equations have a simple solution.
 Taking the Snell wave to go through the origin at time zero,
-an expression for the 
+an expression for the
 arrival time of the Snell wave at any other location
 is given by
 \begin{eqnarray}
-t_0(x,z) \ \ \ &=&\ \ \ {\sin\,\theta  \over v }\  x\ +\ \int_0^z\ 
-{\cos\,\theta  \over v }\ d z 
+t_0(x,z) \ \ \ &=&\ \ \ {\sin\,\theta  \over v }\  x\ +\ \int_0^z\
+{\cos\,\theta  \over v }\ d z
 \label{eqn:5iei6a}
 \\
-t_0(x,z)\ \ \ &=&\ \ \ p\,x\ +\ \int_0^z\ 
-\sqrt{ {1 \over v ( z ) ^2 }\ -\ 
-p^2 } \ \ d z 
+t_0(x,z)\ \ \ &=&\ \ \ p\,x\ +\ \int_0^z\
+\sqrt{ {1 \over v ( z ) ^2 }\ -\
+p^2 } \ \ d z
 \label{eqn:5iei6b}
 \end{eqnarray}
 The validity of equations~(\ref{eqn:5iei6a}) and~ (\ref{eqn:5iei6b})
@@ -632,8 +632,8 @@ An arbitrary waveform  $f(t)$  may be carried by the Snell wave.
 Use (\ref{eqn:5iei6a}) and (\ref{eqn:5iei6b}) to {\em  define} the time $t_0$ for
 a delayed wave  $f[t-t_0 (x,z)]$  at the location  $(x,z)$.
 \begin{equation}
-\hbox{SnellWave}(t,x,z)\eq f \, \left( \  t\ -\ 
-p\,x\ -\  \int_0^z\ 
+\hbox{SnellWave}(t,x,z)\eq f \, \left( \  t\ -\
+p\,x\ -\  \int_0^z\
 \sqrt{ {1 \over v ( z )^2}\ -\ p^2 } \ \ dz \  \right)
 \label{eqn:5iei7}
 \end{equation}
@@ -656,7 +656,7 @@ The simplest waves are expanding circles.
 An equation for a circle expanding with velocity  $v$
 is
 \begin{equation}
-v^2 \, t^2  \eq  x^2 \ \ +\ \ z^2 
+v^2 \, t^2  \eq  x^2 \ \ +\ \ z^2
 \label{eqn:circeqn}
 \end{equation}
 Considering  $t$  to be a constant,
@@ -672,7 +672,7 @@ Converting equation~(\ref{eqn:circeqn})
 to traveltime depth $\tau$ we get
 \begin{eqnarray}
 v^2 \, t^2 &=& z^2 \ +\  x^2 \\
-t^2        &=& \tau^2 \ +\ { x^2   \over  v^2 } 
+t^2        &=& \tau^2 \ +\ { x^2   \over  v^2 }
 \label{eqn:hyper}
 \end{eqnarray}
 The earth's velocity typically increases
@@ -707,7 +707,7 @@ The $x$ coordinate of the tip of a ray with Snell parameter $p$ is
 the horizontal component of velocity integrated over time.
 \begin{equation}
 x(p,t) \eq \int_0^t \ v'(p,t) \ \sin\theta(p,t)\ dt
-       \eq p\ \int_0^t v'(p,t)^2\ dt \ 
+       \eq p\ \int_0^t v'(p,t)^2\ dt \
 \end{equation}
 Inserting this into equation~(\ref{eqn:vrmsobs})
 and canceling $p=dt/dx$ we have
@@ -752,7 +752,7 @@ let us next see how
 we can fit an earth model of layers,
 each with a constant velocity.
 Consider the  horizontal reflector
-overlain by a stratified \bx{interval velocity} $v(z)$ 
+overlain by a stratified \bx{interval velocity} $v(z)$
 shown in Figure~\ref{fig:stratrms}.%
 \sideplot{stratrms}{width=3.00in}{
   Raypath diagram for normal moveout in a stratified earth.
@@ -823,20 +823,20 @@ to be $V_i$.
 Equation (\ref{eqn:vrmsdefn}) tells us that for
 reflections from the bottom of the first, second, and third layers we have
 \begin{eqnarray}
-V_1^2 &=& {v_1^2\Delta\tau_1           
+V_1^2 &=& {v_1^2\Delta\tau_1
                                \over \Delta\tau_1                 }
 \\
 \label{eqn:bot2}
-V_2^2 &=& {v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 
+V_2^2 &=& {v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2
                                \over \Delta\tau_1 + \Delta\tau_2        }
 \\
 \label{eqn:bot3}
-V_3^2 &=& {v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 +v_3^2\Delta\tau_3  
+V_3^2 &=& {v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 +v_3^2\Delta\tau_3
                                \over \Delta\tau_1 + \Delta\tau_2 +\Delta\tau_3}
 \end{eqnarray}
 
 Normally it is easy to measure the times of the three hyperbola tops,
-$\Delta\tau_1$, 
+$\Delta\tau_1$,
 $\Delta\tau_1 + \Delta\tau_2$
 and
 $\Delta\tau_1 + \Delta\tau_2 +\Delta\tau_3$.
@@ -848,11 +848,11 @@ Rearrange (\ref{eqn:bot3}) and (\ref{eqn:bot2}) to get
 \begin{eqnarray}
 \label{eqn:next3}
                                     (\Delta\tau_1 + \Delta\tau_2 +\Delta\tau_3)
-V_3^2 &=& v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 +v_3^2\Delta\tau_3  
+V_3^2 &=& v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 +v_3^2\Delta\tau_3
 \\
 \label{eqn:next2}
                                     (\Delta\tau_1 + \Delta\tau_2)
-V_2^2 &=& v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2 
+V_2^2 &=& v_1^2\Delta\tau_1+ v_2^2\Delta\tau_2
 \end{eqnarray}
 and subtract getting the squared interval velocity $v_3^2$
 \begin{equation}
@@ -889,11 +889,11 @@ Occasionally data does not fit a hyperbolic curve very well.
 Two other simple fitting functions are
 \begin{eqnarray}
 \label{eqn:fourthorder}
-t^2              &=& \tau^2 \ +\ { x^2   \over  v^2 } \ 
+t^2              &=& \tau^2 \ +\ { x^2   \over  v^2 } \
                                                 +\ x^4 \times {\rm parameter}
 \\
 \label{eqn:datum}
-(t-t_0)^2        &=& (\tau-t_0)^2 \ +\ { x^2   \over  v^2 } 
+(t-t_0)^2        &=& (\tau-t_0)^2 \ +\ { x^2   \over  v^2 }
 \end{eqnarray}
 Equation~(\ref{eqn:fourthorder}) has an extra adjustable parameter
 of no simple interpretation other than the beginning of a power series in $x^2$.
@@ -903,7 +903,7 @@ namely, a time shift
 such as would result from a near-surface low velocity layer.
 In other words, a datum correction.
 
-\todo{ XXXXXX 
+\todo{ XXXXXX
 \subsection{Can I abandon the material in this section?}
 \par
 We could work out the mathematical problem
@@ -944,7 +944,7 @@ is a constant along both raypaths in Figure~\ref{fig:stratrms}.
 %\begin{equation}
 %\cos\theta_i \eq \sqrt{1-(pv_i)^2} \ \ \ .
 %\end{equation}
-Inspection of Figure~\ref{fig:stratrms} shows that 
+Inspection of Figure~\ref{fig:stratrms} shows that
 in the $i$th layer
 the raypath horizontal distance $\Delta x_i$ and travel time $\Delta t_i$
 are given on the left below by
@@ -954,12 +954,12 @@ are given on the left below by
            \eq
 %          \frac{p}{2}
 %          \frac{\Delta\tau_i v_i^2}
-           \frac{v_i\Delta\tau}{2} \ 
+           \frac{v_i\Delta\tau}{2} \
            \frac{p v_i}
            {\sqrt{1-p^2v_i^2}}
            \eq \frac{p}{2} \Delta\tau_i v_i^2 + O(p^3)    \\
 \label{eqn:trms}
-\Delta t_i &=& \frac{2\,\Delta z_i}{v_i \cos\theta_i} 
+\Delta t_i &=& \frac{2\,\Delta z_i}{v_i \cos\theta_i}
            \eq \frac{\Delta\tau_i}{\sqrt{1-p^2v_i^2}}
            \eq \Delta\tau_i \left(1+
                 {\tiny 1 \over 2}  p^2 v_i^2 \right) + O(p^4) \ \ .
@@ -970,7 +970,7 @@ as a function of $\sin\theta$ hence $p$,
 and the right sides above come from expanding in powers of $p$.
 Any terms of order $p^3$ or higher will be discarded,
 since these become important only at large values of $h$.
-Summing equation~(\ref{eqn:xrms}) and~(\ref{eqn:trms}) over all layers 
+Summing equation~(\ref{eqn:xrms}) and~(\ref{eqn:trms}) over all layers
 yields the half-offset $h$ separating the midpoint
 from the geophone location and the total travel time $t$.
 \begin{eqnarray}
@@ -1049,7 +1049,7 @@ yields:
 Thus the desired expression for \RMS\ velocity
 as a function of traveltime depth is:
 \begin{equation}
-V(\tau) \eq v_0 \ 
+V(\tau) \eq v_0 \
         \sqrt{
         \frac{e^{\alpha \tau} - 1 }{\alpha \tau}
         }
@@ -1069,46 +1069,3 @@ V(\tau) \quad\approx \quad v_0\ \sqrt{1 + \alpha \tau / 2}  .
 %\iex{Exer/Phasemig}{assignment}
 %\iex{Exer/Stolt1}{assignment}
 %\iex{Exer/Stolt2}{assignment}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                                        
