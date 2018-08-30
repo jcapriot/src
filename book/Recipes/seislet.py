@@ -1,5 +1,8 @@
 from rsf.proj import *
 import random,  math
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 random.seed(2005)
 nr = 0
@@ -22,7 +25,7 @@ def seislet(data,              # data name
     'Seislet transform fun'
 
     global nr
-    
+
     Result(data,'grey  title=Input')
 
     dip = data+'dip'
@@ -35,7 +38,7 @@ def seislet(data,              # data name
          'seislet dip=${SOURCES[1]} eps=%g adj=y inv=y unit=y type=b' % eps)
     Result(seis,
            '''
-           put o2=0 d2=1 | 
+           put o2=0 d2=1 |
            grey  title="Seislet Transform" label2=Scale unit2=
            ''')
 
@@ -75,7 +78,7 @@ def seislet(data,              # data name
            window n1=%d |
            scale axis=1 |
            math output="10*log(input)/log(10)" |
-           graph dash=1,0 label1=n label2="a\_n\^" unit2="DB" wanttitle=n 
+           graph dash=1,0 label1=n label2="a\_n\^" unit2="DB" wanttitle=n
            ''' % (n1*n2/2))
 
     four = data+'four'
@@ -85,14 +88,14 @@ def seislet(data,              # data name
         coef = case+'c'
         Flow(coef,case,
              '''
-             stack axis=1 norm=n | put o1=1 d1=1 label1=n unit1= | 
+             stack axis=1 norm=n | put o1=1 d1=1 label1=n unit1= |
              sort | scale axis=1 | math output="log(input)"
              ''')
     Result(data+'c',[seis+'c',wvlt+'c',four+'c'],
            '''
            cat axis=2 ${SOURCES[1:3]} |
            graph wanttitle=n max2=0 min2=%d dash=0,1,2
-           label2="Log(a\_\s75 n\^\s100 )" unit2= 
+           label2="Log(a\_\s75 n\^\s100 )" unit2=
            ''' % minlog)
 
     for c in (1,clip,25):
@@ -106,8 +109,8 @@ def seislet(data,              # data name
         wrec = '%swrec%d' % (data,c)
         Flow(wrec,wvlt,
              '''
-             threshold pclip=%d | 
-             transp | 
+             threshold pclip=%d |
+             transp |
              dwt adj=y inv=y unit=y type=l | transp
              ''' % c)
         Result(wrec,'grey  title="Inverse Wavelet Transform (%d%%)" ' % c)
@@ -137,11 +140,11 @@ def seislet(data,              # data name
     Flow(imps,dip,
      '''
      spike nsp=%d k1=%s k2=%s n1=%d n2=%d o2=%g d2=%g |
-     seislet dip=$SOURCE eps=%g inv=y 
+     seislet dip=$SOURCE eps=%g inv=y
      ''' % (nsp,k1,k2,n1,n2,o2,d2,eps),stdin=0)
     Result(imps,'grey  title=Seislets')
 
-    
+
     impw = data+'impw'
     Flow(impw,dip,
      '''
@@ -161,16 +164,16 @@ def diplet(data,              # data name
            nsp=200            # number of spikes
            ):
     'Seislet frame fun'
-    
+
     global nr
-    
+
     dips = data+'dips'
     Flow(dips,data,
          '''
-         spray axis=3 n=%d o=%g d=%g | 
+         spray axis=3 n=%d o=%g d=%g |
          math output=x3
          ''' % (np,pmin,(pmax-pmin)/(np-1)))
-    
+
     dipl = data+'dipl'
     Flow(dipl,[data,dips],'diplet dips=${SOURCES[1]} eps=%g perc=90 niter=100' % eps)
 
@@ -197,5 +200,3 @@ def diplet(data,              # data name
          diplet dips=$SOURCE eps=%g inv=y
          ''' % (nsp,k1,k2,k3,n1,n2,np,o2,d2,eps),stdin=0)
     Result(imps,'grey  title="Seislet Frame Members" ')
-
-   

@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 ##   Copyright (C) 2008 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import math
 import vplot
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 iseed=1996
 
@@ -41,20 +44,20 @@ def draw(vp):
     vp.utext( .25     ,  .1    , 14, 0, "t")
 
     vp.uclip (xmin, .6, xmax, tmax)
-    vp.umove( xmin, tmax) 	
+    vp.umove( xmin, tmax)
     vp.udraw( xmax, tmax)
-    vp.umove(   0., tmax) 	
+    vp.umove(   0., tmax)
     vp.udraw( 0., tmax-tmax)
     vp.color(6)
     for iz in xrange(nz):
 	orig = 3 * ((xmax-xmin) * rand01() +xmin)
-	alfa = degrees *  2 * 3.14 / 360 * rand01() 
+	alfa = degrees *  2 * 3.14 / 360 * rand01()
 	c2a = math.cos( 2*alfa)
 	vp.penup()
-        for ix in xrange(nx):       # x=g s=0 
+        for ix in xrange(nx):       # x=g s=0
 	    x = x0 + ix*dx
 	    arg = orig*orig +(x-orig)*(x-orig) + 2*orig*(x-orig) * c2a
-	    t = math.sqrt( arg) 
+	    t = math.sqrt( arg)
 	    if t < math.fabs(x):
                 t = math.fabs(x)
             vp.upendn(x, tmax-t)

@@ -19,7 +19,7 @@
 from __future__ import print_function
 import sys,  os, signal
 
-if sys.version_info>=2:
+if sys.version_info[0]>=2:
     basestring=str
 
 def handler(signum, frame):

@@ -1,22 +1,25 @@
 #!/usr/bin/env python
 ##   Copyright (C) 2008 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import math, sys
 import numpy
 import m8r, vplot
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 def main(argv=sys.argv):
 
@@ -30,8 +33,8 @@ def main(argv=sys.argv):
     c2=6.8
     d1=0.02
     d2=0.12
-    
-    par = m8r.Par(argv)    
+
+    par = m8r.Par(argv)
 
     top = par.float('top',5.0)
     c1 = par.float('c1',0.5)
@@ -41,13 +44,13 @@ def main(argv=sys.argv):
 
     vp.uorig (-c1,-.5)
     vp.uclip (0.,top-3.,4.,top)
-    vp.umove (0.,top-0.)  
+    vp.umove (0.,top-0.)
     vp.udraw (0.,top-4.)
-    vp.umove (0.,top-0.)  
+    vp.umove (0.,top-0.)
     vp.udraw (4.,top-0.)
 
     z = 0.4
-    while z < 4: 
+    while z < 4:
 	vp.penup()
 	x0 = z * math.tan(math.pi*45./180.)
         x = 0
@@ -69,7 +72,7 @@ def main(argv=sys.argv):
 	c.put('n2',nx)
 	c.put('d1',d1)
 	c.put('d2',d2)
-	
+
         tdat = numpy.zeros((nx,nt),'f')
 
         for iz in range(12):
@@ -86,9 +89,9 @@ def main(argv=sys.argv):
 
     vp.uorig (-c2,-.5)
     vp.uclip (0.,top-3.,4.,top)
-    vp.umove (0.,top-0.)  
+    vp.umove (0.,top-0.)
     vp.udraw (0.,top-4.)
-    vp.umove (0.,top-0.)   
+    vp.umove (0.,top-0.)
     vp.udraw (4.,top-0.)
 
     t = 0.4
@@ -111,7 +114,7 @@ def main(argv=sys.argv):
 	d.put('n2',nx)
 	d.put('d1',d1)
 	d.put('d1',d2)
-	
+
         zdat = numpy.zeros([nx,nz],'f')
 
 	for it in range(20):
@@ -128,7 +131,7 @@ def main(argv=sys.argv):
 		    if iz >= 0 and iz < nz and ix >=0 and ix < nx:
 			zdat[ix,iz] += b[ib]*r
                 theta += 1
-	
+
         d.write(zdat)
 
 if __name__ == '__main__':

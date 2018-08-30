@@ -1,37 +1,40 @@
 #!/usr/bin/env python
 ##   Copyright (C) 2008 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import math
 import vplot
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 def onebox(vp, x, y, dx, dy):
     edge=0.95
     vx = []
     vy = []
 
-    vx.append(x-edge*dx) 
+    vx.append(x-edge*dx)
     vy.append(y-edge*dy)
-    
-    vx.append(x+edge*dx)      
+
+    vx.append(x+edge*dx)
     vy.append(y-edge*dy)
-    
-    vx.append(x+edge*dx)      
+
+    vx.append(x+edge*dx)
     vy.append(y+edge*dy)
-    
-    vx.append(x-edge*dx)      
+
+    vx.append(x-edge*dx)
     vy.append(y+edge*dy)
 
     vp.umove( vx[3], vy[3])
@@ -46,7 +49,7 @@ def draw(vp):
     xmin=-2
     xmax=9
     tmax=9.5
-    
+
     dt =  tmax / (nt-1.0)
     dx =  xmax / (nx-1.0)
     t0 = 0
@@ -55,9 +58,9 @@ def draw(vp):
     v = 1.01 * xmax/math.sqrt( tmax*tmax - z*z)
 
     vp.uorig( -1.+xmin, 0.)
-    vp.umove( xmin, 9.5)       
+    vp.umove( xmin, 9.5)
     vp.udraw( xmax, 9.5)
-    vp.umove(   0., 9.5)     
+    vp.umove(   0., 9.5)
     vp.udraw( 0., 9.5-tmax)
 
     vp.color(5)
@@ -68,7 +71,7 @@ def draw(vp):
     for iz in range(1,4):
         z = (-.10 + .33*iz) * tmax + dt/2
         itlast = int(z / dt)
-        
+
         for ix in xrange(nx):
 	    x = x0 + ix*dx
 	    t = math.hypot(z,x/v)
@@ -80,7 +83,7 @@ def draw(vp):
             else:
                 i0=itlast+1
 
-        
+
             for i in xrange(i0,it+1):
       		t = t0+i*dt
                 if t < tmax:
@@ -92,4 +95,3 @@ def draw(vp):
 if __name__ == "__main__":
     vp = vplot.Vplot()
     draw(vp)
-

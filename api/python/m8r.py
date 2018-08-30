@@ -20,6 +20,7 @@ from __future__ import unicode_literals
 
 import os, sys, tempfile, re, subprocess
 if sys.version_info[0]>2:
+    xrange = range
     from urllib.request import urlretrieve
 else:
     from urllib import urlretrieve

@@ -34,7 +34,7 @@ pmin=0          # initial and minimum dips
 clip=5          # clip percentile
 eps=0.1         # regularization
 nsp=200         # number of spikes
-    
+
 Result(data,'grey unit1=s unit2=km  title=Input')
 
 dip = data+'dip'
@@ -47,7 +47,7 @@ Flow(seis,[data,dip],
      'seislet dip=${SOURCES[1]} eps=%g adj=y inv=y unit=y' % eps)
 Result(seis,
        '''
-       put o2=0 d2=1 | 
+       put o2=0 d2=1 |
        grey unit1=s title="Seislet Transform" label2=Scale unit2=
        ''')
 
@@ -74,7 +74,7 @@ recs = []
 for c in (1,clip,25):
     rec = '%ssrec%d' % (data,c)
     recs.append(rec)
-    
+
     Flow(rec,[seis,dip],
          '''
          threshold pclip=%d |
@@ -85,7 +85,7 @@ for c in (1,clip,25):
            mutter v0=1.3 |
            grey unit1=s unit2=km  title="Inverse Seislet Transform (%d%%)"
            ''' % c)
-    
+
     wrec = '%swrec%d' % (data,c)
     Flow(wrec,wvlt,
          'threshold pclip=%d | transp | dwt adj=y inv=y unit=y | transp' % c)
@@ -96,12 +96,12 @@ for c in (1,clip,25):
            ''' % c)
 
 max=int(math.log(n2)/math.log(2))
-for m in xrange(max):
+for m in range(max):
     scale = int(math.pow(2,m))
     slet = '%sslet%d' % (data,scale)
     Flow(slet,[seis,dip],
          '''
-         cut f2=%d | 
+         cut f2=%d |
          seislet dip=${SOURCES[1]} eps=%g inv=y unit=y
          ''' % (scale,eps))
     Result(slet,
@@ -117,7 +117,7 @@ slet = '%sslet%d' % (data,16)
 Result('sign',[slet,dip],
      '''
      seislet dip=${SOURCES[1]} eps=%g adj=y inv=y unit=y |
-     put o2=0 d2=1 | 
+     put o2=0 d2=1 |
      grey unit1=s title="Seislet Transform" label2=Scale unit2=
      ''' % eps)
 
@@ -141,7 +141,7 @@ Flow('rand2','seis2','noise rep=y var=200000 seed=2006 | mutter v0=1.3')
 Flow('seis4','seis2 rand2','cat axis=2 ${SOURCES[1]} | put d2=0.003125')
 Result('seis4',
        '''
-       put o2=0 d2=1 | 
+       put o2=0 d2=1 |
        grey unit1=s title="Seislet Transform" label2=Scale unit2=
        ''')
 
@@ -168,7 +168,7 @@ Flow(imps,dip,
      ''' % (nsp,k1,k2,n1,n2,o2,d2,eps),stdin=0)
 Result(imps,'mutter v0=1.3 | grey unit1=s unit2=m  title=Seislets')
 
-    
+
 impw = data+'impw'
 Flow(impw,dip,
      '''
@@ -192,12 +192,12 @@ for i2 in range(n2):
     Flow(nmo,[trace,dip],
          '''
          seislet dip=${SOURCES[1]} eps=%g adj=y inv=y unit=y type=haar |
-         window n2=1         
+         window n2=1
          ''' % eps)
 
 Flow('snmo',nmos,
      '''
-     cat axis=2 ${SOURCES[1:%d]} 
+     cat axis=2 ${SOURCES[1:%d]}
      ''' % len(nmos))
 
 Result('snmo','grey unit1=s unit2=km title="Seislet Moveout" ')

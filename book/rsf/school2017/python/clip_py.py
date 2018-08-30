@@ -1,14 +1,17 @@
 #!/usr/bin/env python
- 
+
 import numpy
 import rsf.api as rsf
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 # input and output files
 par = rsf.Par()
 input  = rsf.Input()
 output = rsf.Output()
 
-#check that the input type is float 
+#check that the input type is float
 assert 'float' == input.type
 
 #get parameters from the rsf head
@@ -29,8 +32,8 @@ assert upper
 
 lower = par.float("lower")
 assert upper
- 
-# call numpy 
+
+# call numpy
 trace = numpy.zeros(n1,'f')
 
 # loop over traces

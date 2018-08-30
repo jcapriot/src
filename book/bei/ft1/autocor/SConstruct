@@ -5,7 +5,7 @@ random.seed(2004)
 
 # no random.shuffle in Python 1.5.2
 def shuffle(x):
-    for i in xrange(len(x)-1, 0, -1):
+    for i in range(len(x)-1, 0, -1):
         # pick an element in x[:i+1] with which to exchange x[i]
         j = int(random.random() * (i+1))
         x[i], x[j] = x[j], x[i]
@@ -55,7 +55,7 @@ Flow('gaussian','spike',
      (8./n1,n1-2))
 
 Flow('white','spike','noise type=n seed=1990 | math output="2*(input-1)" ')
-Flow('colored','white','smooth rect1=3')    
+Flow('colored','white','smooth rect1=3')
 
 signals = signals + Split('exponent gaussian white colored')
 labels = labels + ':exp:gauss:rand:s ran'
@@ -63,7 +63,7 @@ labels = labels + ':exp:gauss:rand:s ran'
 def dots(title):
     return '''
     dots dots=0 connect=0 overlap=.75 yreverse=1 labelsz=12
-    title="%s" 
+    title="%s"
     ''' % title
 
 Flow('sig',signals,'cat axis=2 ${SOURCES[1:%d]}' % len(signals))

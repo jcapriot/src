@@ -47,7 +47,7 @@ frame3=350
 
 #Plotting Ratio
 volpt2 = .7
- 
+
 def grey3(byte,color,title,label,frame1,frame2,frame3,point2):
          return '''
          byte gainpanel=all %s mean=y |
@@ -60,9 +60,9 @@ def grey3(byte,color,title,label,frame1,frame2,frame3,point2):
 Fetch('ordovician-vp.HH','xavier')
 Flow('vp','ordovician-vp.HH',
      '''
-     dd form=native | 
+     dd form=native |
      transp plane=12 memsize=%i |
-     put o1=0 o2=0 o3=0  
+     put o1=0 o2=0 o3=0
      label1="Z Depth" label2="X Inline" label3="Y Crossline"
      unit1=m unit2=m unit3=m
      '''%(memsize))
@@ -72,7 +72,7 @@ Plot('vp','vp vpbar',
      byte allpos=y min=3500 max=6500|
      grey3 title=Velocity color=a barlabel=Velocity barunit="m/s"
      frame1=%i frame2=%i frame3=%i flat=n
-     scalebar=y bar=${SOURCES[1]} point2=%g 
+     scalebar=y bar=${SOURCES[1]} point2=%g
      '''%(frame1d,frame2,frame3,volpt2))
 Result('vp','vp vpbar',
      '''
@@ -81,7 +81,7 @@ Result('vp','vp vpbar',
      byte allpos=y min=3500 max=6500|
      grey3 title="Ordovician Velocity" color=a barlabel=Velocity barunit="m/s"
      frame1=%i frame2=%i frame3=%i flat=n
-     scalebar=y bar=${SOURCES[1]} point2=%g  
+     scalebar=y bar=${SOURCES[1]} point2=%g
      '''%(frame1d,frame2,frame3,volpt2))
 #smooth slowness
 Flow('vp_s','vp',
@@ -115,14 +115,14 @@ Flow('fft2','wvp','fft1 | fft3 axis=2 pad=1 | fft3 axis=3 pad=1')
 Flow('right2 left2','wvp fft2',
      '''
      scale dscale=0.5 |
-     isolr3 seed=2012 dt=%g fft=${SOURCES[1]} 
+     isolr3 seed=2012 dt=%g fft=${SOURCES[1]}
      left=${TARGETS[1]} seed=2014 npk=10 eps=0.00001
      '''%(dt))
 Flow('fft2_s','wvp_s','fft1 | fft3 axis=2 pad=1 | fft3 axis=3 pad=1')
 Flow('right2_s left2_s','wvp_s fft2_s',
      '''
      scale dscale=0.5 |
-     isolr3 seed=2012 dt=%g fft=${SOURCES[1]} 
+     isolr3 seed=2012 dt=%g fft=${SOURCES[1]}
      left=${TARGETS[1]} seed=2014 npk=10 eps=0.00001
      '''%(dt))
 
@@ -144,8 +144,8 @@ Plot('model',
 Flow('exp','model left2 right2',
      '''
      fftexp3 ompchunk=1
-     left=${SOURCES[1]} right=${SOURCES[2]} 
-     nt=%i dt=%g 
+     left=${SOURCES[1]} right=${SOURCES[2]}
+     nt=%i dt=%g
      ''' %(nt,dt))
 Flow('exp0','exp',
      '''
@@ -162,7 +162,7 @@ Plot('exp0',
      grey3 title="Modeled Data"
      frame1=%i frame2=%i frame3=%i flat=n
      point2=%g
-     '''%(frame1t,frame2,frame3,volpt2))     
+     '''%(frame1t,frame2,frame3,volpt2))
 Result('exp0',
      '''
      put label1=Time unit1=s d1=.00025
@@ -171,8 +171,8 @@ Result('exp0',
      byte|
      grey3 title="Modeled Data"
      frame1=%i frame2=%i frame3=%i flat=n
-     point2=%g  
-     '''%(frame1t,frame2,frame3,volpt2)) 
+     point2=%g
+     '''%(frame1t,frame2,frame3,volpt2))
 
 #Plane Wave Construction
 #USED IN
@@ -220,7 +220,7 @@ Flow('reflections','exp0 dip',
 #Subtract enhanced reflections from model data to get diffractions
 Flow('diffractions','exp0 reflections',
      '''
-     add scale=1,-1 ${SOURCES[1]} 
+     add scale=1,-1 ${SOURCES[1]}
      ''')
 Plot('reflections',
      '''
@@ -250,7 +250,7 @@ Result('diffractions',
      byte|
      grey3 title="Separated Diffractions"
      frame1=%i frame2=%i frame3=%i flat=n
-     point2=%g  
+     point2=%g
      '''%(frame1t,frame2,frame3,volpt2))
 #smooth slowness migrations
 
@@ -262,7 +262,7 @@ for item in mig:
           transp plane=12 memsize=%i|
           transp plane=23 memsize=%i|
           fftexp3 mig=y ompchunk=1
-          left=${SOURCES[1]} right=${SOURCES[2]} 
+          left=${SOURCES[1]} right=${SOURCES[2]}
           nz=%d dz=%g
           ''' %(memsize,memsize,nz,dz))
      Plot(item+'-mig',
@@ -273,27 +273,27 @@ for item in mig:
           byte|
           grey3 title="%s"
           frame1=%i frame2=%i frame3=%i flat=n
-          point2=%g  
+          point2=%g
           '''%(item,frame1d,frame2*2/5,frame3*2/5,volpt2))
 Result('exp0-mig',
           '''
-          put 
+          put
           label2=Inline d2=.025 unit2=km
           label3=Crossline d3=.025 unit3=km|
           byte|
           grey3 title="Conventional Image"
           frame1=%i frame2=%i frame3=%i flat=n
-          point2=%g  
+          point2=%g
           '''%(frame1d,frame2,frame3,volpt2))
 Result('diffractions-mig',
           '''
-          put 
+          put
           label2=Inline d2=.025 unit2=km
           label3=Crossline d3=.025 unit3=km|
           byte gainpanel=a|
           grey3 title="Diffraction Image"
           frame1=%i frame2=%i frame3=%i flat=n
-          point2=%g  
+          point2=%g
           '''%(frame1d,frame2,frame3,volpt2))
 ##############################################
 # create prediction volume of migrated image #
@@ -314,10 +314,10 @@ Plot('image_slope_I','image_slope image_slope_bar',
      label2=Inline d2=.05 unit2=km
      label3=Crossline d3=.05 unit3=km|
      byte gainpannel=a|
-     grey3 title="Inline Image Slope" color=j 
+     grey3 title="Inline Image Slope" color=j
      frame1=%i frame2=%i frame3=%i flat=n
      scalebar=y bar=${SOURCES[1]} point2=%g
-     barlabel=Slope 
+     barlabel=Slope
      '''%(frame1t,frame2/5,frame3/5,volpt2))
 Plot('image_slope_X','image_slope image_slope_bar',
      '''
@@ -326,7 +326,7 @@ Plot('image_slope_X','image_slope image_slope_bar',
      label2=Inline d2=.05 unit2=km
      label3=Crossline d3=.05 unit3=km|
      byte gainpannel=a|
-     grey3 title="Crossline Image Slope" color=j 
+     grey3 title="Crossline Image Slope" color=j
      frame1=%i frame2=%i frame3=%i flat=n
      scalebar=y bar=${SOURCES[1]} point2=%g
      barlabel=Slope
@@ -342,7 +342,7 @@ Flow('slope_spray','exp0-mig image_slope',
 
 # Prediction error
 Flow('copy','exp0-mig','spray axis=2 n=25 d=25 o=0')
-Flow('sweight','copy slope_spray', 
+Flow('sweight','copy slope_spray',
      '''
      similarity other=${SOURCES[1]} rect1=10 rect4=1 | math output=1/input
      ''')
@@ -350,7 +350,7 @@ Flow('sweight','copy slope_spray',
 Flow('diff','exp0-mig slope_spray',
      '''
      spray axis=2 n=25 d=25 o=0|
-     add scale=1,-1 ${SOURCES[1]} 
+     add scale=1,-1 ${SOURCES[1]}
      ''')
 Flow('diff2','diff','mul $SOURCE')
 
@@ -359,10 +359,10 @@ for box in range(2,6):
     coh = 'cohP%d' % box
     Flow(coh,'diff2',
         '''
-        transp plane=12 | spray axis=2 n=1 | put n1=%d n2=%d | 
-        boxsmooth rect1=%d | boxsmooth rect2=%d | 
-        window f1=%d f2=%d | 
-        stack axis=2 min=y | stack axis=1 min=y 
+        transp plane=12 | spray axis=2 n=1 | put n1=%d n2=%d |
+        boxsmooth rect1=%d | boxsmooth rect2=%d |
+        window f1=%d f2=%d |
+        stack axis=2 min=y | stack axis=1 min=y
         ''' % (2*ns2+1,2*ns3+1,box,box,box-1,box-1))
 
 #Make figures for Feb 4 Meeting
@@ -375,7 +375,7 @@ regularize='put label1="Depth" d1=0.002 unit1="km" d2=0.025 label2="Inline" unit
 #Predictive Coherence Clip
 clip=.01
 
-for frame in xrange(0,len(frame1lst)):
+for frame in range(len(frame1lst)):
      #Velocity model
      Plot('vp_%i'%frame,'vp vpbar',
           regularize+
@@ -389,16 +389,16 @@ for frame in xrange(0,len(frame1lst)):
           regularize+
           '''
           byte allpos=y min=3500 max=6500|
-          grey3 title="Velocity Model" color=a 
+          grey3 title="Velocity Model" color=a
           frame1=%i frame2=%i frame3=%i flat=n
           scalebar=n bar=${SOURCES[1]} point2=%g
           '''%(frame1lst[frame],frame2lst[frame],frame3lst[frame],volpt2))
-     #Smooth Slowness 
+     #Smooth Slowness
      Plot('vps_%i'%frame,'vp_s vpbar',
           regularize+
           '''
           byte allpos=y min=3500 max=6500|
-          grey3 title="Smooth Slowness Velocity" color=a 
+          grey3 title="Smooth Slowness Velocity" color=a
           frame1=%i frame2=%i frame3=%i flat=n
           scalebar=y bar=${SOURCES[1]} point2=%g
           '''%(frame1lst[frame],frame2lst[frame],frame3lst[frame],volpt2))

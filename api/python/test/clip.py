@@ -2,6 +2,9 @@
 
 import numpy
 import m8r
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 par = m8r.Par()
 inp  = m8r.Input()
@@ -21,4 +24,3 @@ for i2 in xrange(n2): # loop over traces
     inp.read(trace)
     trace = numpy.clip(trace,-clip,clip)
     output.write(trace)
-

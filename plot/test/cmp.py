@@ -1,21 +1,24 @@
 #!/usr/bin/env python
 ##   Copyright (C) 2008 University of Texas at Austin
-##  
+##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as published by
 ##   the Free Software Foundation; either version 2 of the License, or
 ##   (at your option) any later version.
-##  
+##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##   GNU General Public License for more details.
-##  
+##
 ##   You should have received a copy of the GNU General Public License
 ##   along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 import math
 import vplot
+import sys
+if sys.version_info[0] > 2:
+    xrange = range
 
 iseed=1996
 
@@ -33,7 +36,7 @@ def draw(vp):
     nx=100
     degrees=85
 
-    t0 = 0	
+    t0 = 0
     x0= xmin
     dx= (xmax-xmin)/(nx-1)
 
@@ -44,14 +47,14 @@ def draw(vp):
     vp.utext( .25     ,  .1    , 14, 0, "t")
 
     vp.uclip (xmin, .6, xmax, tmax)
-    vp.umove( xmin, tmax) 	
+    vp.umove( xmin, tmax)
     vp.udraw( xmax, tmax)
-    vp.umove(   0., tmax) 	
+    vp.umove(   0., tmax)
     vp.udraw( 0., tmax-tmax)
 
     vp.color(6)
     for iz in xrange(nz):
-	alfa = degrees *  math.pi / 180 * rand01() 
+	alfa = degrees *  math.pi / 180 * rand01()
 	ca = math.cos( alfa)
 	sa = math.sin( alfa)
 	z =  tmax * (.1 + .9*rand01())

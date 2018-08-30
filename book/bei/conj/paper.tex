@@ -11,7 +11,7 @@ we do in science and engineering
 are really matrix multiplication in disguise.
 The first goal of this chapter is to unmask the disguise
 by showing many examples.
-Second, we see how the 
+Second, we see how the
 \bx{adjoint} operator (matrix transpose)
 back-projects information from data to the underlying model.
 
@@ -115,7 +115,7 @@ Much later in this chapter is a formal definition of adjoint operator.
 Throughout the chapter we handle an adjoint operator as a matrix transpose,
 but we hardly ever write down any matrices or their transposes.
 Instead, we always prepare two subroutines,
-one that performs 
+one that performs
 $\bold y =\bold A \bold x$
 and another that performs
 $\tilde{\bold x} =\bold A' \bold y$.
@@ -184,7 +184,7 @@ With the option {\tt add=true}, results accumulate like {\tt y=y+B*x}.
 The subroutine \texttt{matmult()}
 for matrix multiply and its adjoint
 exhibits the style that we will use repeatedly.
-\opdex{matmult}{matrix multiply}{33}{45}{user/fomels}
+\opdex{matmult}{matrix multiply}{33}{45}{user/pwd}
 
 % NEW
 \par
@@ -209,13 +209,13 @@ For example,
 the row operator $[a,b]$
 \begin{equation}
 y \eq
-\left[ \ a \ b \ \right] 
+\left[ \ a \ b \ \right]
 \left[
 \begin{array}{l}
 	x_1 \\
 	x_2
 \end{array}
-\right] 
+\right]
 \eq
 a x_1 + b x_2
 \end{equation}
@@ -264,7 +264,7 @@ expressed as the matrix-multiply below:
 	 .& .& .&-1& 1& . \\
 	 .& .& .& .&-1& 1 \\
 	 .& .& .& .& .& 0
-	\end{array} \right] \ 
+	\end{array} \right] \
 \left[ \begin{array}{c}
 	x_1 \\
 	x_2 \\
@@ -283,7 +283,7 @@ This is a convenience for plotting
 and for simplifying the assembly of other operators building on this one.
 \par
 The \bx{filter impulse response} is seen in any column
-in the middle of the matrix, namely $(1,-1)$. 
+in the middle of the matrix, namely $(1,-1)$.
 In the transposed matrix,
 the filter-impulse response
 is time-reversed to $(-1,1)$.
@@ -341,13 +341,13 @@ add some zeros at the end of $\bold x$.
 This zero padding can be regarded as the matrix multiplication
 \begin{equation}
 \bold y\eq
- \left[ 
+ \left[
   \begin{array}{c}
-   \bold I \\ 
+   \bold I \\
    \bold 0
   \end{array}
- \right] 
- \ 
+ \right]
+ \
  \bold x
 \end{equation}
 The matrix is simply an identity matrix $\bold I$
@@ -356,12 +356,12 @@ To find the transpose to zero-padding, we now transpose the matrix
 and do another matrix multiply:
 \begin{equation}
 \tilde {\bold x} \eq
- \left[ 
+ \left[
   \begin{array}{cc}
    \bold I & \bold 0
   \end{array}
- \right] 
-\ 
+ \right]
+\
 \bold y
 \end{equation}
 So the transpose operation to zero padding data
@@ -383,7 +383,7 @@ We denote the complex-conjugate transpose (or \bx{adjoint}) matrix
 with a prime,
 i.e.,~$\bold F'$.
 The adjoint arises naturally whenever we consider energy.
-The statement that Fourier transforms conserve energy is 
+The statement that Fourier transforms conserve energy is
 $\bold y'\bold y=\bold x'\bold x$ where $\bold y= \bold F \bold x$.
 Substituting gives $\bold F'\, \bold F = \bold I$, which shows that
 the inverse matrix to Fourier transform
@@ -398,13 +398,13 @@ Padding followed by Fourier transformation $\bold F$
 can be expressed in matrix algebra as
 \begin{equation}
 {\rm Program} \eq
-\bold F \ 
- \left[ 
+\bold F \
+ \left[
   \begin{array}{c}
-   \bold I \\ 
+   \bold I \\
    \bold 0
   \end{array}
- \right] 
+ \right]
 \end{equation}
 According to matrix algebra, the transpose of a product,
 say $\bold A \bold B = \bold C$,
@@ -412,11 +412,11 @@ is the product $\bold C' = \bold B' \bold A'$ in reverse order.
 So the adjoint subroutine is given by
 \begin{equation}
 {\rm Program'} \eq
- \left[ 
+ \left[
   \begin{array}{cc}
    \bold I & \bold 0
   \end{array}
- \right] 
+ \right]
 \
 \bold F'
 \end{equation}
@@ -447,7 +447,7 @@ a floating-point variable $z$.
 Conversion from the counting variable to the floating-point variable
 is exact and is often seen in a computer idiom
 such as either of \begin{verbatim}
-            for (iz=0; iz < nz; iz++) {   z = z0 + iz * dz; 
+            for (iz=0; iz < nz; iz++) {   z = z0 + iz * dz;
             for (i3=0; i3 < n3; i3++) {  x3 = o3 + i3 * d3;
 \end{verbatim}
 %{\tt
@@ -469,7 +469,7 @@ A small warning is in order:
 People generally use positive counting variables.
 If you also include negative ones,
 then to get the nearest integer,
-you should do your rounding with the 
+you should do your rounding with the
 C function \texttt{floor}.
 %Fortran function {\tt NINT()}.
 
@@ -531,29 +531,29 @@ we have the operator in (\ref{eqn:lintseq}).
   to \protect(\ref{eqn:lintseq}).
 }
 \begin{equation}
-\left[ 
+\left[
 \begin{array}{c}
-  d_0 \\ 
-  d_1 \\ 
-  d_2 
-  \end{array} \right] 
+  d_0 \\
+  d_1 \\
+  d_2
+  \end{array} \right]
 \quad \approx \quad
-\left[ 
+\left[
 \begin{array}{rrrrrr}
    .8 & .2 &  .  & .  & .  & .  \\
    .  & .  &  1  & .  & .  & .  \\
-   .  & .  &  .  & .  & .5 & .5 
-  \end{array} \right] 
-\left[ 
+   .  & .  &  .  & .  & .5 & .5
+  \end{array} \right]
+\left[
 	\begin{array}{c}
-	  m_0 \\ 
-	  m_1 \\ 
-	  m_2 \\ 
-	  m_3 \\ 
-	  m_4 \\ 
+	  m_0 \\
+	  m_1 \\
+	  m_2 \\
+	  m_3 \\
+	  m_4 \\
 	  m_5
 	\end{array}
-\right] 
+\right]
 \label{eqn:lintseq}
 \end{equation}
 The two weights in each row sum to unity.
@@ -607,10 +607,10 @@ we should call causal summation, but we often call it causal integration.
 	1 &1 &1 &1 &1 &1 &1 &0 &0 &0 \\
 	1 &1 &1 &1 &1 &1 &1 &1 &0 &0 \\
 	1 &1 &1 &1 &1 &1 &1 &1 &1 &0 \\
-	1 &1 &1 &1 &1 &1 &1 &1 &1 &1 
+	1 &1 &1 &1 &1 &1 &1 &1 &1 &1
 	\end{array}
   \right]
-  \ \ 
+  \ \
   \left[
 	\begin{array}{c}
 		x_0 \\
@@ -628,7 +628,7 @@ we should call causal summation, but we often call it causal integration.
 \label{eqn:mytri}
 \end{equation}
 %Having 1/2 instead of 1 on the diagonal clutters our code a little
-%but it is a worthwhile improvement. 
+%but it is a worthwhile improvement.
 %With 1/2, the summation equivalent of
 %$\int_{-\infty}^t + \int_t^{\infty} = \int_{-\infty}^\infty$
 %remains exactly true.
@@ -710,7 +710,7 @@ a triangle waveform on the bottom row.
 %\item
 %Notice that the triangle waveform is not time aligned
 %with the input {\tt in2}.
-%Force time alignment with the operator 
+%Force time alignment with the operator
 %${\bold C' \bold C}$ or
 %${\bold C  \bold C'}$.
 %\item
@@ -806,7 +806,7 @@ to fit in the memory of any computer.
 Sometimes it is also not obvious how to formulate the process at hand
 as a matrix multiplication.
 (Examples are differential equations and fast Fourier transforms.)
-What we find in practice is that an application and its adjoint 
+What we find in practice is that an application and its adjoint
 amounts to two subroutines. The first subroutine
 amounts to the matrix multiplication $ \bold F \bold x$.
 The adjoint subroutine computes $\bold F' \bold y$,
@@ -815,7 +815,7 @@ Most methods of solving inverse problems will fail
 if the programmer provides an inconsistent pair of subroutines
 for $\bold F$ and $\bold F'$.
 The dot product test described next
-is a simple test for verifying that the two 
+is a simple test for verifying that the two
 subroutines really are adjoint to each other.
 
 \par
@@ -839,7 +839,7 @@ Now we build a useful test for it.
 
 \begin{eqnarray}
 \bold y' ( \bold F \bold x ) &=& ( \bold y' \bold F )  \bold x   \\
-\bold y' ( \bold F \bold x ) &=& ( \bold F' \bold y )' \bold x 
+\bold y' ( \bold F \bold x ) &=& ( \bold F' \bold y )' \bold x
 \label{eqn:bilin2}
 \end{eqnarray}
 For the dot-product test,
@@ -872,41 +872,3 @@ and much more information about inverse operators
 is found in my other books,
 Earth Soundings Analysis: Processing versus inversion (PVI) and
 Geophysical Estimation by Example (GEE).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
