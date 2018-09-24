@@ -32,7 +32,11 @@ except: # Python < 2.3
 if sys.version_info[0] < 3:
     import io
     open = io.open
-encoding = 'utf-8'
+    encoding = None
+    open_method = 'b'
+else:
+    encoding = 'utf-8'
+    open_method = ''
 
 progs = {}
 data = {}
@@ -75,7 +79,7 @@ def subdirs():
 def getversion(target=None,source=None,env=None):
     label = env.get('version')
     name = str(target[0])
-    out = open(name,'w')
+    out = open(name,'w'+open_method, encoding=encoding)
     out.write('#!/usr/bin/env python\n\n')
     out.write('from __future__ import print_function\n')
     out.write('label="%s"\n\n' % label)
@@ -88,7 +92,7 @@ if __name__ == "__main__":
     return 0
 
 def getprogs(target=None,source=None,env=None):
-    out = open(str(target[0]),'w')
+    out = open(str(target[0]),'w'+open_method, encoding=encoding)
     out.write('import sys, os\n\n')
     out.write('import rsf.doc\n\n')
     for mod in map(str,source):
@@ -122,7 +126,7 @@ def selfdoc():
 
 def use(target=None,source=None,env=None):
     'Collect program uses information'
-    out = open(str(target[0]),'w')
+    out = open(str(target[0]),'w'+open_method, encoding=encoding)
     out.write('import rsf.doc\n\n')
     for dotproj in map(str,source):
 
@@ -148,7 +152,7 @@ def use(target=None,source=None,env=None):
 
 def selfdoc(target=None,source=None,env=None):
     src = str(source[0])
-    doc = open(str(target[0]),"w")
+    doc = open(str(target[0]),"w"+open_method, encoding=encoding)
     rsfprefix = env.get('rsfprefix','sf')
     rsfsuffix = env.get('rsfsuffix','rsf')
     lang = env.get('lang','c')
@@ -466,7 +470,7 @@ class rsfprog(object):
     def mwiki(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.wiki'),'w', encoding=encoding)
+        file = open (os.path.join(dir,name + '.wiki'),'w'+open_method, encoding=encoding)
         contents = '==%s==\n{| class="wikitable" ' % name
         contents += 'align="center" cellspacing="0" border="1"\n'
         desc = '! colspan="4" style="background:#ffdead;" | %s\n' % self.desc
@@ -488,7 +492,7 @@ class rsfprog(object):
     def man(self,dir,usedoc_max,rsfroot,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.1'),'w', encoding=encoding)
+        file = open (os.path.join(dir,name + '.1'),'w'+open_method, encoding=encoding)
         contents = '.TH %s 1  ' % name
         if have_datetime_module:
             day = datetime.datetime.now()
@@ -538,7 +542,7 @@ class rsfprog(object):
     def latex(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.tex'),'w', encoding=encoding)
+        file = open (os.path.join(dir,name + '.tex'),'w'+open_method, encoding=encoding)
         contents = '\\footnotesize\n'
         name = '\\subsection{%s: %s}\n' % (name,self.desc)
         contents = contents + name
@@ -562,7 +566,7 @@ class rsfprog(object):
         if not name:
             name = self.name
         if dir:
-            file = open (os.path.join(dir,name + '.txt'),'w', encoding=encoding)
+            file = open (os.path.join(dir,name + '.txt'),'w'+open_method, encoding=encoding)
         contents = 'Program %s | %s\n' % (name,self.desc)
         if self.snps:
             contents = contents + '[SYNOPSIS]\n%s\n' % self.snps
@@ -586,7 +590,7 @@ class rsfprog(object):
     def spec(self,dir,name=None):
         if not name:
             name = self.name
-        file = open (os.path.join(dir,name + '.spec'),'w', encoding=encoding)
+        file = open (os.path.join(dir,name + '.spec'),'w'+open_method, encoding=encoding)
         filedir = os.path.split(self.file)[0]
         doccmd = '%s | cat' % name
         contents = '''[%s]
@@ -628,7 +632,7 @@ DocCmd: %s
         file.write(contents)
         file.close()
     def html(self,dir,rep):
-        hfile = open (os.path.join(dir,self.name + '.html'),'w', encoding=encoding)
+        hfile = open (os.path.join(dir,self.name + '.html'),'w'+open_method, encoding=encoding)
         name = '<big><big><strong>%s</strong></big></big>' % self.name
         if self.vers:
             name = name + " (%s)" % self.vers
@@ -700,7 +704,7 @@ def link(name):
 def html(dir,known_version):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,'index.html'),'w', encoding=encoding)
+    file = open (os.path.join(dir,'index.html'),'w'+open_method, encoding=encoding)
     name = '<big><big><strong>Madagascar Programs</strong></big></big>'
     content = heading(name,'#ffffff','#7799ee')
 
@@ -743,7 +747,7 @@ def html(dir,known_version):
 def text(dir,name):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,name),'w', encoding=encoding)
+    file = open (os.path.join(dir,name),'w'+open_method, encoding=encoding)
     file.write('Madagascar Programs\n')
     dirs = {}
     for prog in list(progs.keys()):
@@ -762,7 +766,7 @@ def text(dir,name):
 def spec(dir,name='extend.spec'):
     if not os.path.isdir(dir):
         os.mkdir(dir)
-    file = open (os.path.join(dir,name),'w', encoding=encoding)
+    file = open (os.path.join(dir,name),'w'+open_method, encoding=encoding)
     file.write('''
 # Madagascar Enumerations
 
@@ -895,7 +899,7 @@ def getprog(file,out,lang = 'c',rsfprefix = 'sf',rsfsuffix='rsf',
     else:
         name = re.sub('\.c(c|u)?$','',name)
     cname = re.sub('\-','',name)
-    src = open(file,"r")   # open source
+    src = open(file,"r"+open_method, encoding=encoding)   # open source
     text = ''.join(src.readlines())
     src.close()
     first = comment[lang].match(text)
@@ -1181,7 +1185,7 @@ To obtain a selfdoc, install %s with Madagascar: http://www.ahay.org/wiki/Adding
               ''' % {'prog':this})
 
 if __name__ == "__main__":
-    junk = open('junk.py',"w")
+    junk = open('junk.py',"w"+open_method, encoding=encoding)
     junk.write("import rsf.doc\n\n")
     junk.write("rsfprog = {}\n")
     getprog('filt/main/dd.c',junk)
