@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import pplot
+from rsf.recipes import pplot
 
 def cgrey(custom,par):
     return '''
@@ -19,7 +19,7 @@ def rgrey(custom,par):
 def cgraph(custom,par):
     return '''
     graph labelrot=n  %s
-    yreverse=y wantaxis=n title=" " 
+    yreverse=y wantaxis=n title=" "
     min1=%g max1=%g min2=%g max2=%g  screenratio=%g screenht=%g
     ''' % (custom,par['xmin'],par['xmax'],par['zmin'],par['zmax'],par['ratio'],par['height'])
 
@@ -40,7 +40,7 @@ def param(par):
 
     par['ratio']=(par['zmax']- par['zmin'])/(par['xmax']- par['xmin'])
     par['height']=par['ratio']*14
-    
+
 # plot coordinate system
 def cos(cos,jray,jwft,par):
     wft = cos + '-wft'
@@ -53,7 +53,7 @@ def cos(cos,jray,jwft,par):
          + cgraph('plotcol=1',par))
     Plot(wft,cos,'window j2=%(jwft)d |' % par
          + cgraph('plotcol=2',par))
-    
+
     Plot(cos,[ray,wft],'Overlay')
 
 # slowness in CC and RC
@@ -67,7 +67,7 @@ def slow(sloCC,sloRC,vel,cos,par):
          spray axis=2 n=1 o=0 d=1 |
          put label1=x label2=y label3=z
          ''')
-    
+
     # slowness in RC
     Flow(sloRC,[sloCC,cos],
          '''
@@ -101,7 +101,7 @@ def frq(frqRC,frqCC,datCC,cos,par):
          fft1 opt=n inv=n |
          window squeeze=n min1=%(ow)g n1=%(nw)d |
          transp |
-         spray axis=2 n=1 o=0 d=1 | 
+         spray axis=2 n=1 o=0 d=1 |
          put label1=x label2=y label3=w
          ''' % par)
 
@@ -121,7 +121,7 @@ def mig(migCC,migRC,frqRC,abmRC,abrRC,cos,par):
     for i in (['SSF','FFD','PSC',
                'F15','F45','F60']):
         sfx = '-' + i
-        
+
         if(i=='F15'): method='method=0 c1=0.50   c2=0.00'
         if(i=='F45'): method='method=0 c1=0.50   c2=0.25'
         if(i=='F60'): method='method=0 c1=0.4761 c2=0.3767'
@@ -149,7 +149,7 @@ def mig(migCC,migRC,frqRC,abmRC,abrRC,cos,par):
                + rgrey('title=%s pclip=99',par) % i)
         Result(migRC+sfx,'window | transp |'
                + rgrey('title=%s',par) % i)
-        
+
         Plot(migCC+sfx,'window | transp |'
              + cgrey('title=%s pclip=99',par) % i)
         Result(migCC+sfx,[migCC+sfx,cos],'Overlay')
@@ -159,18 +159,18 @@ def mod(modCC,modRC,migRC,abmRC,abrRC,cos,par):
     for i in (['SSF','FFD','PSC',
                'F15','F45','F60']):
         sfx = '-' + i
-        
+
         if(i=='F15'): method='method=0 c1=0.50   c2=0.00'
         if(i=='F45'): method='method=0 c1=0.50   c2=0.25'
         if(i=='F60'): method='method=0 c1=0.4761 c2=0.3767'
         if(i=='SSF'): method='method=1'
         if(i=='FFD'): method='method=2 c1=0.50   c2=0.00'
         if(i=='PSC'): method='method=3 c1=0.50   c2=0.00'
-        
+
         Flow(modRC+sfx,[migRC+sfx,abmRC,abrRC],
              '''
              rwezomig ntap=10 adj=y verb=y %s
-             nw=%d ow=%g dw=%g 
+             nw=%d ow=%g dw=%g
              abm=${SOURCES[1]}
              abr=${SOURCES[2]} |
              put label1=g label2=t label3=w
@@ -188,7 +188,7 @@ def mod(modCC,modRC,migRC,abmRC,abrRC,cos,par):
              a2n=%(nzcut)d a2o=%(ozcut)g a2d=%(dz)g |
              window n2=1 min2=%(oz)g
              ''' % par)
-        
+
         Flow(modCC+sfx,'cutCC'+sfx,
              '''
              transp |
@@ -196,7 +196,7 @@ def mod(modCC,modRC,migRC,abmRC,abrRC,cos,par):
              fft1 opt=n inv=y |
              put label1=t label2=x
              ''' % (int(par['ow']/par['dw']),par['nT']/2+1))
-        
+
         Result(modCC+sfx,
                'grey pclip=100 wanttitle=n grid=y label1=t unit1=s label2=x unit2=km')
 
@@ -221,7 +221,5 @@ def plots(par):
     Plot('imgRC-ovl',['imgRC','cos'],'Overlay')
 
     pplot.p2x1('CCvsRC','imgRC-ovl','imgCC',0.5,0.5,-9)
-    
-#    Result('CCvsRC',['imgRC-ovl','imgCC'],'OverUnderIso')
 
-        
+#    Result('CCvsRC',['imgRC-ovl','imgCC'],'OverUnderIso')

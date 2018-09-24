@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import spmig,sgmig,zomig,fdmod
+from rsf.recipes import spmig,sgmig,zomig,fdmod
 import random
 from functools import reduce
 
@@ -42,7 +42,7 @@ def wempar(par):
 
     if('tmx' not in par):     par['tmx']=16
     if('tmy' not in par):     par['tmy']=16
-    
+
     if('incore' not in par):  par['incore']='y'
 
 # ------------------------------------------------------------
@@ -50,15 +50,15 @@ def slowness2d(slow,velo,par):
     Flow(slow,velo,
          '''
          math "output=1/input" |
-         transp plane=34 | 
-         transp plane=12 | 	
+         transp plane=34 |
+         transp plane=12 |
 	 transp plane=23 |
          put label2=y o2=0 d2=1
          ''')
 
 def slowness(slow,velo,par):
     slowness2d(slow,velo,par)
-    
+
 # ------------------------------------------------------------
 # WEM
 # ------------------------------------------------------------
@@ -90,18 +90,18 @@ def bWRwem(data,wfld,slow,par):
 
 def wemWR(data,wfld,slow,causal,par):
     Flow(wfld,[data,slow],
-         'wexwfl %s slo=${SOURCES[1]}' % param(par) + ' causal=%s '%causal) 
+         'wexwfl %s slo=${SOURCES[1]}' % param(par) + ' causal=%s '%causal)
 
 def iwindow(par):
     win = ' ' + \
           '''
-          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g 
+          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g
           nqx=%(nqx)d oqx=%(oqx)g dqx=%(dqx)g
           jsnap=%(jdata)d jdata=%(jdata)d
           ''' % par + ' '
 
     return win
-    
+
 # ------------------------------------------------------------
 # RTM
 # ------------------------------------------------------------
@@ -139,7 +139,7 @@ def bWRcda(data,wfld,velo,coor,custom,par):
 
 def reverse(wfldO,wfldI,par):
     Flow(wfldO,wfldI,'reverse which=4 opt=i verb=y')
-    
+
 # ------------------------------------------------------------
 # variable-density shot-record migration
 def rtmcic(imag,velo,dens,
@@ -286,11 +286,11 @@ def cic(imag,swfl,rwfl,custom,par,isreversed=0):
     Flow(imag,[swfl,rwfl],
          '''
          cicold2d verb=y
-         ur=${SOURCES[1]} 
+         ur=${SOURCES[1]}
          '''%par+ 'isreversed=%d'%isreversed + ' ' + custom )
-    
+
 # EIC
-def eic(cip,swfl,rwfl,cc,custom,par,isreversed=0):    
+def eic(cip,swfl,rwfl,cc,custom,par,isreversed=0):
     Flow(cip,[swfl,rwfl,cc],
          '''
          eicold2d verb=y
@@ -298,21 +298,21 @@ def eic(cip,swfl,rwfl,cc,custom,par,isreversed=0):
          ur=${SOURCES[1]}
          cc=${SOURCES[2]}
          '''%par+ 'isreversed=%d'%isreversed + ' '+ custom )
-    
+
 # CIC: deconvolution
 def dic(imag,swfl,rwfl,eps,custom,par):
     par['diccustom'] = custom
-    
+
     Flow(imag,[swfl,rwfl],
          '''
-         math s=${SOURCES[0]} r=${SOURCES[1]} 
+         math s=${SOURCES[0]} r=${SOURCES[1]}
          output="-(conj(s)*r)/(conj(s)*s+%g)" |
          transp plane=23 | stack | real
          ''' %eps)
 
 # ------------------------------------------------------------
 def wem(imag,sdat,rdat,slow,custom,par):
-    
+
     fWRwem(sdat,swfl,slow,par)
     bWRwem(rdat,rwfl,slow,par)
 
@@ -320,7 +320,7 @@ def wem(imag,sdat,rdat,slow,custom,par):
 
 # ------------------------------------------------------------
 def rtm(imag,sdat,rdat,velo,dens,custom,par):
-    
+
     fWRrtm(sdat,swfl,velo,dens,par)
     bWRrtm(rdat,rwfl,velo,dens,par)
 
@@ -335,7 +335,7 @@ def rtm(imag,sdat,rdat,velo,dens,custom,par):
 #
 #    # datuned data
 #    sgmig.datum('d1','sd','d0',par)
-#    
+#
 #    for k in ('0','1'):
 #        s = 's' + k # slowness
 #        d = 'd' + k # prestack data
@@ -345,7 +345,7 @@ def rtm(imag,sdat,rdat,velo,dens,custom,par):
 #
 #        # prestack migration
 #        sgmig.image(i,s,d,par)
-#        
+#
 #        # near offset migration
 #        Flow(e,d,'window squeeze=n n3=8')
 #        sgmig.image(z,s,e,par)
@@ -357,18 +357,18 @@ def rtm(imag,sdat,rdat,velo,dens,custom,par):
 #def profile(par):
 #    # surface wavefields
 #    spmig.wflds('d0s','d0r','wave','shot',par)
-#    
+#
 #    # datumed wavefields
 #    spmig.datum('d1s','d1r','sd','d0s','d0r',par)
-#    
+#
 #    for k in ('0','1'):
 #        s = 's' + k       # slowness
 #        j = 'j' + k       # image
 #        ds= 'd' + k + 's' # source   wavefield
 #        dr= 'd' + k + 'r' # receiver wavefield
-#        
+#
 #        spmig.image(j,s,ds,dr,par)
-#        
+#
 # ------------------------------------------------------------
 # RESULTS
 # ------------------------------------------------------------
@@ -388,7 +388,7 @@ def rtm(imag,sdat,rdat,velo,dens,custom,par):
 #            z = 'z' + k
 #            i = 'i' + k
 #            j = 'j' + k
-#            
+#
 #            Result(z,z,'window n3=1 | transp |'
 #                   +igrey('title=z pclip=99',par))
 #            Result(i,i,'window n3=1 | transp |'

@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import wplot
+from rsf.recipes import wplot
 import math
 
 # ------------------------------------------------------------
@@ -47,15 +47,15 @@ def makeBoxSpec(s,fPEAK,fBAND,par):
     boxS = fBAND/(2*math.sqrt(3));
     boxL = fPEAK - math.sqrt(3) * boxS;
     boxH = fPEAK + math.sqrt(3) * boxS;
-    kf = 1 + boxL/par['df'] 
+    kf = 1 + boxL/par['df']
     lf = 1 + boxH/par['df']
-    
+
     Flow(s,None,
-    'spike nsp=1 mag=0 n1=%(nf)d o1=%(of)g d1=%(df)g |'%par +          
+    'spike nsp=1 mag=0 n1=%(nf)d o1=%(of)g d1=%(df)g |'%par +
     '''
     spike nsp=1 mag=1 k1=%d l1=%d |
-    smooth rect1=5 | 
-    scale axis=123 
+    smooth rect1=5 |
+    scale axis=123
     '''%(kf,lf))
 
 def makeGauSpec(s,fPEAK,fBAND,par):
@@ -67,7 +67,7 @@ def makeGauSpec(s,fPEAK,fBAND,par):
     gauC = fPEAK;
 
     Flow(s,None,
-    'spike nsp=1 mag=0 n1=%(nf)d o1=%(of)g d1=%(df)g |'%par +                 
+    'spike nsp=1 mag=0 n1=%(nf)d o1=%(of)g d1=%(df)g |'%par +
     '''
     math output="exp(-0.5*((x1-%g)/%g)^2)" |
     scale axis=123
@@ -80,14 +80,14 @@ def makeTimeWavelet(t,f,par):
     window f1=%d n1=%d | put o1=%f d1=%f |
     scale axis=123
     '''%(par['nt']-par['kt'],par['nt'],par['ot'],par['dt']))
-    
-    
+
+
 # ------------------------------------------------------------
 def plotWavelet(plot,wvl,env,par):
     Plot(wvl,wplot.waveplot('plotcol=5',par))
     Plot(env,wplot.waveplot('plotcol=3',par))
     Result(plot,[wvl,env],'Overlay')
-    
+
 def plotSpectrum(plot,wvl,par):
     Flow(wvl+'spec',wvl,
         'spectra | put d1=%g'%(1./(par['nt']*par['dt'])))

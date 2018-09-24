@@ -1,5 +1,4 @@
 from rsf.proj import *
-import dix
 
 mig2cip = None
 
@@ -28,7 +27,7 @@ def velcon(data,        # data name
     global mig2cip
 
     vm = v0+0.5*nv*dv
-    
+
     mig=data+'-mig'
     Flow(mig,data,
          '''
@@ -44,7 +43,7 @@ def velcon(data,        # data name
     else:
         mig2cip = '''
         transp plane=34 memsize=500 |
-        transp plane=23 
+        transp plane=23
         '''
         n1=100
 
@@ -63,18 +62,18 @@ def velcon(data,        # data name
 
     ckx2=data+'-ckx2'
     vlf2=data+'-vlf2'
-    
+
     Flow(ckx,pad,'cosft sign3=1 | put o4=0')
     Flow(ckx+'v',ckx,
          '''
-         fourvc nv=%d dv=%g v0=%g pad=%d pad2=%d verb=y 
+         fourvc nv=%d dv=%g v0=%g pad=%d pad2=%d verb=y
          ''' % (nv,dv,v0,padt,padt2),
-         split=[3,padx])    
+         split=[3,padx])
     Flow(vlf,ckx+'v',
          '''
          cosft sign3=-1 | window n3=%d
          ''' % nx)
-    
+
     Flow(ckx2,pad,
          '''
          halfint inv=y adj=y |
@@ -84,9 +83,9 @@ def velcon(data,        # data name
          ''')
     Flow(ckx2+'v',ckx2,
          '''
-         fourvc nv=%d dv=%g v0=%g pad=%d pad2=%d verb=y 
+         fourvc nv=%d dv=%g v0=%g pad=%d pad2=%d verb=y
          ''' % (nv,dv,v0,padt,padt2),
-         split=[3,padx])    
+         split=[3,padx])
     Flow(vlf2,ckx2+'v',
          '''
          cosft sign3=-1 | window n3=%d | clip2 lower=0
@@ -107,7 +106,7 @@ def velcon(data,        # data name
          fourvc2 nv=%d dv=%g v0=%g pad=%d pad2=%d |
          window n2=%d | transp plane=23 memsize=1000
          ''' % (nv,dv,v0,padt,padt2,nx))
-    
+
     if v1:
         Flow(mig+'1',data,'preconstkirch vel=%g' % v1,split=[4,nh])
         Flow(cip+'1',mig+'1',mig2cip)
@@ -131,46 +130,45 @@ def velcon(data,        # data name
     if vslope:
         pick = '''
         mutter x0=%g v0=%g half=n |
-        scale axis=2 | pick rect1=%d rect2=%d 
+        scale axis=2 | pick rect1=%d rect2=%d
         ''' % (vx0,vslope,rect1,rect2)
     else:
         pick = '''
-        scale axis=2 | pick rect1=%d rect2=%d 
+        scale axis=2 | pick rect1=%d rect2=%d
         ''' % (rect1,rect2)
 
     npk = data+'-npk'
     Flow(npk,sem,pick)
-    Plot(npk, 	 
-         ''' 	 
-         grey pclip=100 color=j bias=%g 	 
-         scalebar=y title="Picked Migration Velocity" 	 
-         label1=Time unit1=s label2="Lateral Position" unit2=%s 	 
-         barlabel=Velocity barunit="%s/s" barreverse=y 	 
+    Plot(npk,
+         '''
+         grey pclip=100 color=j bias=%g
+         scalebar=y title="Picked Migration Velocity"
+         label1=Time unit1=s label2="Lateral Position" unit2=%s
+         barlabel=Velocity barunit="%s/s" barreverse=y
          ''' % (vm,units,units))
-        
+
     fmg = data+'-fmg'
     Flow(fmg,[vlf,npk],'slice pick=${SOURCES[1]}')
 
     Result(fmg,
            '''
-           grey title=Slice label1=Time unit1=s 
-           label2="Lateral Position" unit2=%s 
+           grey title=Slice label1=Time unit1=s
+           label2="Lateral Position" unit2=%s
            ''' % units)
 
     agc = data+'-agc'
     Flow(agc,fmg,'agc rect1=200')
     Plot(fmg,agc,
          '''
-         grey title="Time-Migrated Image" label1="Time" 
+         grey title="Time-Migrated Image" label1="Time"
          unit1=s label2="Lateral Position" unit2=%s
          ''' % units)
     Result(agc,
            '''
-           grey title=Picked pclip=98 label1="Time" 
+           grey title=Picked pclip=98 label1="Time"
            unit1=s label2="Lateral Position" unit2=%s
            ''' % units)
 
     Result(fmg+'2',[fmg,npk],'SideBySideAniso',vppen='txscale=1.2')
 
     Flow(agc+'2',[sem,npk],'slice pick=${SOURCES[1]} | window')
-    

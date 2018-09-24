@@ -2,7 +2,7 @@ try:
     from rsf.cluster import *
 except:
     from rsf.proj import *
-import sigsbee,fdmod,spmig,encode,adcig,zomig
+from rsf.recipes import sigsbee,fdmod,spmig,encode,adcig,zomig
 
 # ------------------------------------------------------------
 def param(par):
@@ -28,7 +28,7 @@ def param(par):
     par['fs']=20 # shots first
     par['ns']=40 # shots number
     par['js']=10 # shots jump
-    
+
     par['jds']=par['ds']*par['js']
     par['jos']=par['os']+par['fs']*par['ds']
 
@@ -54,7 +54,7 @@ def param(par):
     par['oximg']=par['ox']+20*par['dx']
     par['nximg']=1000
     par['dximg']=par['dx']
-    
+
     par['ozimg']=par['oz']+par['nzdtm']*par['dz']
     par['jzimg']=2
     par['nzimg']=1+(par['nz']-par['nzdtm'])/par['jzimg']
@@ -72,7 +72,7 @@ def param(par):
     par['nxtile']=par['nximg']/par['jcig']*(par['nht'])
     par['dxtile']=(par['nximg']-1)*par['dximg']/par['nxtile']
     par['oxtile']=par['oximg']
-    
+
     # picking parameters
     par['npck1']=50
     par['npck2']=50
@@ -83,8 +83,8 @@ def setup(par):
 
     # ------------------------------------------------------------
     param(par)
-    fdmod.param(par) 
-    
+    fdmod.param(par)
+
     # ------------------------------------------------------------
     # shot positions
     # ------------------------------------------------------------
@@ -94,7 +94,7 @@ def setup(par):
     # slowness models
     # ------------------------------------------------------------
     importvels(par)
-    
+
 # ------------------------------------------------------------
 def run(par):
 
@@ -112,9 +112,9 @@ def run(par):
                   'wfr'+vtag,
                   'slo'+vtag,
                   'ss',par)
-        
+
     for vtag in (['L','H']):
-        
+
         # ------------------------------------------------------------
         # image perturbation
         # ------------------------------------------------------------
@@ -123,7 +123,7 @@ def run(par):
                    'drv'+vtag,
                    'slo'+vtag,
                    'ss',par)
-        
+
         # ------------------------------------------------------------
         # slowness backprojection
         # ------------------------------------------------------------
@@ -133,7 +133,7 @@ def run(par):
                 'wfr'+vtag,
                 'slo'+vtag,
                 'ss',par)
-        
+
         # ------------------------------------------------------------
         # image perturbation
         # ------------------------------------------------------------
@@ -143,7 +143,7 @@ def run(par):
                 'wfr'+vtag,
                 'slo'+vtag,
                 'ss',par)
-        
+
         # ------------------------------------------------------------
         # slowness backprojection
         # ------------------------------------------------------------
@@ -166,7 +166,7 @@ def importvels(par):
     # padding in z
     Flow('vpad','vstr',
          '''
-         window n1=1 f1=1200 | 
+         window n1=1 f1=1200 |
          spray axis=1 n=143 |
          smooth rect2=250 repeat=5
          ''' )
@@ -188,7 +188,7 @@ def importref(par):
     # padding in z
     Flow('rpad','ref_',
          '''
-         window n1=1 f1=1200 | 
+         window n1=1 f1=1200 |
          spray axis=1 n=143 |
          smooth rect2=250 repeat=5
          ''' )
@@ -198,7 +198,7 @@ def importref(par):
          spike nsp=1 mag=1
          n1=3201 d1=0.00762 o1=3.048 k1=0 l1=%(nx)d
          n2=1180 d2=0.00762 o2=0     k2=1179 l2=1179 |
-         put label1=x label2=z unit1=km unit2=km | transp 
+         put label1=x label2=z unit1=km unit2=km | transp
          ''' % par)
 
     Flow('rsed','ref_','window n1=1180' )
@@ -228,7 +228,7 @@ def slownesses(amask,magn,s,ds,ss,par):
 
     # anomaly shape
     Flow('shapex',amask,'transp')
-    
+
     Flow('shape1',[amask,'velC'],         'remap1 pattern=${SOURCES[1]}')
     Flow('shape2','shape1 velCt','transp | remap1 pattern=${SOURCES[1]} | transp')
     Flow('anom','shape2 lmask',
@@ -238,7 +238,7 @@ def slownesses(amask,magn,s,ds,ss,par):
          math s=${SOURCES[1]} output="input*s"
          ''')
     Result('anom',fdmod.cgrey('allpos=y',par))
-    
+
     # incorrect velocity
     Flow('velL',['velC','anom'],
          'math v=${SOURCES[0]} a=${SOURCES[1]} output="v*(1.0-(%g)*a)"' % magn)
@@ -247,7 +247,7 @@ def slownesses(amask,magn,s,ds,ss,par):
     # velocity plots
     for i in ('velC','velL','velH'):
         Result(i,fdmod.cgrey('color=j allpos=y bias=1.5',par))
-        
+
     # ------------------------------------------------------------
     # prepare slowness
     spmig.slowness('svelC','velC',par)
@@ -258,7 +258,7 @@ def slownesses(amask,magn,s,ds,ss,par):
     Flow(s+'C','svelC','window squeeze=n      f3=%(nzdtm)d j3=%(jzimg)d'%par) # correct velocity
     Flow(s+'L','svelL','window squeeze=n      f3=%(nzdtm)d j3=%(jzimg)d'%par) # low     velocity
     Flow(s+'H','svelH','window squeeze=n      f3=%(nzdtm)d j3=%(jzimg)d'%par) # high    velocity
-    
+
     Flow('slows',[s+'C',s+'L',s+'H'],
          '''
          cat axis=2 space=n ${SOURCES[1:3]} |
@@ -291,11 +291,11 @@ def shotcoord(ss,par):
 
     for iexp in range(par['ns']):
         etag = "-e%03d" % iexp
-    
+
         xsou = par['os'] + (par['fs'] + iexp * par['js']) * par['ds']
         fdmod.point('ss'+etag,xsou,par['ozimg'],par)
         Plot(ss+etag,fdmod.ssplot('plotcol=5',par))
-        
+
     Plot(ss,[ss+'-e%03d'%x for x in range(par['ns'])],
          'cat axis=3 space=n ${SOURCES[1:%d]} |' % par['ns']
          + fdmod.ssplot('plotcol=5',par))
@@ -308,14 +308,14 @@ def originaldata(sdat,rdat,sd,par):
 
     sigsbee.getdata('data',par)
     sigsbee.makeshots('sall','data',par)
-        
+
     Flow('swin',
          'sall',
          '''
          window n3=%(ns)d f3=%(fs)d j3=%(js)d |
          bandpass flo=2 fhi=10
          ''' % par)
-    
+
     for file in (['swin','sall']):
         for iexp in range(par['ns']):
             etag = "-e%03d" % iexp
@@ -332,13 +332,13 @@ def originaldata(sdat,rdat,sd,par):
 
     encode.time2freq('S-sou-t','S-sou-w',par)
     encode.time2freq('S-rec-t','S-rec-w',par)
-    
+
     # datum through water
     spmig.datum3('S-dfs',
                  'S-dfr',
                  sd,
                  'S-sou-w',
-                 'S-rec-w',par) 
+                 'S-rec-w',par)
 
     # window datumed data (all shots)
     Flow(sdat,'S-dfs','window squeeze=n min1=%(oximg)g n1=%(nximg)g' % par)
@@ -356,13 +356,13 @@ def simulateddata(sdat,rdat,slo,sd,ss,par):
     par['kzref']=par['nzimg']-par['nzpad']/par['jzimg']-10
     Flow('ref',None,
          '''
-         spike nsp=1 mag=1 
+         spike nsp=1 mag=1
          n1=%(nximg)d d1=%(dximg)g o1=%(oximg)g k1=%(kxref)d l1=%(lxref)d
          n2=%(nzimg)d d2=%(dzimg)g o2=%(ozimg)g k2=%(kzref)d |
          smooth rect1=25 repeat=3 |
          spray axis=2 n=1 o=0 d=1 |
-         put label1=x label2=y label3=z 
-         ''' % par )    
+         put label1=x label2=y label3=z
+         ''' % par )
     Plot('ref','window | transp | smooth rect1=3 |'
          + fdmod.cgrey('pclip=100',par))
     Result('ref',['ref',ss],'Overlay')
@@ -391,7 +391,7 @@ def simulateddata(sdat,rdat,slo,sd,ss,par):
              pad beg2=%d n2out=%d |
              put label1=w label2=x label3=y o2=%g d2=%g |
              transp memsize=250 plane=12 |
-             transp memsize=250 plane=23 
+             transp memsize=250 plane=23
              ''' % (isou,
                     par['nximg'],
                     par['oximg'],
@@ -419,7 +419,7 @@ def simulateddata(sdat,rdat,slo,sd,ss,par):
 #         map(lambda x: 'tdt-e%03d'  % x,range(par['ns'])),
 #         'cat space=n axis=4 ${SOURCES[1:%d]}'%par['ns'])
 #    Result(rdat,fdmod.fgrey('',par))
-        
+
 # ------------------------------------------------------------
 def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
 
@@ -451,7 +451,7 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
              cig=${TARGETS[1]}
              drv=${TARGETS[2]}
              ''' % spmig.param(par))
-        
+
     # concatenate images and CIGs
     for k in ([img,drv,cig]):
         Flow(k+'-all',
@@ -462,7 +462,7 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
     # plot complete images
     Plot(  img,'window | transp |'+ fdmod.cgrey('pclip=97',par))
     Result(img,[img,ss],'Overlay')
-    
+
     for k in ([drv,cig]):
         # plot complete CIGs
         Result(k,'window n1=1 f1=%d |' % (par['nximg']/4)
@@ -478,7 +478,7 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
                put n2=%(nxtile)d o2=%(oxtile)g d2=%(dxtile)g n3=1 |
                ''' % par
                + fdmod.cgrey('wantaxis2=n pclip=97',par))
-    
+
     # clip image
     Flow(img+'-byt',
          img+'-all','byte gainpanel=a pclip=97')
@@ -496,7 +496,7 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
 
         # plot partial CIGs
         Result(cig+etag,
-               cig+'-byt',               
+               cig+'-byt',
                'window n1=1 f1=%d n2=1 f2=%d |' % (par['nximg']/4,iexp)
                + adcig.tgrey('',par))
 
@@ -504,10 +504,10 @@ def migration(img,cig,drv,sdat,rdat,swfl,rwfl,slo,ss,par):
 def tauplot(col,fat,custom,par):
     return '''
     graph pad=n transp=y yreverse=y wanttitle=n
-    plotcol=%d 
+    plotcol=%d
     min1=%g max1=%g
-    min2=%g max2=%g 
-    plotfat=%d wantaxis=n screenratio=2.0 
+    min2=%g max2=%g
+    plotfat=%d wantaxis=n screenratio=2.0
     %s %s labelsz=4
     ''' % (col,
 	   par['zmin'],par['zmax'],
@@ -529,7 +529,7 @@ def deltaimage(dim,cig,drv,slo,ss,par):
          envelope |
          smooth rect1=50 rect2=50 repeat=1 |
          scale axis=123 |
-         clip clip=0.75         
+         clip clip=0.75
          ''')
 
     # pick tau
@@ -543,7 +543,7 @@ def deltaimage(dim,cig,drv,slo,ss,par):
     Result(cig+'-pck',
            'window | transp |' + fdmod.cgrey('color=j',par))
 
-    # plot picked tau on CIG 
+    # plot picked tau on CIG
     Flow(cig+'-sbt',
          cig,'byte gainpanel=a pclip=90')
     for ipos in range(0,par['nximg'],10):
@@ -579,7 +579,7 @@ def deltaimage(dim,cig,drv,slo,ss,par):
     Plot(dim,
          'window n4=1 min4=0 | transp |' + fdmod.cgrey('pclip=97',par))
     Result(dim,[dim,ss],'Overlay')
-    
+
     # plot DIM tiles
     Result(dim+'-tile',
            dim,
@@ -625,7 +625,7 @@ def adjoint(bsl,dim,swfl,rwfl,slo,ss,par):
 
     for iexp in range(par['ns']):
         etag = "-e%03d" % iexp
-        
+
         # plot partial slowness backprojection
         Plot(bsl+etag,bsl+'-byt',
              'window n2=1 f2=%d | transp |' % iexp + fdmod.cgrey('color=e',par))
@@ -637,7 +637,7 @@ def forward(dsl,dim,swfl,rwfl,slo,ss,par):
 
     for iexp in range(par['ns']):
         etag = "-e%03d" % iexp
-        
+
         Flow(dim+etag,
              [dsl,swfl+etag,rwfl+etag,slo],
              '''
@@ -659,7 +659,7 @@ def forward(dsl,dim,swfl,rwfl,slo,ss,par):
     Plot(dim,
          'window n4=1 min4=0 | transp |' + fdmod.cgrey('pclip=97',par))
     Result(dim,[dim,ss],'Overlay')
-    
+
     # plot DIM tiles
     Result(dim+'-tile',
            dim,
@@ -670,7 +670,7 @@ def forward(dsl,dim,swfl,rwfl,slo,ss,par):
            put n2=%(nxtile)d o2=%(oxtile)g d2=%(dxtile)g n3=1 |
            ''' % par
            + fdmod.cgrey('wantaxis2=n pclip=97',par))
-    
+
 
     # clip image perturbation
 #    Flow(dim+'-byt',
@@ -678,7 +678,7 @@ def forward(dsl,dim,swfl,rwfl,slo,ss,par):
 
 #    for iexp in range(par['ns']):
 #        etag = "-e%03d" % iexp
-#        
+#
 #        # plot partial image perturbation
 #        Plot(dim+etag,dim+'-byt',
 #             'window n4=1 min4=0 n2=1 f2=%d | transp |' % iexp + fdmod.cgrey('',par))

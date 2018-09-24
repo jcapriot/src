@@ -2,14 +2,15 @@ try:
     from rsf.cluster import *
 except:
     from rsf.proj import *
-import fdmod,math 
+from rsf.recipes import fdmod
+import math
 
 '''
     This module should help to do 2d filtering
-    
+
     I will add in the future some filter for upgoing/downgoing
     wavefield separation.
-    
+
     Esteban Diaz,
 
     Center for Wave Phenomena
@@ -22,8 +23,8 @@ def fourier2d(four2d,fin,a1=1,a2=2):
     Flow(four2d,fin,
       '''
       rtoc |
-      fft3 axis=%d | 
-      fft3 axis=%d  
+      fft3 axis=%d |
+      fft3 axis=%d
       '''%(a1,a2))
 
 def invfourier2d(invfour2d,fin):
@@ -31,17 +32,17 @@ def invfourier2d(invfour2d,fin):
     # Input is complex (fourier domain), output is real
     Flow(four2d,fin,
       '''
-      fft3 axis=1 inv=y| 
+      fft3 axis=1 inv=y|
       fft3 axis=2 inv=y|
       real
       ''')
 
 def spectra2d(spectra2d,fin):
-    # 2D fourier spectra 
+    # 2D fourier spectra
     # output is real
     Flow(spectra2d,fin,
       '''
-      math output="sqrt(input*conj(input))" | 
+      math output="sqrt(input*conj(input))" |
       real |
       window min1=0 min2=0
       ''')
@@ -55,7 +56,7 @@ def f2dv1(filt,inp,slp=0.1,smooth="rect1=1 rect2=1 repeat=1",sym=1):
     # 2D filter based on spectra slopes,
     # slope=d1/d2  (change on axis1 over change on axis2
     # inp: complex file with the same grid of the fourier2d()
-    # Default slope=0.1    
+    # Default slope=0.1
     # Filt is a complex file, with the same filter in
     # both real and imaginary parts
     # smooth: custom smoothing for tapering the filter
@@ -65,8 +66,8 @@ def f2dv1(filt,inp,slp=0.1,smooth="rect1=1 rect2=1 repeat=1",sym=1):
             '''
             real |
             math output="1*(%g*abs(x2) -abs(x1))/sqrt(%g*%g +1)" |
-            mask min=0 | 
-            dd type=float | 
+            mask min=0 |
+            dd type=float |
             smooth %s |
             rtoc |
             math output="input -sqrt(-1)*input"
@@ -76,35 +77,35 @@ def f2dv1(filt,inp,slp=0.1,smooth="rect1=1 rect2=1 repeat=1",sym=1):
             '''
             real |
             math output="1*(%g*x2 -x1)/sqrt(%g*%g +1)" |
-            mask min=0 | 
-            dd type=float | 
+            mask min=0 |
+            dd type=float |
             smooth %s |
             rtoc |
             math output="input -sqrt(-1)*input"
             '''%(slp,slp,slp,smooth))
-                                   
 
 
- 
+
+
 def f2dv1v2(filt,inp,slp1=0.1,slp2=0.4,smooth="rect1=1 rect2=1 repeat=1",sym=0,reject=1):
     # 2D filter based on spectra slopes,
     # slope=d1/d2  (change on axis1 over change on axis2
     # slp2 >slp1
     # fan filter
     # inp: complex file with the same grid of the fourier2d()
-    # Default slope=0.1    
+    # Default slope=0.1
     # Filt is a complex file, with the same filter in
     # both real and imaginary parts
     # smooth: custom smoothing for tapering the filter
     tslp1=slp1
     tslp2=slp2
-    if (abs(slp2)<abs(slp1)): 
+    if (abs(slp2)<abs(slp1)):
        tslp2=slp1
        tslp1=slp2
     slp1=tslp1
-    slp2=tslp2  
+    slp2=tslp2
     f2dv1(filt+'tmp1',inp,slp1,smooth="rect1=1 rect2=1 repeat=1",sym=sym)
- 
+
     f2dv1(filt+'tmp2',inp,slp2,smooth="rect1=1 rect2=1 repeat=1",sym=sym)
 
     if reject==1:
@@ -112,10 +113,10 @@ def f2dv1v2(filt,inp,slp1=0.1,slp2=0.4,smooth="rect1=1 rect2=1 repeat=1",sym=0,r
           '''
           add mode=a scale=1,-1 ${SOURCES[1]}|
           real |
-          math output="abs(input)" | 
+          math output="abs(input)" |
           smooth %s |
           scale axis=123 |
-          rtoc | 
+          rtoc |
           math output="input- sqrt(-1)*input"
           '''%smooth)
     else:
@@ -123,13 +124,13 @@ def f2dv1v2(filt,inp,slp1=0.1,slp2=0.4,smooth="rect1=1 rect2=1 repeat=1",sym=0,r
           '''
           add mode=a scale=1,-1 ${SOURCES[1]}|
           real |
-          math output="abs(input)" | 
+          math output="abs(input)" |
           smooth %s |
           scale axis=123 |
-          rtoc | 
+          rtoc |
           math output="1-(input- sqrt(-1)*input)"
           '''%smooth)
-        
+
 
 
 def kzfilt(filt,inp,smooth="rect1=1 rect2=1 repeat=1",forw=1.0):
@@ -200,9 +201,6 @@ def filtinvert(filtdata,fourier2d,filt2d):
         '''
         add mode=p ${SOURCES[1]} |
         fft3 axis=1 inv=y |
-        fft3 axis=2 inv=y | 
+        fft3 axis=2 inv=y |
         real
         ''')
-
-    
-

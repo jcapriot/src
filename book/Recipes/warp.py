@@ -1,6 +1,6 @@
 from rsf.proj import *
 import math, string, sys
-import version
+from rsf.recipes import version
 
 warp0 = '''
 warp1 other=${SOURCES[1]} warpin=${SOURCES[2]}
@@ -12,13 +12,13 @@ getmask = 'add scale=1,-1 ${SOURCES[1]} | mask min=0 | dd type=float'
 def psrect(rect):
     return '''
     math min=${SOURCES[2]} max=${SOURCES[1]}
-    output="sqrt(1+%d*(1/min^2-1/max^2)*input)" 
+    output="sqrt(1+%d*(1/min^2-1/max^2)*input)"
     ''' % rect
 
 def pprect(rect):
     return '''
     math min=${SOURCES[2]} max=${SOURCES[1]}
-    output="sqrt(1+%d*(1/max^2-1/min^2)*(1-input))" 
+    output="sqrt(1+%d*(1/max^2-1/min^2)*(1-input))"
     ''' % rect
 
 balance = '''
@@ -42,7 +42,7 @@ def warping(niter,rect1=1,rect2=1,rect3=1):
 
 def pick(min2,max2,rect1=1,rect2=1,rect3=1,an=0.5):
     return '''
-    window min2=%g max2=%g | 
+    window min2=%g max2=%g |
     pick rect1=%d rect2=%d rect3=%d an=%g vel0=1 |
     window''' % (min2,max2,rect1,rect2,rect3,an)
 
@@ -61,7 +61,7 @@ def warp2gamma(ss):
 
 def warp2egamma(ss):
     return '''
-    math output="(input+x1)/x1" %s 
+    math output="(input+x1)/x1" %s
     ''' % ('| math output="2*input-1" ','')[ss]
 
 
@@ -85,7 +85,7 @@ def warp3(name,       # name prefix
           fmin=0,     # minimum frequency
           fmax=40,    # maximum frequency
           frect=12,   # frequency smoothing
-          frame1=10,  # time frame          
+          frame1=10,  # time frame
           ng=101,     # number of gammas
           g0=0.96,    # first gamma
           pmin=0,     # minimum gamma for picking
@@ -131,7 +131,7 @@ def warp3(name,       # name prefix
     transp          memsize=500 |
     spline n1=%d d1=1 o1=%g | transp memsize=500  |
     transp plane=13 memsize=500 |
-    spline n1=%d d1=1 o1=%g | transp plane=13 memsize=500 
+    spline n1=%d d1=1 o1=%g | transp plane=13 memsize=500
     ''' % (j2,j3,2*rect1,2*rect2/j2,2*rect3/j3,nx,o2,ny,o3)
 
     def freqplot3(title):
@@ -167,8 +167,8 @@ def warp3(name,       # name prefix
     Plot(pp+'s',pp,pslice('PP'))
 
     for i in range(iter):
-        wrp = warp 
-        
+        wrp = warp
+
         #################
         # INITIAL WARPING
         #################
@@ -235,16 +235,16 @@ def warp3(name,       # name prefix
         #########
         # WARPING
         #########
-        
+
         warp = n('wrp')
         Flow([warp,psw+'2'],[sr,pr,pk,wrp],warpit,stdout=-1)
-        Result(psw+'2',plot3('Warped ' + PS))        
+        Result(psw+'2',plot3('Warped ' + PS))
 
         Flow(psw+'1',[ps,pp,warp],warp0)
         Result(psw+'1',plot3('Warped ' + PS))
-        
+
         gamma = n('gamma2')
-        Flow(gamma,warp,warp2gamma(ss))        
+        Flow(gamma,warp,warp2gamma(ss))
         Result(gamma,
                '''
                window min1=%g max1=%g |
@@ -253,14 +253,14 @@ def warp3(name,       # name prefix
                point1=0.75 point2=0.75 color=j scalebar=y minval=%g maxval=%g
                label1="Time (s)" label2="In-line" label3="Cross-line"
                ''' % (tmin,tmax,(gmin+gmax)/2,(gmax-gmin)/2,
-                      frame1,trace-o2,line-o3,gmin,gmax))   
+                      frame1,trace-o2,line-o3,gmin,gmax))
 
         if i == iter-1:
             Flow(psw+'1',[ps,pp,warp],warp0)
             Plot(psw+'s',psw+'1',pslice('Warped %s (After)' % PS))
 
             Result(psw+'s',[pp+'s',ps+'s',psw+'s'],'SideBySideIso')
-                
+
         g0 = (g0+1)*0.5
 
 def warp2(name,       # name prefix
@@ -279,7 +279,7 @@ def warp2(name,       # name prefix
           fmin=0,     # minimum frequency
           fmax=40,    # maximum frequency
           frect=12,   # frequency smoothing
-          frame1=10,  # time frame          
+          frame1=10,  # time frame
           ng=101,     # number of gammas
           g0=0.96,    # first gamma
           pmin=0,     # minimum gamma for picking
@@ -298,9 +298,9 @@ def warp2(name,       # name prefix
         return # think how to do it better
 
     interg = 'pad n2=%d | put n2=%d n3=%d | stack' % ((nx/inter+1)*inter,inter,nx/inter+1)
-    inter = 2*inter    
+    inter = 2*inter
     interw = 'pad n2=%d | put n2=%d n3=%d | stack' % ((nx/inter+1)*inter,inter,nx/inter+1)
-      
+
     if trace:
         for case in (pp,ps,warp):
             Flow(case+'1',case,'window n2=1 min2=%d' % trace)
@@ -313,7 +313,7 @@ def warp2(name,       # name prefix
     def plot(title):
         return '''
         window min1=%g max1=%g |
-        grey title="%s" label1=Time unit1=s clip=%g 
+        grey title="%s" label1=Time unit1=s clip=%g
         ''' % (tmin,tmax,title,clip)
 
     vplot = plot('Vp/Vs') + '''
@@ -337,7 +337,7 @@ def warp2(name,       # name prefix
         return '''
         cat axis=2 ${SOURCES[1]} |
         graph title="%s" max1=%g label1=Frequency unit1=Hz
-        dash=0,1 plotfat=7 label2= 
+        dash=0,1 plotfat=7 label2=
         ''' % (title,4*fmax)
 
     def giplot(title):
@@ -357,7 +357,7 @@ def warp2(name,       # name prefix
         title="Interleaved (%s)"
         label1=Time unit1=s label2="In-line"
         ''' % (tmin,tmax,title)
-        
+
     Plot(pp,plot('PP'))
     Flow(pp+'i',pp,ifreq)
     Plot(pp+'i',freqplot('PP Local Frequency'))
@@ -380,16 +380,16 @@ def warp2(name,       # name prefix
 
     simplot = '''
     window min1=%g max1=%g |
-    grey title="%s" allpos=y 
+    grey title="%s" allpos=y
     color=j clip=1
-    label1="Time (s)" 
+    label1="Time (s)"
     ''' % (tmin,tmax,'%s')
 
     warpit = warping(niter,200,200)
 
     for i in range(iter):
-        wrp = warp 
-        
+        wrp = warp
+
         #################
         # INITIAL WARPING
         #################
@@ -400,7 +400,7 @@ def warp2(name,       # name prefix
         psw = n('psw')
         Flow(psw,[ps,pp,wrp],warp0)
         Plot(psw,plot('Warped ' + PS))
-        
+
         dif = n('dif')
         Plot(dif,[psw,pp],
              'add scale=1,-1 ${SOURCES[1]} | ' + plot('Difference'))
@@ -434,7 +434,7 @@ def warp2(name,       # name prefix
         pi = n('pi')
         Flow(pi,pr,ifreq)
         Flow(si+'2',sr,ifreq)
-        
+
         Plot(si+'2',freqplot(PS + ' Local Frequency'))
         Plot(pi,freqplot('PP Local Frequency'))
         Result(si,[pp+'i',si,pi,si+'2'],'TwoRows')
@@ -451,12 +451,12 @@ def warp2(name,       # name prefix
         Flow(ppft+'a',ppft,'math output="abs(input)" | real')
         Flow(psft+'a',psft,'math output="abs(input)" | real')
 
-        
+
 
         s0 = psw+'s0'
         Flow(s0,psw,'spectra all=y')
         Plot(s0,[pp+'s0',s0],specplot('Before'))
-        
+
         s1 = psw+'s1'
         Flow(s1,sr,'spectra all=y')
         Flow(pr+'s1',pr,'spectra all=y')
@@ -472,22 +472,22 @@ def warp2(name,       # name prefix
             Flow(pr+'in0w',pr,interw)
             Flow(sr+'in0w',sr,interw)
             Plot(in0+'w',[pr+'in0w',sr+'in0w'],wiplot('Before'))
-            
+
             Result(in0,in0,'Overlay')
             Result(in0+'w',in0+'w','Overlay')
 
             sim0 = n('sim0')
             Flow(sim0,[pr,sr],simil(rect1,rect2))
             Result(sim0,simplot % 'Before')
-           
+
         Plot(sr,plot('Warped and Balanced ' + PS))
         Plot(pr,plot('Balanced PP'))
-        
+
         dif = dif+'2'
         Plot(dif,[sr,pr],
              'add scale=1,-1 ${SOURCES[1]} | ' + plot('Difference'))
 
-        Result(sr,[pr,sr,dif,gamma],'TwoRows')        
+        Result(sr,[pr,sr,dif,gamma],'TwoRows')
 
         ############
         # GAMMA SCAN
@@ -495,15 +495,15 @@ def warp2(name,       # name prefix
 
         g1 = 2-g0
         warpscan2 = warpscan(ng,g0,g1,rect1,1,int(0.5+rect2/j2))
-        
+
         sc = n('sc')
 
         Flow(sr+'2',sr,'window j2=%d' % j2)
         Flow(pr+'2',pr,'window j2=%d' % j2)
-        
+
         Flow(sc,[sr+'2',pr+'2'],warpscan2)
         Result(sc,scanplot)
-        
+
         pk = n('pk')
 
         if i==0:
@@ -527,7 +527,7 @@ def warp2(name,       # name prefix
         warp = n('wrp')
         Flow([warp,psw+'2'],[sr,pr,pk,wrp],warpit,stdout=-1)
         Plot(psw+'2',plot('Warped ' + PS))
-        
+
         dif = n('dif2')
         Plot(dif,[psw+'2',pr],
              'add scale=1,-1 ${SOURCES[1]} | ' + plot('Difference'))
@@ -546,7 +546,7 @@ def warp2(name,       # name prefix
             Flow(pr+'in1w',pr,interw)
             Flow(psw+'2in1w',psw+'2',interw)
             Plot(in1+'w',[pr+'in1w',psw+'2in1w'],wiplot('After'))
-            
+
             Result(in1,in1,'Overlay')
             Result(in1+'w',in1+'w','Overlay')
             Result(in0+'1',[in0,in1],'SideBySideIso')
@@ -560,7 +560,7 @@ def warp2(name,       # name prefix
             Result(psw+'1',plot('Warped ' + PS))
 
             rt = n('rt')
-            Flow(psw+'i',psw+'1',ifreq)            
+            Flow(psw+'i',psw+'1',ifreq)
             Flow(rt,psw+'i','math output="sqrt(1+12*(1/input^2-1/%g^2))" ' % (fmax*2*math.pi*dt))
 
             dl = n('dl')
@@ -572,7 +572,7 @@ def warp2(name,       # name prefix
 
             Flow('e'+gamma,warp,warp2egamma(ss))
             Result(gamma,'e'+gamma,vplot)
-        
+
         g0 = (g0+1)*0.5
 
 def warp1(name,      # name prefix
@@ -616,7 +616,7 @@ def warp1(name,      # name prefix
     def iphase(title):
         return '''
         cat axis=2 ${SOURCES[1]} |
-        scale dscale=%g | 
+        scale dscale=%g |
         graph title="Local Frequency (%s)" label1=Time unit1=s
         min2=%g max2=%g min1=%g max1=%g
         dash=0,1 label2=Frequency unit2=Hz
@@ -628,12 +628,12 @@ def warp1(name,      # name prefix
         #################
         # INITIAL WARPING
         #################
-        wrp = warp 
-      
+        wrp = warp
+
         def showpick(case):
             return '''
             graph transp=y min2=%g max2=%g min1=%g max1=%g
-            yreverse=y plotcol=%d plotfat=%d 
+            yreverse=y plotcol=%d plotfat=%d
             wantaxis=n wanttitle=n pad=n
             ''' % (g0,g1,tmin,tmax,(7,0)[case],(5,1)[case])
 
@@ -682,14 +682,14 @@ def warp1(name,      # name prefix
              'ricker niter=1000 ma=$TARGET verb=n m=20',stdout=0)
 
         rickplot = '''
-        cat axis=3 ${SOURCES[1]} | window n1=1 max2=%g | 
+        cat axis=3 ${SOURCES[1]} | window n1=1 max2=%g |
         math output="sqrt(input)" |
-        graph title="Dominant Frequency" 
+        graph title="Dominant Frequency"
         label2=Frequency unit2=Hz min2=%g max2=%g
         ''' % (tmax,fmin,fmax)
 
         Result(n('rick'),[pprick,psrick],rickplot)
-        
+
         Flow([ppft+'b',psft+'b'],[ppft,psft,pprick,psrick],
              '''
              freshape in2=${SOURCES[1]} ma=${SOURCES[2]}
@@ -716,12 +716,12 @@ def warp1(name,      # name prefix
         ############
 
         g1 = 2-g0
-        
+
         warpscan1 = warpscan(2*ng,g0,g1,rect1)
-        
+
         greyscan = '''
         window min1=%g max1=%g |
-        grey title="Gamma scan" allpos=y 
+        grey title="Gamma scan" allpos=y
         min2=%g max2=%g
         color=j pclip=100
         label1=Time unit1=s label2=Gamma
@@ -754,6 +754,5 @@ def warp1(name,      # name prefix
         Plot(gamma+'2',graph)
         Plot(psw+'2',[psw+'2',pr],dplot)
         Result(psw+'2',[gamma+'2',psw+'2'],'OverUnderAniso')
-        
+
         g0 = (g0+1)*0.5
-        

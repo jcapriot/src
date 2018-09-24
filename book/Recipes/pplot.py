@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import fdmod 
+from rsf.recipes mport fdmod 
 
 # ------------------------------------------------------------
 def multip(plot,allplots,ny,nx,ys,xs,yc,xc):
@@ -76,7 +76,7 @@ def p3x2(plot,p0,p1,p2,p3,p4,p5,ys,xs,yc,xc):
     Plot(j5,p5,'Overlay',vppen='yscale=%f xscale=%f ycenter=%f xcenter=%f'% (ys,xs,2*yc-1,xc-1))
 
     Plot(plot,[j0,j1,j2,j3,j4,j5],'Overlay')
-    
+
 # ------------------------------------------------------------
 
 def p2x1(plot,p0,p1,ys,xs,yc):
@@ -124,7 +124,7 @@ def p1x2(plot,p0,p1,ys,xs,yc):
 
     Plot  (plot,[j0,j1],'Overlay')
 #    Result(plot,[j0,j1],'Overlay')
-    
+
 def p1x3(plot,p0,p1,p2,ys,xs,yc):
     j0 = plot + '_' + p0
     j1 = plot + '_' + p1
@@ -243,5 +243,3 @@ def p1x9(plot,p0,p1,p2,p3,p4,p5,p6,p7,p8,ys,xs,yc):
     Plot(j8,p8,'Overlay',vppen='yscale=%f xscale=%f xcenter=%f ycenter=0'% (ys,xs,8*yc))
 
     Plot(plot,[j0,j1,j2,j3,j4,j5,j6,j7,j8],'Overlay')
-
-

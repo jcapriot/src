@@ -2,7 +2,8 @@ from __future__ import print_function
 from functools import reduce
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import pplot,math
+from rsf.recipes import pplot
+import math
 import random
 
 random.seed(1006)

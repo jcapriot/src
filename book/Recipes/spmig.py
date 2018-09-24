@@ -1,6 +1,7 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import zomig, os
+from rsf.recipes import zomig
+import os
 
 # ------------------------------------------------------------
 def param(par):
@@ -45,7 +46,7 @@ def migpar(par):
 
     if('tmx' not in par):     par['tmx']=16
     if('tmy' not in par):     par['tmy']=16
-    
+
     if('incore' not in par):  par['incore']='y'
 
 # ------------------------------------------------------------
@@ -57,7 +58,7 @@ def wflds(swfl,rwfl,wave,shot,par):
     #
     _ssss = '_' + swfl
     _rrrr = '_' + rwfl
-    
+
     # _wave(nw)
     Flow(_wave,wave,
          '''
@@ -99,7 +100,7 @@ def wflds(swfl,rwfl,wave,shot,par):
          transp plane=23 |
          put label5=
          ''')
-    
+
 # ------------------------------------------------------------
 def slowness(slow,velo,par):
     Flow(slow,velo,
@@ -113,12 +114,12 @@ def slowness(slow,velo,par):
 # ------------------------------------------------------------
 # datum surface wavefields
 def datum(swf1,rwf1,slow,swf0,rwf0,par):
-    
+
     zomig.Cdtone(swf1,swf0,slow,par) #      causal
     zomig.Adtone(rwf1,rwf0,slow,par) # anti-causal
 
 def datum3(swf1,rwf1,slow,swf0,rwf0,par):
-    
+
     zomig.Cdtone3(swf1,swf0,slow,par) #      causal
     zomig.Adtone3(rwf1,rwf0,slow,par) # anti-causal
 
@@ -148,7 +149,7 @@ def modelPW3(data,slow,wfld,refl,par):
           ref=${SOURCES[1]}
           slo=${SOURCES[2]}
           ''' % param(par))
-    
+
 def modelCW3(data,sslo,rslo,wfld,refl,par):
     Flow(    data,[         wfld,refl,sslo,rslo],
           '''
@@ -197,7 +198,7 @@ def imageCW3(imag,cigs,sslo,rslo,swlf,rwfl,par):
          rwf=${SOURCES[3]}
          cig=${TARGETS[1]}
          ''' % param(par))
-    
+
 # migrate (cluster call)
 #def cimage(imag,slow,swlf,rwfl,par):
 #    Flow(imag,[swlf,slow,rwfl],
@@ -236,7 +237,7 @@ def script(EDIR,job,imag,cigs,slow,swfl,rwfl,par,ngroup,nshots):
 
     mycom = 'cp ' + bindir + '/sfsrmig2' + ' '+ EDIR
     os.system(mycom)
-    
+
     allk = ['%03d' % x for x in range(ngroup)]
     for k in allk:
         _j = '_' + imag + '.' + k + '.rsf'
@@ -255,7 +256,7 @@ def script(EDIR,job,imag,cigs,slow,swfl,rwfl,par,ngroup,nshots):
         mycom = 'echo "' + mycom + '" >>' + EDIR + '/' + job
         os.system(mycom)
 
-def execute(EDIR,JOB,ngroup,nshots,imag,cigs,slow,swfl,rwfl,par):    
+def execute(EDIR,JOB,ngroup,nshots,imag,cigs,slow,swfl,rwfl,par):
     script = EDIR + '/' + JOB
 
     f = open(script,'w')
@@ -280,7 +281,7 @@ def execute(EDIR,JOB,ngroup,nshots,imag,cigs,slow,swfl,rwfl,par):
     f.close()
 
 #bsub = WhereIs('bsub')
-        
+
 def run(img,cig,swf,rwf,slo,imc,par,clspar,cigpar):
     if(imc=='o'): par['misc']='itype=o'
     if(imc=='x'): par['misc']='itype=x jcx=%(jmx)d nhx=%(nhx)d hsym=y                 ' % cigpar
@@ -333,7 +334,7 @@ def s2i(dslow,dimag,swfld,rwfld,bslow,par):
          rwf=${SOURCES[2]}
          slo=${SOURCES[3]}
          ''' % param(par))
-    
+
 # first-order scattering (image to slowness)
 def i2s(dimag,dslow,swfld,rwfld,bslow,par):
     Flow(dslow,[dimag,swfld,rwfld,bslow],
@@ -345,5 +346,3 @@ def i2s(dimag,dslow,swfld,rwfld,bslow,par):
          ''' % param(par))
 
 # ------------------------------------------------------------
-
-

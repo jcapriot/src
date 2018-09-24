@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import adcig
+from rsf.recipes import adcig
 
 # ------------------------------------------------------------
 # model parameters

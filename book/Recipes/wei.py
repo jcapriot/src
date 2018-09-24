@@ -1,7 +1,7 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
 
-import fdmod
+from rsf.recipes import fdmod
 
 def param(par):
     p  = ' '
@@ -53,15 +53,15 @@ def slowness2d(slow,velo,par):
     Flow(slow,velo,
          '''
          math "output=1/input" |
-         transp plane=34 | 
-         transp plane=12 | 	
+         transp plane=34 |
+         transp plane=12 |
 	 transp plane=23 |
          put label2=y o2=0 d2=1
          ''')
 
 def slowness(slow,velo,par):
     slowness2d(slow,velo,par)
-    
+
 
 # ------------------------------------------------------------
 # Wavefield Reconstruction
@@ -119,7 +119,7 @@ def hicmig(icic,ieic,sdat,rdat,slow,ccoo,custom,par):
          cip=${TARGETS[1]}
          %s
          ''' % (param(par)+eicpar(par)+custom))
-    
+
 # ------------------------------------------------------------
 # wavefields from arbitrary sources
 def genwfl(wfl,sou,coo,slo,down,causal,custom,par):
@@ -128,7 +128,7 @@ def genwfl(wfl,sou,coo,slo,down,causal,custom,par):
          weigwf verb=y
          slo=${SOURCES[1]}
          coo=${SOURCES[2]}
-         down=%s causal=%s 
+         down=%s causal=%s
          %s
          ''' %(down,causal,param(par)+custom))
 
@@ -141,7 +141,7 @@ def fwikerZ(ker,dws,ss,dwr,rr,slo,pad,custom,par):
           '''
           remap1 n1=%d o1=%g d1=%g
           '''%(pad,par['ox']-padL*par['dx'],par['dx']))
-          
+
      genwfl(ker+'_SW',dws,ss,ker+'_padX','y','y','',par)
      genwfl(ker+'_RW',dwr,rr,ker+'_padX','y','n','',par)
 
@@ -162,11 +162,11 @@ def fwikerX(ker,dws,ss,dwr,rr,slo,pad,custom,par):
      padT=min(par['nz'],int(0.5*(pad-par['nz'])))
      Flow(ker+'_padZ',slo,
           '''
-          window | transp | 
+          window | transp |
           remap1 n1=%d o1=%g d1=%g |
-          transp plane=23 
+          transp plane=23
           '''%(pad,par['oz']-padT*par['dz'],par['dz']))
-     
+
      genwfl(ker+'_SW',dws,ss+'_T',ker+'_padZ','y','y','',par)
      genwfl(ker+'_RW',dwr,rr+'_T',ker+'_padZ','n','n','',par)
 
@@ -175,7 +175,5 @@ def fwikerX(ker,dws,ss,dwr,rr,slo,pad,custom,par):
           math output="conj(us)*ur"
           us=${SOURCES[0]} ur=${SOURCES[1]} |
           window min1=%g n1=%g |
-          stack axis=3 | real 
+          stack axis=3 | real
           '''%(par['oz'],par['nz']),stdin=0)
-
-

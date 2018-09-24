@@ -1,24 +1,24 @@
 from __future__ import print_function
 from rsf.proj import *
-import sigs,fdmod,pot
+from rsf.recipes import sigs,fdmod,pot
 
 
 def inimodel(ss,rr,par):
 
-    
+
     Result('vwin',fdmod.cgrey('color=j allpos=y wantscalebar=y',par))
-    
+
     # ------------------------------------------------------------
     sigs.saltmask('mask','vwin',par)
     Result('mask',fdmod.cgrey('wantscalebar=y',par))
-    
+
     Flow('vo',['vwin','mask'],
          'math m=${SOURCES[1]} output="input*(1-m)+m*0.85*14.76*%g"' % par['ft2km'])
 
     # ------------------------------------------------------------
     Flow('vp','vwin','scale rscale=1')
     Flow('nu','vp','math output=0.0')
-    
+
     # vp/vs
     Flow('vsvpratio','vwin',
          '''
@@ -34,11 +34,11 @@ def inimodel(ss,rr,par):
     Flow(  'amask','vp','mask min=2.0 max=4 | dd type=float')
     Result('amask',fdmod.cgrey('allpos=y',par))
     Flow(  'bmask','vp','mask min=2.5 max=3.0 | dd type=float')
-    Result('bmask',fdmod.cgrey('allpos=y',par))    
+    Result('bmask',fdmod.cgrey('allpos=y',par))
 
     Flow(  'cmask','vp','mask min=2.5 max=4 | dd type=float')
     Result('cmask',fdmod.cgrey('allpos=y',par))
-    
+
     Flow(  'denmask','vp','mask max=4 | dd type=float')
     Result('denmask',fdmod.cgrey('allpos=y',par))
 
@@ -80,7 +80,7 @@ def inimodel(ss,rr,par):
     Plot('epsilon',
          fdmod.cgrey('allpos=y color=iC color=j formatbar=%4.2f  barlabel="\s150 \F9 e" '
                      +labelattr,par))
-    Plot('delta',  
+    Plot('delta',
          fdmod.cgrey('allpos=y color=iC color=j formatbar=%4.2f barlabel="\s150 \F9 d" '
                      +labelattr,par))
 
@@ -89,9 +89,9 @@ def inimodel(ss,rr,par):
     Plot('vpvsratio','vsvpratio','math output="1/input" |'+fdmod.cgrey('allpos=y color=iC color=j',par))
     for i in (['vp','vs','ro','epsilon','delta','vpvsratio']):
         Result(i,[i],'Overlay')
-    
+
 def wfom(wom,wfldp,wflds,velo,vmean,name1,name2,axis,custom,par):
-    
+
 #    if(not par.has_key('wweight')): par['wweight']=10
 #    if(not par.has_key('wclip')):   par['wclip']=1.0
 
@@ -118,38 +118,38 @@ def wfom3(wom,wfldp,wfldsv,wfldsh,velo,vmean,name1,name2,name3,axis,custom,par):
              scale axis=123 |
              math w=${SOURCES[1]} output="input+%g*w"
              ''' %(vmean, par['wweight']) )
-        
-    pot.cliptogether3(wom,wfldp+'t2',wfldsv+'t2',wfldsh+'t2',name1,name2,name3,axis,custom,par)    
+
+    pot.cliptogether3(wom,wfldp+'t2',wfldsv+'t2',wfldsh+'t2',name1,name2,name3,axis,custom,par)
 
 
 
 
 
-def weight(nref,par,param): 
+def weight(nref,par,param):
 
     Flow('re','R epsilon','add mode=p ${SOURCES[1]}')
 
-    for i in range(0,nref):        
+    for i in range(0,nref):
         ref="%01d"%i
 
-                
+
 #        Flow('eps'+ref,'epsilon',
 #             '''
 #             window n1=1 n2=1 min1=%f min2=%f |
 #             spray n=%d axis=1 | spray n=%d  axis=2
-#             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx']) 
+#             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx'])
 #             )
 #        Flow('R'+ref,'R',
 #             '''
 #             window n1=1 n2=1 min1=%f min2=%f |
 #             spray n=%d axis=1 | spray n=%d  axis=2
-#             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx']) 
+#             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx'])
 #             )
         Flow('re'+ref,'re',
              '''
              window n1=1 n2=1 min1=%f min2=%f |
              spray n=%d axis=1 | spray n=%d  axis=2
-             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx']) 
+             '''%(param['z'+ref],param['x'+ref],par['nz'],par['nx'])
              )
 #        Flow('w'+ref,['epsilon','R','eps'+ref,'R'+ref],
 #             '''

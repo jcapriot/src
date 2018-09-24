@@ -3,7 +3,7 @@
 #
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import pplot
+from rsf.recipes import pplot
 import random
 from functools import reduce
 

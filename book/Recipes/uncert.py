@@ -1,5 +1,5 @@
 from rsf.proj import *
-import velcon
+from rsf.recipes import velcon
 
 def uncert(data,        # data name
            nv,          # continuation steps
@@ -22,7 +22,7 @@ def uncert(data,        # data name
            rect2=10):   # lateral  smoothing
 
     velcon.velcon(data,nv,v0,dv,nx,nh,padt,padt2,padx,v1,n1,dt,dx,units,vslope,vx0,x0,rect1,rect2)
-    
+
     vlf=data+'-vlf'
     vlf2=data+'-vlf1'
     npk = data+'-npk'
@@ -43,7 +43,7 @@ def uncert(data,        # data name
         refer = '''
         transp | refer ref=${SOURCES[1]} | transp
         '''
-    
+
     Flow(ref+'2',[vlf2,npk],refer)
 
     dtdv = data+'-dtdv'
@@ -85,7 +85,7 @@ def uncert(data,        # data name
          stack norm=n |
          add mode=d ${SOURCES[1]} |
          math output="sqrt(input)"
-         ''')   
+         ''')
     Result(ddv,
            '''
            grey title="Velocity Uncertainty" allpos=y
@@ -111,7 +111,7 @@ def uncert(data,        # data name
            label1=Time unit1=s label2="Lateral Position" unit2=%s
            barlabel="Lateral Uncertainty (%s)"
            ''' % (units,units))
-    
+
     ddip=data+'-ddip'
     Flow(ddip,data,
          '''
@@ -145,7 +145,7 @@ def uncert(data,        # data name
          cosft sign3=-1 | window n3=%d
          ''' % (nv,dv,v0,padt,padt2,nx))
 
-    
+
     vlf22=data2+'-vlf2'
     Flow(vlf22,pad2,
          '''
@@ -154,7 +154,7 @@ def uncert(data,        # data name
          window n2=%d | transp plane=23 memsize=500
          ''' % (nv,dv,v0,padt,padt2,nx))
 
-    
+
     foc=data2+'-foc'
     Flow(foc,[vlf2,vlf22],
          '''

@@ -3,7 +3,7 @@ try:
 except:
     from rsf.proj import *
 import string, sys
-import version
+from rsf.recipes import version
 
 def pmig(data,hdip,ydip,frame1=1,frame2=1,frame3=1):
 
@@ -14,9 +14,9 @@ def pmig(data,hdip,ydip,frame1=1,frame2=1,frame3=1):
         Flow('bar'+name,name,'bar')
         Result(name,[name,'bar'+name],
                '''
-               byte | transp plane=23 | 
+               byte | transp plane=23 |
                grey3 title="%s" bar=${SOURCES[1]}
-               frame1=%d frame2=%d frame3=%d color=%s 
+               frame1=%d frame2=%d frame3=%d color=%s
                flat=y point1=0.75 point2=0.75 %s
                ''' % (title,frame1,frame2,frame3,color,extra))
 
@@ -45,11 +45,11 @@ def pmig(data,hdip,ydip,frame1=1,frame2=1,frame3=1):
     Grey3(mig,'Oriented Prestack Time Migration')
     Result(mig+'2',mig,
            '''
-           stack | 
-           grey title="Oriented Prestack Time Migration" 
+           stack |
+           grey title="Oriented Prestack Time Migration"
            wheretitle=t wherexlabel=b
            ''')
-    
+
     mzo = data+'-mzo'
     Flow(mzo,[data+'2',hdip+'2',ydip+'2'],
          '''
@@ -59,4 +59,3 @@ def pmig(data,hdip,ydip,frame1=1,frame2=1,frame3=1):
     Grey3(mzo,'Oriented Migration to Zero Offset')
     Result(mzo+'2',mzo,
            'stack | grey title="Oriented DMO Stack" wheretitle=t wherexlabel=b')
-    

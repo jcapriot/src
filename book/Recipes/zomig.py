@@ -49,7 +49,7 @@ def migpar(par):
 
     if('tmx' not in par):     par['tmx']=16
     if('tmy' not in par):     par['tmy']=16
-    
+
     if('incore' not in par):  par['incore']='y'
 
 # ------------------------------------------------------------
@@ -93,7 +93,7 @@ def model(data,slow,imag,par):
          zowei mode=m inv=y %s %s
          slo=${SOURCES[1]}
          ''' % (param(par),freqs(par)))
-    
+
 # zero-offset migration
 def image(imag,slow,data,par):
     Flow(imag,[data,slow],
@@ -116,7 +116,7 @@ def image3(imag,slow,data,par):
          zomig3 mode=m inv=n %s
          slo=${SOURCES[1]}
          ''' % param(par))
-    
+
 # ------------------------------------------------------------
 
 #      causal datuming (forward in time, causal=y)
@@ -133,7 +133,7 @@ def Cdtone3(wfld,data,slow,par):
          zomig3 mode=d inv=n causal=y twoway=n %s
          slo=${SOURCES[1]}
          ''' % param(par))
-    
+
 def Cdttwo(wfld,data,slow,par):
     Flow(wfld,[data,slow],
          '''
@@ -146,7 +146,7 @@ def Cdttwo3(wfld,data,slow,par):
          zomig3 mode=d inv=n causal=y twoway=y %s
          slo=${SOURCES[1]}
          ''' % param(par))
-    
+
 # anti-causal datuming (backward in time, causal=n)
 # (useful for datuming receiver wavefields)
 def Adtone(wfld,data,slow,par):
@@ -161,7 +161,7 @@ def Adtone3(wfld,data,slow,par):
          zomig3 mode=d inv=n causal=n twoway=n %s
          slo=${SOURCES[1]}
          ''' % param(par))
-    
+
 def Adttwo(wfld,data,slow,par):
     Flow(wfld,[data,slow],
          '''
@@ -281,7 +281,7 @@ def i2s3(dimag,dslow,bwfld,bslow,par):
 #    rwfl = imag + rdat + '_w'
 
 #    slow = imag + velo + '_s'
-    
+
 #    Flow(sfrq,sdat,
 #         '''
 #         transp |
@@ -340,7 +340,7 @@ def zom(imag,data,velo,par):
          transp plane=12 |
          transp plane=23
          ''' % par )
-    
+
     Flow(imag,[freq,slow],
          '''
          zomig3 mode=m inv=n %s

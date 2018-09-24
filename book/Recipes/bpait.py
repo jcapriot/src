@@ -1,9 +1,8 @@
-## 
+##
  # BPAIT parameters
  ##
 
 from rsf.proj import *
-import fdmod
 
 # ------------------------------------------------------------
 # model parameters
@@ -30,7 +29,7 @@ def fwipar(par):
     par['nqz']=par['nz']/2
     par['oqz']=par['oz']
     par['dqz']=par['dz']*2
-    
+
     par['nqx']=par['nx']/2
     par['oqx']=par['ox']
     par['dqx']=par['dx']*2
@@ -43,7 +42,7 @@ def getmigvel(velo,par):
     else:
         migvelfile = 'bpaitvel.hh'
         Fetch(datafile,'bpait')
-        
+
     Flow(velo,migvelfile,
          '''
          dd form=native |
@@ -52,4 +51,3 @@ def getmigvel(velo,par):
          o2=%(ox)g d2=%(dx)g  unit1=%(uz)s  unit2=%(ux)s |
          scale rscale=0.001
          ''' % par)
-    

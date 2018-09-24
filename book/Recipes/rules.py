@@ -1,5 +1,5 @@
 from rsf.proj import *
-import fdmod
+from rsf.recipes import fdmod
 
 def param():
     par = {
@@ -22,7 +22,7 @@ def param():
 # acoustic modeling
 def amodel(dat,wfl,  wav,vel,den,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [dat,wfl],[wav,vel,den,sou,rec],
          '''
          awefd2d
@@ -38,7 +38,7 @@ def amodel(dat,wfl,  wav,vel,den,sou,rec,custom,par):
 # elastic modeling
 def emodel(dat,wfl,  wav,ccc,den,sou,rec,custom,par):
     par['fdcustom'] = custom
-    
+
     Flow( [dat,wfl],[wav,ccc,den,sou,rec],
          '''
          ewefd2d
@@ -80,7 +80,7 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
     fdmod.wavelet('wava0',par['frq'],par)
     Flow(  'wava','wava0','transp')
     Result('wava','transp | window n1=500 |' + fdmod.waveplot('title="Acoustic source"',par))
-    
+
     # ------------------------------------------------------------
     # elastic source
     fdmod.wavelet('hor0',par['frq'],par)
@@ -95,7 +95,7 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
          transp plane=23 |
          transp plane=12
          ''')
-    
+
     Plot('ver','wave','window n2=1 f2=0 | window n1=500 |' + fdmod.waveplot('title="Elastic vertical source"',par))
     Plot('hor','wave','window n2=1 f2=1 | window n1=500 |' + fdmod.waveplot('title="Elastic horizontal source"',par))
     Result('wave','hor ver','Movie')
@@ -118,20 +118,20 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
     # ------------------------------------------------------------
     # acoustic modeling
     amodel('da','wa','wava',vp,ro,ss,rr,'',par)
-    
+
     Flow('waw','wa',
          '''
          window min1=%g max1=%g min2=%g max2=%g |
          scale axis=123
          ''' % (par['zmin'],par['zmax'],par['xmin'],par['xmax']))
-    
+
     Result('wa',          fdmod.wgrey('pclip=99 title="Acoustic wavefield"',par))
     Result('da','transp | window f1=%(kt)d | put o1=%(ot)g | pad end1=%(kt)d |' % par
            + fdmod.dgrey('pclip=99 title="Acoustic data" grid=y',par))
 
     # elastic modeling
     emodel('de','we','wave','cc',ro,ss,rr,'ssou=%(ssou)s opot=n' % par,par)
-    
+
     for i in range(2):
         Flow('we'+str(i+1),'we',
              '''
@@ -139,7 +139,7 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
              window min1=%g max1=%g min2=%g max2=%g |
              scale axis=123
              ''' % (i,par['zmin'],par['zmax'],par['xmin'],par['xmax']))
-        
+
         Result('we'+str(i+1),
                fdmod.wgrey('title=u%s pclip=99' % str(i+1),par))
         Result('de'+str(i+1),'de',
@@ -149,7 +149,7 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
                window f1=%d | put o1=%g | pad end1=%d |
                ''' % (i,par['kt'],par['ot'],par['kt'])
                + fdmod.dgrey('title=u%s pclip=99 grid=y' %str(i+1),par))
-    
+
     Flow(  'weall','we1 we2','cat axis=1 space=n ${SOURCES[1]}')
     Result('weall',
            '''
@@ -172,5 +172,3 @@ def test(vp,vs,ro,epsilon,delta,ss,rr,par):
         fdmod.wframe('wa-' +str(j),'wa', j,'pclip=99.9',par)
         fdmod.wframe('we1-'+str(j),'we1',j,'pclip=99.9',par)
         fdmod.wframe('we2-'+str(j),'we2',j,'pclip=99.9',par)
-        
-

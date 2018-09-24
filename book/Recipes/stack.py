@@ -1,6 +1,6 @@
 from rsf.proj import *
 import string, sys
-import version
+from rsf.recipes import version
 
 def stack(name,
           v0,
@@ -33,7 +33,7 @@ def stack(name,
 
     scn = name+'-scn'
     vel = name+'-vel'
-    
+
     Flow(scn,name,
          'mutter v0=%g | vscan semblance=y v0=%g nv=%d dv=%g' % (v0,v0,nv,dv))
 
@@ -43,11 +43,11 @@ def stack(name,
         pick = ''
 
     pick = pick + 'pick rect1=%d rect2=%d | window' % (rect1,rect2)
-        
+
     def grey(title):
         return '''
         window n1=%d |
-        grey title="%s" 
+        grey title="%s"
         label1=Time unit1=s label2=Distance unit2="%s"
         ''' % (nt,title,units)
 
@@ -57,9 +57,9 @@ def stack(name,
         barreverse=y
         ''' % units
 
-    Flow(vel,scn,pick)   
+    Flow(vel,scn,pick)
     Result(vel,velgrey('RMS Velocity'))
- 
+
     nmo = name+'-nmo'
     stk = name+'-stk'
 
@@ -134,7 +134,7 @@ def diffimg(name,
     def grey(title):
         return '''
         window n1=%d |
-        grey title="%s" 
+        grey title="%s"
         label1=Time unit1=s label2=Distance unit2="%s"
         ''' % (nt,title,units)
 
@@ -147,13 +147,13 @@ def diffimg(name,
     dip = name+'-dip'
     Flow(dip,stk,'dip rect1=%d rect2=%d' % (rect1,rect2))
     Result(dip,grey('Dominant Slope') + \
-           ' color=j scalebar=y barlabel=Slope barunit=samples ')   
+           ' color=j scalebar=y barlabel=Slope barunit=samples ')
 
     pwk = name+'-pwk'
     Flow(pwk,dip,
          'noise rep=y seed=2007 | pwdsmooth2 dip=$SOURCE rect1=3 rect2=%d' %  srect2)
     Result(pwk,grey('Pattern'))
-    
+
     pwd=name+'-pwd'
     Flow(pwd,[stk,dip],'pwd dip=${SOURCES[1]}')
     Result(pwd,grey('Separated Diffractions'))
@@ -190,11 +190,11 @@ def diffimg(name,
 #    Flow(dif,[pwds,vel],'window f4=1 | inmo velocity=${SOURCES[1]}')
 
     velcon = '''
-    pad n2=%d beg1=%d | cosft sign2=1 | put o3=0 | 
-    stolt vel=%g | 
+    pad n2=%d beg1=%d | cosft sign2=1 | put o3=0 |
+    stolt vel=%g |
     vczo nv=%d dv=%g v0=%g |
     transp plane=23 |
-    cosft sign2=-1 | 
+    cosft sign2=-1 |
     window n2=%d f1=%d |
     put o2=%g |
     transp plane=23
@@ -212,13 +212,13 @@ def diffimg(name,
         focus = 'window j3=%d | ' % j3
     else:
         focus = ''
-        
-    focus = focus + '''    
+
+    focus = focus + '''
     focus rect1=%d rect3=%d |
     math output="1/abs(input)" |
-    cut max1=%g | cut min1=%g 
+    cut max1=%g | cut min1=%g
     ''' % (frect1,frect2,tmin,tmax)
- 
+
     foc=name+'-foc'
     Flow(foc,vlf,focus)
 
@@ -247,7 +247,7 @@ def diffimg(name,
         ''' % (nx,dx,x0)
     else:
         pick2 = pick
-        
+
     Flow(pik,sem,pick2)
     Result(pik,velgrey('Migration Velocity'))
 
@@ -273,6 +273,3 @@ def diffimg(name,
     Flow(slc+'3',slc+'0','agc rect1=200')
 
     Result(slc+'3',grey('Migrated Reflections'))
-
-
-

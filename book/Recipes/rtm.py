@@ -1,6 +1,6 @@
 try:    from rsf.cluster import *
 except: from rsf.proj    import *
-import fdmod
+from rsf.recipes import fdmod
 import random
 from functools import reduce
 
@@ -19,11 +19,11 @@ def awepar(par):
           dabc=%(dabc)s nb=%(nb)d
           '''%par + ' '
     return awe
-    
+
 def iwindow(par):
     win = ' ' + \
           '''
-          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g 
+          nqz=%(nqz)d oqz=%(oqz)g dqz=%(dqz)g
           nqx=%(nqx)d oqx=%(oqx)g dqx=%(dqx)g
           ''' % par + ' '
     return win
@@ -31,7 +31,7 @@ def iwindow(par):
 def eicpar(par):
     eic = ' ' + 'nhx=%(nhx)d nhy=%(nhy)d nhz=%(nhz)d nht=%(nht)d'%par + ' '
     return eic
-    
+
 # ------------------------------------------------------------
 # WR: forward in time
 def fWRrtm(data,wfld,velo,dens,coor,custom,par):
@@ -65,7 +65,7 @@ def bWRcda(data,wfld,velo,coor,custom,par):
 
 def reverse(wfldO,wfldI,par):
     Flow(wfldO,wfldI,'reverse which=4 opt=i verb=y')
-    
+
 # ------------------------------------------------------------
 # variable-density RTM w/ CIC
 def cicmig(icic,
@@ -73,7 +73,7 @@ def cicmig(icic,
            rdat,rcoo,
            velo,dens,
            custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
@@ -121,7 +121,7 @@ def cicmigCD(icic,
              rdat,rcoo,
              velo,
              custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
@@ -159,7 +159,7 @@ def cicmigCD(icic,
          '''%(M8R,swfl,rdrv,rwfl),
               stdin=0,
               stdout=0)
-    
+
 # ------------------------------------------------------------
 # veriable-density RTM w/ CIC and EIC
 def eicmig(icic,
@@ -168,7 +168,7 @@ def eicmig(icic,
            rdat,rcoo,
            velo,dens,
            custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
@@ -200,12 +200,12 @@ def eicmig(icic,
          '''%(M8R,rdrv,iwindow(par)+awepar(par)+custom,rwfl,DPT) +
          '''
          %scicold2d <%s isreversed=0 verb=n %s
-         ur=%s 
+         ur=%s
          >${TARGETS[0]};
          '''%(M8R,swfl,custom,rwfl) +
          '''
          %seicold2d <%s isreversed=0 verb=n %s
-         ur=%s cc=${SOURCES[4]} 
+         ur=%s cc=${SOURCES[4]}
          >${TARGETS[1]};
          '''%(M8R,swfl,eicpar(par)+custom,rwfl) +
          '''
@@ -222,7 +222,7 @@ def eicmigCD(icic,
              rdat,rcoo,
              velo,
              custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
@@ -252,12 +252,12 @@ def eicmigCD(icic,
          '''%(M8R,rdrv,iwindow(par)+awepar(par)+custom,rwfl,DPT) +
          '''
          %scicold2d <%s isreversed=0 verb=n %s
-         ur=%s 
+         ur=%s
          >${TARGETS[0]};
          '''%(M8R,swfl,custom,rwfl) +
          '''
          %seicold2d <%s isreversed=0 verb=n %s
-         ur=%s cc=${SOURCES[4]} 
+         ur=%s cc=${SOURCES[4]}
          >${TARGETS[1]};
          '''%(M8R,swfl,eicpar(par)+custom,rwfl) +
          '''
@@ -273,11 +273,11 @@ def cic(icic,swfl,rwfl,custom,par,isreversed=0):
     Flow(icic,[swfl,rwfl],
          '''
          cicold2d verb=y
-         ur=${SOURCES[1]} 
+         ur=${SOURCES[1]}
          '''%par+ 'isreversed=%d'%isreversed + ' ' + custom )
 
 # EIC
-def eic(ieic,swfl,rwfl,cc,custom,par,isreversed=0):    
+def eic(ieic,swfl,rwfl,cc,custom,par,isreversed=0):
     Flow(ieic,[swfl,rwfl,cc],
          '''
          eicold2d verb=y
@@ -315,7 +315,7 @@ def zofmig(imag,data,rcoo,velo,dens,custom,par):
          '''%(M8R,rdat,rwfl),
               stdin=0,
               stdout=0)
-    
+
 # ------------------------------------------------------------
 def zofmigCD(imag,data,rcoo,velo,custom,par):
     M8R='$RSFROOT/bin/sf'
@@ -344,27 +344,27 @@ def zofmigCD(imag,data,rcoo,velo,custom,par):
          '''%(M8R,rdat,rwfl),
               stdin=0,
               stdout=0)
-    
+
 # ------------------------------------------------------------
 # FWI kernel
 def fwiker(ker,dts,ss,dtr,rr,vel,den,custom,par):
-    
+
     fdmod.awefd(ker+'_SD',ker+'_SW',dts,vel,den,ss,rr,custom+iwindow(par),par)
 
     Flow(dtr+'_R',dtr,'reverse which=2 opt=i verb=y')
     fdmod.awefd(ker+'_RD',ker+'_RW',dtr+'_R',vel,den,rr,ss,custom+iwindow(par),par)
-    
+
     cic(ker,ker+'_SW',ker+'_RW','',par,isreversed=0)
 
 def fwikerCDold(ker,dts,ss,dtr,rr,vel,custom,par):
-    
+
     fdmod.cdafd(ker+'_SD',ker+'_SW',dts,vel,ss,rr,custom+iwindow(par),par)
 
     Flow(dtr+'_R',dtr,'reverse which=2 opt=i verb=y')
     fdmod.cdafd(ker+'_RD',ker+'_RW',dtr+'_R',vel,rr,ss,custom+iwindow(par),par)
-    
+
     cic(ker,ker+'_SW',ker+'_RW','',par,isreversed=0)
-    
+
 # ------------------------------------------------------------
 # FWI kernel (same as variable-density RTM w/ CIC)
 def fwiker(kern,
@@ -372,7 +372,7 @@ def fwiker(kern,
            rdat,rcoo,
            velo,dens,
            custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
@@ -420,7 +420,7 @@ def fwikerCD(kern,
              rdat,rcoo,
              velo,
              custom,par):
-    
+
     M8R='$RSFROOT/bin/sf'
     DPT=os.environ.get('TMPDATAPATH')
 
