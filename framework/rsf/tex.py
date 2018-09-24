@@ -644,7 +644,9 @@ def colorize(target=None,source=None,env=None):
          progs = sout.read()
          sout.close()
 
-         exec(progs)
+         g = globals()
+         l = locals()
+         exec(progs, g, l)
 
          if uses:
              out.write('</div><p><div class="progs">')

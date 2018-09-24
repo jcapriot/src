@@ -16,14 +16,16 @@
 import sys, os, glob,  re
 
 try: # The subprocess module was introduced in Python 2.4
-    from subprocess import getstatusoutput
+    import subprocess
     have_subprocess=True
 except: # Python < 2.4
-    from commands import getstatusoutput
     have_subprocess=False
 
 if sys.version_info[0]>2:
     basestring = str
+    from subprocess import getstatusoutput
+else:
+    from commands import getstatusoutput
 
 import SCons
 
@@ -1469,7 +1471,8 @@ def psp(context):
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE,
                                  cwd=testdir)
-        if popen.wait() != 0:
+        val = popen.wait()
+        if val != 0:
             return
         makeoptionsout = popen.stdout.read()
         popen = subprocess.Popen('make PSP_DIR=%s libs' % pspdir,
