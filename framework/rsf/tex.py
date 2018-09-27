@@ -628,7 +628,14 @@ def colorize(target=None,source=None,env=None):
           out.write('</span>')
 
      try:
-          tokenize.tokenize(text.readline, call)
+         if sys.version_info[0] < 3:
+             tokenize.tokenize(text.readline, call)
+         else:
+             temp = lambda : text.readline().encode()
+             output = tokenize.tokenize(temp)
+             for tuples in output:
+                 call(*tuples)
+
      except tokenize.TokenError as ex:
           msg = ex[0]
           line = ex[1][0]
@@ -647,6 +654,8 @@ def colorize(target=None,source=None,env=None):
          g = globals()
          l = locals()
          exec(progs, g, l)
+         uses = l['uses']
+         data = l['data']
 
          if uses:
              out.write('</div><p><div class="progs">')
